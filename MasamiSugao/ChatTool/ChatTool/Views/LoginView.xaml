@@ -1,0 +1,62 @@
+﻿<Window x:Class="ChatTool.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatTool.Views"
+        xmlns:vm="clr-namespace:ChatTool.ViewModels"
+        mc:Ignorable="d"
+        Title="{Binding Title}"
+        Height="200" Width="400"
+        d:DataContext="{d:DesignInstance {x:Type vm:LoginViewModel}, IsDesignTimeCreatable=True}">
+    <!-- 初期フォーカス設定 -->
+    <Grid FocusManager.FocusedElement="{Binding ElementName=txtMailAddress}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 入力エリア -->
+        <Grid Grid.Row="0"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="0.2*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="1"
+                       Height="16"
+                       Margin="8"
+                       Text="メールアドレス" />
+            <TextBox x:Name="txtMailAddress" Grid.Row="0" Grid.Column="2"
+                     Height="16"
+                     Margin="8"
+                     Text="{Binding MailAddress}" />
+            <TextBlock Grid.Row="1" Grid.Column="1"
+                       Height="16"
+                       Margin="8"
+                       Text="パスワード" />
+            <PasswordBox Grid.Row="1" Grid.Column="2"
+                         Height="16"
+                         Width="auto"
+                         Margin="8"
+                         PasswordChanged="PasswordBox_PasswordChanged" />
+        </Grid>
+
+        <!-- ボタンエリア -->
+        <Grid Grid.Row="1">
+            <Button Margin="16, 8"
+                    Height="30"
+                    Content="ログイン"
+                    Command="{Binding BtnLoginClickedCommand}" />
+
+        </Grid>
+    </Grid>
+</Window>
