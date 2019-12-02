@@ -9,7 +9,7 @@ namespace ChatTool.Infrastructure.Database
     public static class Conection
     {
         public static string ConnectionString;
-        public static MySqlConnection connection { get; set; }
+        public static MySqlConnection? connection { get; set; }
 
         static Conection()
         {
@@ -19,6 +19,7 @@ namespace ChatTool.Infrastructure.Database
 
         public static MySqlConnection ConnectDB()
         {
+            if (null != connection) return connection;
             connection = new MySqlConnection(ConnectionString);
             connection.Open();
             return connection;
@@ -26,7 +27,9 @@ namespace ChatTool.Infrastructure.Database
 
         public static void DisConnectDB()
         {
+            if (null == connection) return;
             connection.Close();
+            connection = null;
         }
     }
 }

@@ -9,11 +9,10 @@ namespace ChatTool.Models.Services
 {
     static class LoginService
     {
-        static User user;
-        static private MySqlConnection connection;
+        static User? user;
         public static void StartLoginService()
         {
-            connection = Conection.ConnectDB();
+            Conection.ConnectDB();
         }
         public static void EndLoginService()
         {
@@ -23,24 +22,24 @@ namespace ChatTool.Models.Services
         }
         public static User[] LoadUserTable()
         {
-            connection = Conection.ConnectDB();
+            Conection.ConnectDB();
 
             User[] list = new User[0];
             var userDAO = new UserDAO();
-            list = userDAO.UserList(list, connection);
+            list = userDAO.UserList(list, Conection.connection);
             Conection.DisConnectDB();
 
             return list;
         }
         public static bool LoadUser(string mailAdress, string password)
         {
-            connection = Conection.ConnectDB();
+            Conection.ConnectDB();
             var userDAO = new UserDAO();
             var aaa = mailAdress;
-            user = userDAO.User(aaa, password, connection);
+            user = userDAO.User(aaa, password, Conection.connection);
 
             Conection.DisConnectDB();
-
+            if (null == user) return false;
             userDAO.Online(user, Conection.ConnectDB());
             Conection.DisConnectDB();
             return user.IsOnline;

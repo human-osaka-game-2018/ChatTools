@@ -8,7 +8,7 @@ namespace ChatTool.Infrastructure.Database
 {
     class UserDAO
     {
-        public User[] UserList(User[] list,MySqlConnection connection)
+        public User[] UserList(User[] list,MySqlConnection? connection)
         {
             var cmd = new MySqlCommand("select * from m_user;", connection);
             var reader = cmd.ExecuteReader();
@@ -24,7 +24,7 @@ namespace ChatTool.Infrastructure.Database
             }
             return list;
         }
-        public User User(string mailAdress, string password, MySqlConnection connection)
+        public User? User(string mailAdress, string password, MySqlConnection? connection)
         {
             var command = new StringBuilder();
             command.Append("select * from m_user where mail_address = @mail and password = @pass;");
@@ -42,7 +42,7 @@ namespace ChatTool.Infrastructure.Database
             user.IsOnline = true;
             return user;
         }
-        public void Online(User user, MySqlConnection connection)
+        public void Online(User? user, MySqlConnection connection)
         {
             var command = new StringBuilder();
             command.Append("update m_user set is_online = @isOnline where id = @id;");
