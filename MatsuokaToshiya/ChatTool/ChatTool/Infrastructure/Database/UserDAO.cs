@@ -29,8 +29,9 @@ namespace ChatTool.Infrastructure.Database
             var command = new StringBuilder();
             command.Append("select * from m_user where mail_address = @mail and password = @pass;");
             var cmd = new MySqlCommand(command.ToString(), connection);
-            cmd.Parameters.Add(new MySqlParameter("@mail", mailAdress));
-            cmd.Parameters.Add(new MySqlParameter("@pass", password));
+
+            cmd.Parameters.Add(CreateParameter("@mail", mailAdress,MySqlDbType.VarChar,255));
+            cmd.Parameters.Add(CreateParameter("@pass", password,MySqlDbType.VarChar,40));
             var reader = cmd.ExecuteReader();
             reader.Read();
             if (false == reader.HasRows) return null;
@@ -47,10 +48,16 @@ namespace ChatTool.Infrastructure.Database
             var command = new StringBuilder();
             command.Append("update m_user set is_online = @isOnline where id = @id;");
             var cmd = new MySqlCommand(command.ToString(), connection);
-            cmd.Parameters.Add(new MySqlParameter("@isOnline", user.IsOnline));
-            cmd.Parameters.Add(new MySqlParameter("@id", user.Id));
+            cmd.Parameters.Add(CreateParameter("@isOnline", user.IsOnline,MySqlDbType.Byte,1));
+            cmd.Parameters.Add(CreateParameter("@id", user.Id,MySqlDbType.Int32,16));
 
             cmd.ExecuteNonQuery();
+        }
+        MySqlParameter CreateParameter(string paramName,object value,MySqlDbType dbType,int size)
+        {
+            var mysqlParam = new MySqlParameter(paramName, dbType, size);
+            mysqlParam.Value = value;
+            return mysqlParam;
         }
     }
 }
