@@ -10,11 +10,15 @@
         <Grid.Background>
             <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
         </Grid.Background>
-        <TextBox x:Name="txtbMailAdress" HorizontalAlignment="Left" Margin="213,63,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="195" Grid.Row="0" Height="18"/>
-        <PasswordBox x:Name="pwbPassword" HorizontalAlignment="Left" Margin="213,119,0,0" VerticalAlignment="Top"  Width="195" Height="18"/>
-        <Button x:Name="btnLogin" Content="Login
-" HorizontalAlignment="Center" Margin="0,162,0,0" VerticalAlignment="Top" Width="40" Click="OnClick_btnLogin"/>
+        <TextBox x:Name="txtbMailAdress" Text="{Binding Adress}" HorizontalAlignment="Left" Margin="213,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="195" Grid.Row="0" Height="18"/>
+        
+        <PasswordBox x:Name="pwbPassword" HorizontalAlignment="Left" Margin="213,119,0,0" VerticalAlignment="Top"  Width="195" Height="18" LostFocus="pwbPassword_LostFocus"/>
+        
+        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Center" Margin="0,162,0,0" VerticalAlignment="Top" Width="40"
+                Command="{Binding loginButtonCommand}"/>
+        
         <TextBlock x:Name="txtMailAdress" HorizontalAlignment="Left" Margin="157,64,0,0" Text="E-Mail" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        
         <TextBlock x:Name="txtPassword" HorizontalAlignment="Left" Margin="141,120,0,0" Text="Password" TextWrapping="Wrap" VerticalAlignment="Top"/>
     </Grid>
 </Window>

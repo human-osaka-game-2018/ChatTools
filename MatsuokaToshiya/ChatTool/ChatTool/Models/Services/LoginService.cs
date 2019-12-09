@@ -16,8 +16,11 @@ namespace ChatTool.Models.Services
         }
         public static void EndLoginService()
         {
-            user.IsOnline = false;
-            new UserDAO().Online(user, Conection.ConnectDB());
+            if (user != null)
+            {
+                user.IsOnline = false;
+                new UserDAO().Online(user, Conection.ConnectDB());
+            }
             Conection.DisConnectDB();
         }
         public static User[] LoadUserTable()

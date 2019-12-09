@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ChatTool.Models.Services;
+using ChatTool.ViewModels;
 
 namespace ChatTool.Views
 {
@@ -22,26 +22,18 @@ namespace ChatTool.Views
         public Login()
         {
             InitializeComponent();
+            var viewModel = new LoginViewModel();
+            this.DataContext = viewModel;
+            
         }
         ~Login()
         {
-            LoginService.EndLoginService();
-        }
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
 
 
-        private void OnClick_btnLogin(object sender, RoutedEventArgs e)
+        private void pwbPassword_LostFocus(object sender, RoutedEventArgs e)
         {
-            //bool succeedLogin = LoginService.LoadUser(this.txtbMailAdress.Text, this.pwbPassword.Password);
-            //bool succeedLogin = LoginService.LoadUser("aaa.co.jp", "0000");
-
-            bool succeedLogin = LoginService.LoadUser(this.txtbMailAdress.Text, "0001");
-            LoginService.LoadUserTable();
-            Debug.WriteLine(succeedLogin.ToString());
-            if (succeedLogin) new MainWindow().Show();
+            LoginViewModel.Password = pwbPassword.Password;
         }
     }
 }

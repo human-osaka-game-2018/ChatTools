@@ -45,7 +45,9 @@ namespace ChatTool.Infrastructure.Database
         }
         public void Online(User? user, MySqlConnection connection)
         {
-            var command = new StringBuilder();
+            if (user == null) return;
+
+                var command = new StringBuilder();
             command.Append("update m_user set is_online = @isOnline where id = @id;");
             var cmd = new MySqlCommand(command.ToString(), connection);
             cmd.Parameters.Add(CreateParameter("@isOnline", user.IsOnline,MySqlDbType.Byte,1));
