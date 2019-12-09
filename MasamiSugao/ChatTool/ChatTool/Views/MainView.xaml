@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatTool.Views"
         mc:Ignorable="d"
-        Title="MainView" Height="450" Width="800">
+        Title="ChatTool"
+        Height="450" Width="800"
+        Background="{x:Null}"
+        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        WindowStyle="ThreeDBorderWindow">
     <Grid>
-        
+        <DockPanel LastChildFill="True">
+            <local:ChannelListView DockPanel.Dock="Left"
+                                   Width="auto"
+                                   MinWidth="100"
+                                   BorderBrush="White"
+                                   BorderThickness="0,0,1,0" />
+            <local:InputAreaView DockPanel.Dock="Bottom"
+                                 Height="100" />
+            <local:MessageLogView />
+        </DockPanel>
+
     </Grid>
 </Window>
