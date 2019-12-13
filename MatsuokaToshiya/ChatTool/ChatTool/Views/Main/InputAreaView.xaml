@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="ChatTool.Views.Main.InputAreaView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChatTool.Views"
+             mc:Ignorable="d" 
+             Height="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
+             Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}},XPath=local:MainView}" 
+             BorderBrush="#FF27F906" BorderThickness="2,2,2,2" d:DesignWidth="277.629" d:DesignHeight="172.62">
+    <UserControl.Background>
+        <ImageBrush/>
+    </UserControl.Background>
+    <TextBlock HorizontalAlignment="Left" Margin="10,50,0,0" Text="InputArea" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.134,-3.258"/>
+</UserControl>

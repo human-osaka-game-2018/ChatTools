@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ChatTool.Infrastructure.Database
 {
-    class UserDAO
+    class UserDAO : DAO
     {
         public User[] UserList(User[] list,MySqlConnection? connection)
         {
@@ -55,11 +55,15 @@ namespace ChatTool.Infrastructure.Database
 
             cmd.ExecuteNonQuery();
         }
-        MySqlParameter CreateParameter(string paramName,object value,MySqlDbType dbType,int size)
+        public string UserName(int userId)
         {
-            var mysqlParam = new MySqlParameter(paramName, dbType, size);
-            mysqlParam.Value = value;
-            return mysqlParam;
+            var cmd = new MySqlCommand("select * from m_user where id = @user_id;", Conection.ConnectDB());
+            cmd.Parameters.Add(CreateParameter("@user_id", userId, MySqlDbType.Int32, 10));
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            var str =  DBNull.Value != reader["user_name"] ? reader.GetString("user_name") : "";
+            Conection.DisConnectDB();
+            return str;
         }
     }
 }

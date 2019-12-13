@@ -1,0 +1,34 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChatTool.Views"
+             xmlns:local1="clr-namespace:ChatTool.Views.Main" x:Class="ChatTool.Views.Main.MessageLogView"
+             mc:Ignorable="d" 
+             Height="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
+             Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" 
+             Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" d:DesignWidth="398.539" d:DesignHeight="232.769">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24*"/>
+            <RowDefinition Height="209*"/>
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Left" Text="MessageLog" TextWrapping="Wrap" Height="16" Width="107" Margin="0,4,0,4"/>
+        <ListBox Grid.Row="1"
+                 ItemsSource ="{Binding Messages}" SelectedItem="{Binding SelectItem}"
+                 ScrollViewer.CanContentScroll="False"
+                 ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel >
+                        <TextBlock Text="{Binding UserName}" FontSize="9"  FontFamily="Meiryo"/>
+                        <TextBlock Text="{Binding Text}" FontSize="10" FontFamily="Meiryo" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding Time}" FontSize="8" FontFamily="Meiryo" HorizontalAlignment="Right" FlowDirection="RightToLeft" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+        </ListBox>
+    </Grid>
+</UserControl>
