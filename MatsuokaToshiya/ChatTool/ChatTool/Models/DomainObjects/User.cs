@@ -10,7 +10,7 @@ namespace ChatTool.Models.DomainObjects
 
         public string? Name { get; set; }
 
-        public string? MailAdress { get; set; }
+        public string? MailAddress { get; set; }
 
         public string? Password { get; set; }
 

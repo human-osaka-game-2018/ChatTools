@@ -9,42 +9,32 @@ namespace ChatTool.Models.Services
 {
     static class LoginService
     {
-        static User? user;
-        public static void StartLoginService()
-        {
-            Conection.ConnectDB();
-        }
+        public static User? user;
+
         public static void EndLoginService()
         {
             if (user != null)
             {
                 user.IsOnline = false;
-                new UserDAO().Online(user, Conection.ConnectDB());
+                new UserDAO().Online(user);
             }
-            Conection.DisConnectDB();
         }
         public static User[] LoadUserTable()
         {
-            Conection.ConnectDB();
 
             User[] list = new User[0];
             var userDAO = new UserDAO();
-            list = userDAO.UserList(list, Conection.connection);
-            Conection.DisConnectDB();
+            list = userDAO.UserList(list);
 
             return list;
         }
         public static bool LoadUser(string mailAdress, string password)
         {
-            Conection.ConnectDB();
             var userDAO = new UserDAO();
-            var aaa = mailAdress;
-            user = userDAO.User(aaa, password, Conection.connection);
+            user = userDAO.User(mailAdress, password);
 
-            Conection.DisConnectDB();
             if (null == user) return false;
-            userDAO.Online(user, Conection.ConnectDB());
-            Conection.DisConnectDB();
+            userDAO.Online(user);
             return user.IsOnline;
         }
     }

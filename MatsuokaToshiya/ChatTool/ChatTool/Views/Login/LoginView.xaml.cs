@@ -10,7 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ChatTool.ViewModels;
+using ChatTool.ViewModels.Login;
+using ChatTool.Views.Main;
 
 namespace ChatTool.Views
 {
@@ -23,6 +24,9 @@ namespace ChatTool.Views
         {
             InitializeComponent();
             var viewModel = new LoginViewModel();
+            viewModel.LoginSucceed += (_, __) => { new MainView().Show(); };
+            viewModel.LoginFailed += (_, __) => { MessageBox.Show("ログイン情報に間違いがあります。");
+        };
             this.DataContext = viewModel;
             
         }
@@ -33,7 +37,12 @@ namespace ChatTool.Views
 
         private void pwbPassword_LostFocus(object sender, RoutedEventArgs e)
         {
-            LoginViewModel.Password = pwbPassword.Password;
+            ((LoginViewModel)DataContext).Password = pwbPassword.Password;
+        }
+
+        private void pwbPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            ((LoginViewModel)DataContext).Password = pwbPassword.Password;
         }
     }
 }
