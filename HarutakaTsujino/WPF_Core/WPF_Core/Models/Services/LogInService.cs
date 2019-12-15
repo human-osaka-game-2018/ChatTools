@@ -58,7 +58,7 @@ namespace WPF_Core.Models.Services
                             (int)userData["id"],
                             thisUserMailAddress,
                             thisUserPassword,
-                            (string)userData["name"]);
+                            (string)userData["user_name"]);
 
                         return true;
                     }

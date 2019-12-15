@@ -12,7 +12,7 @@ namespace WPF_Core.Infrastructure.Database
 
             mySqlConnection.Open();
 
-            var cmd = mySqlConnection.CreateCommand();
+            using var cmd = mySqlConnection.CreateCommand();
             cmd.CommandText = $"SELECT * FROM m_user WHERE mail_address = {MAIL_ADDRESS_PARAM_NAME};";
 
             var mailAddressParam = cmd.CreateParameter();
@@ -22,8 +22,8 @@ namespace WPF_Core.Infrastructure.Database
             mailAddressParam.Value = mailAddress;
             cmd.Parameters.Add(mailAddressParam);
 
-            var dataAdapter = new MySqlDataAdapter(cmd);
-            var dataSet = new DataSet();
+            using var dataAdapter = new MySqlDataAdapter(cmd);
+            using var dataSet = new DataSet();
             dataAdapter.Fill(dataSet);
 
             mySqlConnection.Close();
@@ -39,9 +39,9 @@ namespace WPF_Core.Infrastructure.Database
 
             var onlineStateCode = isOnline ? 1 : 0;
 
-            var cmd = mySqlConnection.CreateCommand();
+            using var cmd = mySqlConnection.CreateCommand();
             cmd.CommandText = $"UPDATE m_user SET is_online = {onlineStateCode} WHERE(id = {id});";
-            var dataAdapter = new MySqlDataAdapter(cmd);
+            using var dataAdapter = new MySqlDataAdapter(cmd);
 
             mySqlConnection.Close();
         }

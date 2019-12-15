@@ -8,29 +8,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPF_Core.Models.Services;
 
-namespace WPF_Core.Views
+namespace WPF_Core.Views.UserControls
 {
     /// <summary>
-    /// EditorView.xaml の相互作用ロジック
+    /// TextAreaUC.xaml の相互作用ロジック
     /// </summary>
-    public partial class EditorView : Window
+    public partial class TextAreaUC : UserControl
     {
-        public EditorView()
+        public TextAreaUC()
         {
             InitializeComponent();
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            LogInService.LogOut();
-        }
-
-        private void ChannelsDisplayUC_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

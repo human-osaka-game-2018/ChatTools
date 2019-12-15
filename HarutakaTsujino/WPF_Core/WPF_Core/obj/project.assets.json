@@ -5601,11 +5601,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\MyPrograms\\WPF_CORE\\WPF_Core\\WPF_Core\\WPF_Core.csproj",
+      "projectUniqueName": "C:\\Users\\glaca\\OneDrive\\ドキュメント\\ChatTools\\HarutakaTsujino\\WPF_Core\\WPF_Core\\WPF_Core.csproj",
       "projectName": "WPF_Core",
-      "projectPath": "D:\\MyPrograms\\WPF_CORE\\WPF_Core\\WPF_Core\\WPF_Core.csproj",
+      "projectPath": "C:\\Users\\glaca\\OneDrive\\ドキュメント\\ChatTools\\HarutakaTsujino\\WPF_Core\\WPF_Core\\WPF_Core.csproj",
       "packagesPath": "C:\\Users\\glaca\\.nuget\\packages\\",
-      "outputPath": "D:\\MyPrograms\\WPF_CORE\\WPF_Core\\WPF_Core\\obj\\",
+      "outputPath": "C:\\Users\\glaca\\OneDrive\\ドキュメント\\ChatTools\\HarutakaTsujino\\WPF_Core\\WPF_Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

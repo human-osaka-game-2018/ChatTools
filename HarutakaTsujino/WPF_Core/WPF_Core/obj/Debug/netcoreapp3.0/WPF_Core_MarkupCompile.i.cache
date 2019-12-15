@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\MyPrograms\WPF_CORE\WPF_Core\WPF_Core\obj\Debug\netcoreapp3.0\
+C:\Users\glaca\OneDrive\ドキュメント\ChatTools\HarutakaTsujino\WPF_Core\WPF_Core\obj\Debug\netcoreapp3.0\
 WPF_Core
 none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_0
-D:\MyPrograms\WPF_CORE\WPF_Core\WPF_Core\App.xaml
-31662992669
+C:\Users\glaca\OneDrive\ドキュメント\ChatTools\HarutakaTsujino\WPF_Core\WPF_Core\App.xaml
+6-994291621
 
-111458402652
+21-417336394
 2061852649007
-MainWindow.xaml;Views\EditorView.xaml;Views\LogInView.xaml;
+MainWindow.xaml;Views\EditorView.xaml;Views\LogInView.xaml;Views\UserControls\ChannelsDisplayUC.xaml;Views\UserControls\MessagesDisplayUC.xaml;Views\UserControls\TextAreaUC.xaml;
 
 False
 

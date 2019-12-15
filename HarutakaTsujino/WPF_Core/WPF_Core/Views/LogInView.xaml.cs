@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +28,11 @@ namespace WPF_Core.Views
                 .Subscribe(_ => OpenEditorView());
 
             DataContext = LogInViewModel;
+
+#if DEBUG
+            LogInViewModel.MailAddress = "mail@ress";
+            passBoxPassword.Password = "0000";
+#endif
         }
 
         private void BtnLogIn_Click(object sender, RoutedEventArgs e)
