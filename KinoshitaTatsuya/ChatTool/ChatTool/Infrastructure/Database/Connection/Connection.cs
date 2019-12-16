@@ -8,7 +8,7 @@ namespace ChatTool.Infrastructure.Database.Connection
 {
     public static class Connection
     {
-        private static string connectionStr = null;
+        private static string? connectionStr = null;
 
         static Connection()
         {
