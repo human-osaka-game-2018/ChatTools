@@ -24,14 +24,14 @@ namespace WPF_Core.Views.UserControls
             InitializeComponent();
 
             DataContext = ChannelsDisplayViewModel;
-
-            foreach(var channelBtn in ChannelsDisplayViewModel.GetChannelButtons())
-            {
-                StPChannelButtons.Children.Add(channelBtn);
-            }
         }
 
         private ChannelsDisplayViewModel ChannelsDisplayViewModel { get; set; }
             = new ChannelsDisplayViewModel();
+
+        private void LBChannelButtons_SelectioChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ChannelsDisplayViewModel.ChangeSelectionChannel(sender, e);
+        }
     }
 }

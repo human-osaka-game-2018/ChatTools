@@ -9,18 +9,18 @@ namespace WPF_Core.Common
     {
         public event EventHandler CanExecuteChanged;
 
-        public DelegateCommand(Action onExecute)
+        public DelegateCommand(Action<object> onExecute)
         {
             OnExecute = onExecute;
         }
 
-        public DelegateCommand(Action onExecute, Func<bool> onCanExecute)
+        public DelegateCommand(Action<object> onExecute, Func<object, bool> onCanExecute)
         {
             OnExecute = onExecute;
             OnCanExecute = onCanExecute;
         }
 
-        public bool CanExecute()
+        public bool CanExecute(object parameter)
         {
             if (OnCanExecute == null)
             {
@@ -28,23 +28,13 @@ namespace WPF_Core.Common
             }
             else
             {
-                return OnCanExecute();
+                return OnCanExecute(parameter);
             }
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return CanExecute();
-        }
-
-        public void Execute()
-        {
-            OnExecute();
         }
 
         public void Execute(object parameter)
         {
-            Execute();
+            OnExecute(parameter);
         }
 
         public void RaiseCanExecuteChanged()
@@ -52,13 +42,13 @@ namespace WPF_Core.Common
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private Action OnExecute { get; set; }
+        private Action<object> OnExecute { get; set; }
 
-        private Func<bool> onCanExecute;
-        private Func<bool> OnCanExecute
+        private Func<object, bool> onCanExecute;
+        private Func<object, bool> OnCanExecute
         {
             get => onCanExecute;
-            set 
+            set
             {
                 onCanExecute = value;
 

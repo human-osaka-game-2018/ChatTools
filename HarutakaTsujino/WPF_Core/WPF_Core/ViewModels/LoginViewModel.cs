@@ -24,7 +24,7 @@ namespace WPF_Core.ViewModels
             LogInCommand = new DelegateCommand(LogIn);
         }
 
-        private void LogIn()
+        private void LogIn(object _)
         {
             var logInResult = LogInService.LogIn(MailAddress, Password);
 

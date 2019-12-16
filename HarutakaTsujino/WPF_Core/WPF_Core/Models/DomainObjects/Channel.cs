@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WPF_Core.Models.DomainObjects
 {
-    class Channel
+    public class Channel
     {
         public Channel(int id, string name)
         {
