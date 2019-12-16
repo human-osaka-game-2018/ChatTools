@@ -29,7 +29,7 @@ namespace WPF_Core.Views.UserControls
         private ChannelsDisplayViewModel ChannelsDisplayViewModel { get; set; }
             = new ChannelsDisplayViewModel();
 
-        private void LBChannelButtons_SelectioChanged(object sender, SelectionChangedEventArgs e)
+        private void LBChannels_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ChannelsDisplayViewModel.ChangeSelectionChannel(sender, e);
         }

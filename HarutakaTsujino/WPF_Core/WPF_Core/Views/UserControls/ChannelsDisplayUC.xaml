@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <Label x:Name="LabelLoginUser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontFamily="Yu Mincho Demibold" FontSize="11" Foreground="White" Background="#19FFFFFF"
                Content ="{Binding LogInUserName}"/>
-        <ListBox x:Name="LBChannelButtons" Grid.Row="1" ItemsSource="{Binding Channels}" SelectionChanged="LBChannelButtons_SelectioChanged" Background="{x:Null}">
+        <ListBox x:Name="LBChannels" Grid.Row="1" ItemsSource="{Binding Channels}" SelectionChanged="LBChannels_SelectionChanged" Background="{x:Null}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Label Content="{Binding Name}" FontSize="24" Foreground="White"/>
