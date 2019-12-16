@@ -8,7 +8,7 @@ namespace ChatTool.Models.Services.LoginService
 {
     static public class LoginService
     {
-        static public User LoginUser { get; set; }
+        static public User LoginUser { get; set; } = new User();
         static public bool CanLogin(string mailAddress, string password)
         {            
             var LoginInfo = UserDAO.GetLoginInfos();
