@@ -67,3 +67,4 @@ C:\Users\glaca\OneDrive\ドキュメント\ChatTools\HarutakaTsujino\WPF_Core\WP
 C:\Users\glaca\OneDrive\ドキュメント\ChatTools\HarutakaTsujino\WPF_Core\WPF_Core\obj\Debug\netcoreapp3.0\WPF_Core.csproj.CopyComplete
 C:\Users\glaca\OneDrive\ドキュメント\ChatTools\HarutakaTsujino\WPF_Core\WPF_Core\obj\Debug\netcoreapp3.0\WPF_Core.dll
 C:\Users\glaca\OneDrive\ドキュメント\ChatTools\HarutakaTsujino\WPF_Core\WPF_Core\obj\Debug\netcoreapp3.0\WPF_Core.pdb
+C:\Users\glaca\OneDrive\ドキュメント\ChatTools\HarutakaTsujino\WPF_Core\WPF_Core\obj\Debug\netcoreapp3.0\WPF_Core.csprojAssemblyReference.cache

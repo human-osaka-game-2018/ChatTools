@@ -20,7 +20,7 @@ namespace WPF_Core.ViewModels.UserControls
         {
             var channelButtons = new List<Button>();
 
-            var channels = ChannelDataProviderService.GetJoinedUser(LogInService.LogInUser.Id);
+            var channels = ChannelService.GetJoinedUser(LogInService.LogInUser.Id);
 
             foreach (Channel channel in channels)
             {
@@ -32,7 +32,7 @@ namespace WPF_Core.ViewModels.UserControls
 
                 channelButton.Click += (s, e) =>
                 {
-                    ChannelDataProviderService.SelectingChannel = channel;
+                    ChannelService.SelectingChannel = channel;
                 };
 
                 channelButtons.Add(channelButton);

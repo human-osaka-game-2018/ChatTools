@@ -16,46 +16,39 @@ namespace WPF_Core.ViewModels.UserControls
 
         public MessagesDisplayViewModel()
         {
-            var startChannel = 
-                ChannelDataProviderService.GetJoinedUser(LogInService.LogInUser.Id)[0];
-
-            ChannelDataProviderService.SelectingChannel = startChannel;
-
-            var messages = ChannelDataProviderService.GetMessagesInChannel(startChannel.Id);
-
-            foreach (var message in messages)
-            {
-                Messages.Add(message);
-            }
-
-            subscribeDisposable =
-                ChannelDataProviderService.OnSelectingChangedAsObservable
+            SubscribeDisposable =
+                ChannelService.OnSelectingChangedAsObservable
                 .Subscribe(SetMessagesInChannel);
+
+            var startChannel = 
+                ChannelService.GetJoinedUser(LogInService.LogInUser.Id)[0];
+
+            ChannelService.SelectingChannel = startChannel;
         }
 
         ~MessagesDisplayViewModel()
         {
-            subscribeDisposable.Dispose();
+            SubscribeDisposable.Dispose();
         }
 
         private void SetMessagesInChannel(int channelId)
         {
             var channels =
-                   ChannelDataProviderService.GetJoinedUser(LogInService.LogInUser.Id);
+                   ChannelService.GetJoinedUser(LogInService.LogInUser.Id);
 
             foreach (var channel in channels)
             {
                 if (channelId == channel.Id)
                 {
-                    ChannelDataProviderService.SelectingChannel = channel;
+                    ChannelService.SelectingChannel = channel;
 
                     break;
                 }
             }
 
             var messages = 
-                ChannelDataProviderService
-                .GetMessagesInChannel(ChannelDataProviderService.SelectingChannel.Id);
+                MessageService
+                .GetMessagesInChannel(ChannelService.SelectingChannel.Id);
 
             Messages.Clear();
 
@@ -65,6 +58,6 @@ namespace WPF_Core.ViewModels.UserControls
             }
         }
 
-        private IDisposable subscribeDisposable;
+        private IDisposable SubscribeDisposable { get; set; }
     }
 }

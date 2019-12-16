@@ -1,67 +1,65 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Text;
 
 namespace WPF_Core.Infrastructure.Database
 {
     public static class ChannelDAO
     {
-        public static DataTable GetJoinedUser(int userId)
+        public static DataTable Get(IReadOnlyList<int> Ids)
         {
-            var channelIdsJoinedUser = GetIdsJoinedUser(userId);
+            if (Ids.Count <= 0) return null;
 
-            using var mySqlConnection = Connection.Connect();
-
-            mySqlConnection.Open();
-
-            DataTable channelTable = null;
-
-            foreach (DataRow channelIdRow in channelIdsJoinedUser.Rows)
-            {
-                using var cmd = mySqlConnection.CreateCommand();
-                cmd.CommandText = $"SELECT * FROM m_channel WHERE id = {CHANNEL_ID};";
-
-                var channelIdParam = cmd.CreateParameter();
-                channelIdParam.ParameterName = CHANNEL_ID;
-                channelIdParam.MySqlDbType = MySqlDbType.Int64;
-                channelIdParam.Direction = ParameterDirection.Input;
-                channelIdParam.Value = channelIdRow[0];
-                cmd.Parameters.Add(channelIdParam);
-
-                using var dataAdapter = new MySqlDataAdapter(cmd);
-                using var dataSet = new DataSet();
-                dataAdapter.Fill(dataSet);
-
-                if (channelTable == null)
-                {
-                    channelTable = dataSet.Tables[0].Clone();
-                }
-
-                var dataRowTmp = channelTable.NewRow();
-                dataRowTmp.ItemArray = dataSet.Tables[0].Rows[0].ItemArray;
-                channelTable.Rows.Add(dataRowTmp);
-            }
-
-            mySqlConnection.Close();
-
-            return channelTable;
-        }
-
-        private static DataTable GetIdsJoinedUser(int userId)
-        {
             using var mySqlConnection = Connection.Connect();
 
             mySqlConnection.Open();
 
             using var cmd = mySqlConnection.CreateCommand();
-            cmd.CommandText = $"SELECT channel_id FROM m_channel_member WHERE user_id = {USER_ID};";
+            var commandTextSB = new StringBuilder();
+            commandTextSB.Append("SELECT * FROM m_channel WHERE id ");
 
-            var userIdParam = cmd.CreateParameter();
-            userIdParam.ParameterName = USER_ID;
-            userIdParam.MySqlDbType = MySqlDbType.Int64;
-            userIdParam.Direction = ParameterDirection.Input;
-            userIdParam.Value = userId;
-            cmd.Parameters.Add(userIdParam);
+            if (Ids.Count > 1)
+            {
+                commandTextSB.Append("IN (");
+
+                foreach (var id in Ids)
+                {
+                    var channelIdParam = cmd.CreateParameter();
+                    channelIdParam.MySqlDbType = MySqlDbType.Int64;
+                    channelIdParam.Direction = ParameterDirection.Input;
+
+                    var commandName = "@channel_id_" + id.ToString();
+
+                    commandTextSB.Append($"{commandName}, ");
+
+                    channelIdParam.ParameterName = commandName;
+                    channelIdParam.Value = id;
+
+                    cmd.Parameters.Add(channelIdParam);
+                }
+
+                const int CHAR_NUM_CAMMA_AND_SPACE = 2;
+
+                commandTextSB.Remove(commandTextSB.Length - CHAR_NUM_CAMMA_AND_SPACE, CHAR_NUM_CAMMA_AND_SPACE);
+                commandTextSB.Append(");");
+            }
+            else
+            {
+                var channelIdParam = cmd.CreateParameter();
+                channelIdParam.MySqlDbType = MySqlDbType.Int64;
+                channelIdParam.Direction = ParameterDirection.Input;
+
+                commandTextSB.Append($"= { CHANNEL_ID};");
+
+                channelIdParam.ParameterName = CHANNEL_ID;
+                channelIdParam.Value = Ids[0];
+
+                cmd.Parameters.Add(channelIdParam);
+            }
+
+            cmd.CommandText = commandTextSB.ToString();
 
             using var dataAdapter = new MySqlDataAdapter(cmd);
             using var dataSet = new DataSet();
@@ -72,7 +70,6 @@ namespace WPF_Core.Infrastructure.Database
             return dataSet.Tables[0];
         }
 
-        private const string USER_ID = "@user_id";
         private const string CHANNEL_ID = "@channel_id";
     }
 }
