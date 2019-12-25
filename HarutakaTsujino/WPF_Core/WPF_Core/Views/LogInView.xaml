@@ -3,12 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPF_Core.ViewModels"
+        xmlns:local="clr-namespace:WPF_Core.Views"
+        xmlns:vm="clr-namespace:WPF_Core.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:LogInViewModel}"
         Title="LogIn" Height="450" Width="320" ResizeMode="NoResize">
-    <Window.DataContext>
-        <local:LogInViewModel/>
-    </Window.DataContext>
     <Grid Background="#FF464646" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>

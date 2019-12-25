@@ -3,12 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPF_Core.ViewModels.UserControls"
-             mc:Ignorable="d" 
+             xmlns:local="clr-namespace:WPF_Core.Views.UserControls"
+             xmlns:vm="clr-namespace:WPF_Core.ViewModels.UserControls"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:ChannelsDisplayViewModel}" 
              d:DesignHeight="600" d:DesignWidth="1070" Background="#FF166F83">
-    <UserControl.DataContext>
-        <local:MessagesDisplayViewModel/>
-    </UserControl.DataContext>
     <Grid>
         <ListBox x:Name="LBMessages" Background="{x:Null}" Foreground="White" FontSize="18"
             ItemsSource="{Binding Messages}"
