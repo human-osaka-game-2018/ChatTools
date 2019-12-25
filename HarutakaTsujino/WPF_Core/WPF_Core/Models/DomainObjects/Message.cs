@@ -21,16 +21,16 @@ namespace WPF_Core.Models.DomainObjects
             ParentMessageId = parentMessageId;
         }
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
-        public int ChannelId { get; private set; }
+        public int ChannelId { get; }
 
-        public int UserId { get; private set; }
+        public int UserId { get; }
         
-        public string Text { get; private set; }
+        public string Text { get; }
 
-        public DateTime Time { get; private set; }
+        public DateTime Time { get; }
 
-        public int? ParentMessageId { get; private set; }
+        public int? ParentMessageId { get; }
     }
 }

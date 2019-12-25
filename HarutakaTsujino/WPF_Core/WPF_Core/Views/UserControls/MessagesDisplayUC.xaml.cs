@@ -22,10 +22,9 @@ namespace WPF_Core.Views.UserControls
         public MessagesDisplayUC()
         {
             InitializeComponent();
-            DataContext = MessagesDisplayViewModel;
+            DataContext = messagesDisplayViewModel;
         }
 
-        private MessagesDisplayViewModel MessagesDisplayViewModel { get; set; }
-            = new MessagesDisplayViewModel();
+        private readonly MessagesDisplayViewModel messagesDisplayViewModel = new MessagesDisplayViewModel();
     }
 }

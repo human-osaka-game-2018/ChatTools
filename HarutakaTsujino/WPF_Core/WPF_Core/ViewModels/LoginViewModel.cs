@@ -15,9 +15,9 @@ namespace WPF_Core.ViewModels
      
         public ICommand LogInCommand { get; set; }
 
-        public IObservable<Unit> OnLogInSucceededAsObservable => OnLogInSucceededAsSubject;
+        public IObservable<Unit> OnLogInSucceededAsObservable => onLogInSucceededAsSubject;
 
-        public IObservable<Unit> OnLogInFailedAsObservable => OnLogInSucceededAsSubject;
+        public IObservable<Unit> OnLogInFailedAsObservable => onLogInSucceededAsSubject;
 
         public LogInViewModel()
         {
@@ -32,16 +32,16 @@ namespace WPF_Core.ViewModels
 
             if (logInResult)
             {
-                OnLogInSucceededAsSubject.OnNext(Unit.Default);
+                onLogInSucceededAsSubject.OnNext(Unit.Default);
             }
             else
             {
-                OnLogInFailedAsSubject.OnNext(Unit.Default);
+                onLogInFailedAsSubject.OnNext(Unit.Default);
             }
         }
 
-        private Subject<Unit> OnLogInSucceededAsSubject { get; set; } = new Subject<Unit>();
+        private readonly Subject<Unit> onLogInSucceededAsSubject = new Subject<Unit>();
 
-        private Subject<Unit> OnLogInFailedAsSubject { get; set; } = new Subject<Unit>();
+        private readonly Subject<Unit> onLogInFailedAsSubject = new Subject<Unit>();
     }
 }

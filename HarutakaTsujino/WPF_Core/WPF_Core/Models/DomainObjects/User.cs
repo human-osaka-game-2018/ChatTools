@@ -17,12 +17,12 @@ namespace WPF_Core.Models.DomainObjects
             Name = name;
         }
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
-        public string Mail_address { get; private set; }
+        public string Mail_address { get; }
 
-        public string Password { get; private set; }
+        public string Password { get; }
         
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 }

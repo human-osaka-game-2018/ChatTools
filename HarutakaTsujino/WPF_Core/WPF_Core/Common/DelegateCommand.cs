@@ -11,12 +11,12 @@ namespace WPF_Core.Common
 
         public DelegateCommand(Action<object> onExecute)
         {
-            OnExecute = onExecute;
+            this.onExecute = onExecute;
         }
 
         public DelegateCommand(Action<object> onExecute, Func<object, bool> onCanExecute)
         {
-            OnExecute = onExecute;
+            this.onExecute = onExecute;
             OnCanExecute = onCanExecute;
         }
 
@@ -34,7 +34,7 @@ namespace WPF_Core.Common
 
         public void Execute(object parameter)
         {
-            OnExecute(parameter);
+            onExecute(parameter);
         }
 
         public void RaiseCanExecuteChanged()
@@ -42,7 +42,7 @@ namespace WPF_Core.Common
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private Action<object> OnExecute { get; set; }
+        private readonly Action<object> onExecute;
 
         private Func<object, bool> onCanExecute;
         private Func<object, bool> OnCanExecute

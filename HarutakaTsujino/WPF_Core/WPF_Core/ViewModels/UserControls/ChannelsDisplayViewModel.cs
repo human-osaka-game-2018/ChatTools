@@ -15,13 +15,11 @@ namespace WPF_Core.ViewModels.UserControls
     {
         public string LogInUserName { get; set; }
 
-        public ObservableCollection<Channel> Channels { get; private set; }
+        public ObservableCollection<Channel> Channels { get; }
 
         public ChannelsDisplayViewModel()
         {
             LogInUserName = LogInService.LogInUser.Name;
-
-            var channelButtons = new List<Button>();
 
             var channels = ChannelService.GetJoinedUser(LogInService.LogInUser.Id);
 

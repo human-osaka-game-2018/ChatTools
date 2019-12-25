@@ -24,25 +24,25 @@ namespace WPF_Core.Views
         {
             InitializeComponent();
 
-            SubscribeDisposable = LogInViewModel.OnLogInSucceededAsObservable
+            subscribeDisposable = logInViewModel.OnLogInSucceededAsObservable
                 .Subscribe(_ => OpenEditorView());
 
-            DataContext = LogInViewModel;
+            DataContext = logInViewModel;
 
 #if DEBUG
-            LogInViewModel.MailAddress = "mail@ress";
+            logInViewModel.MailAddress = "mail@ress";
             passBoxPassword.Password = "0000";
 #endif
         }
 
         ~LogInView()
         {
-            SubscribeDisposable.Dispose();
+            subscribeDisposable.Dispose();
         }
 
         private void BtnLogIn_Click(object sender, RoutedEventArgs e)
         {
-            LogInViewModel.Password = passBoxPassword.Password;
+            logInViewModel.Password = passBoxPassword.Password;
         }
 
         private void OpenEditorView()
@@ -52,8 +52,8 @@ namespace WPF_Core.Views
             editorView.ShowDialog();
         }
 
-        private IDisposable SubscribeDisposable { get; set; }
+        private readonly IDisposable subscribeDisposable;
 
-        private LogInViewModel LogInViewModel { get; set; } = new LogInViewModel();
+        private readonly LogInViewModel logInViewModel = new LogInViewModel();
     }
 }
