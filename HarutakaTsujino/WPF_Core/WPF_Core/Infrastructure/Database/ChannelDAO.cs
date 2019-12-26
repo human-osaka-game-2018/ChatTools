@@ -9,11 +9,9 @@ namespace WPF_Core.Infrastructure.Database
 {
     public static class ChannelDAO
     {
-        public static DataTable? Get(IEnumerable<int> Ids)
+        public static DataTable? Get(IEnumerable<int> ids)
         {
-            var idList = Ids.ToList();
-
-            if (idList.Count <= 0) return null;
+            if (ids.Count() <= 0) return null;
 
             using var mySqlConnection = Connection.Connect();
 
@@ -21,7 +19,7 @@ namespace WPF_Core.Infrastructure.Database
 
             mySqlConnection.Open();
 
-            using var dataAdapter = new MySqlDataAdapter(CreateCmd(idList, mySqlConnection));
+            using var dataAdapter = new MySqlDataAdapter(CreateCmd(ids, mySqlConnection));
             using var dataSet = new DataSet();
             dataAdapter.Fill(dataSet);
 
@@ -32,13 +30,13 @@ namespace WPF_Core.Infrastructure.Database
             return dataSet.Tables[0];
         }
 
-        private static MySqlCommand CreateCmd(IReadOnlyList<int> ids, MySqlConnection mySqlConnection)
+        private static MySqlCommand CreateCmd(IEnumerable<int> ids, MySqlConnection mySqlConnection)
         {
             using var cmd = mySqlConnection.CreateCommand();
             var commandTextSB = new StringBuilder();
             commandTextSB.Append("SELECT * FROM m_channel WHERE id ");
 
-            if (ids.Count > 1)
+            if (ids.Count() > 1)
             {
                 commandTextSB.Append("IN (");
 
