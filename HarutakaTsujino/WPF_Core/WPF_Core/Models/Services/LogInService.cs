@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using WPF_Core.Infrastructure.Database;
 using WPF_Core.Models.DomainObjects;
@@ -51,28 +52,19 @@ namespace WPF_Core.Models.Services
 
         private static bool ExtractLogInUser(string mailAddress, string password, DataTable userDataTable)
         {
-            // 引数のメアドとパスに対応するユーザを取得
-            var logInUsers = userDataTable.AsEnumerable()
-                .Where(x => mailAddress == x.Field<string>("mail_address") &&
-                            password    == x.Field<string>("password"))
-                .Select(x =>
-                {
-                    return new User(
-                                x.Field<int>("id"),
-                                x.Field<string>("mail_address"),
-                                x.Field<string>("password"),
-                                x.Field<string>("user_name"));
-                });
+            var logInUser = userDataTable.AsEnumerable()
+                .SingleOrDefault(x => mailAddress == x.Field<string>("mail_address") &&
+                                         password == x.Field<string>("password"));
 
-            // 対応するユーザは一人しかいないはずなので
-            foreach (var logInUser in logInUsers)
-            {
-                LogInUser = logInUser;
+            if (logInUser is null) return false;
 
-                return true;
-            }
+            LogInUser = new User(
+                logInUser.Field<int>("id"),
+                logInUser.Field<string>("mail_address"),
+                logInUser.Field<string>("password"),
+                logInUser.Field<string>("user_name"));
 
-            return false;
+            return true;
         }
     }
 }
