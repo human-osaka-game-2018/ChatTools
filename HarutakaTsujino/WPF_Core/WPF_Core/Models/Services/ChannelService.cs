@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reactive.Subjects;
-using System.Text;
 using WPF_Core.Infrastructure.Database;
 using WPF_Core.Models.DomainObjects;
 
@@ -13,7 +12,7 @@ namespace WPF_Core.Models.Services
     {
         public static IObservable<int> OnSelectingChangedAsObservable => onSelectingChangedAsSubject;
 
-        public static Channel SelectingChannel
+        public static Channel? SelectingChannel
         {
             get
             {
@@ -22,7 +21,9 @@ namespace WPF_Core.Models.Services
 
             set
             {
-                if (selectingChannel == null || selectingChannel.Id != value.Id)
+                if (value is null) return;
+
+                if (selectingChannel is null || selectingChannel.Id != value.Id)
                 {
                     selectingChannel = value;
 
@@ -31,30 +32,31 @@ namespace WPF_Core.Models.Services
             }
         }
 
-        public static List<Channel> GetChannelsJoinedUser(User user)
+        public static IEnumerable<Channel>? GetChannelsJoinedUser(User user)
         {
             using var channelMemberTable = ChannelMemberDAO.GetIdsJoinedUser(user.Id);
 
             var ids = channelMemberTable.AsEnumerable()
                 .Select(x => x.Field<int>("channel_id"));
 
-            using var channelTable = ChannelDAO.Get(ids.ToList());
+            using var channelTable = ChannelDAO.Get(ids);
 
-            var channelsJoinedUser = new List<Channel>();
+            if (channelTable is null) return null;
 
-            foreach (DataRow channelDataRow in channelTable.Rows)
-            {
-                var channel = new Channel(
-                    (int)channelDataRow["id"],
-                    (string)channelDataRow["channel_name"]);
+            var channelsJoinedUser = channelTable.AsEnumerable()
+                .Select(x =>
+                {
+                    return new Channel(
+                       x.Field<int>("id"),
+                       x.Field<string>("channel_name"));
+                });
 
-                channelsJoinedUser.Add(channel);
-            }
+            if (channelsJoinedUser.Count() <= 0) return null;
 
             return channelsJoinedUser;
         }
 
-        private static Channel selectingChannel;
+        private static Channel? selectingChannel;
 
         private static readonly Subject<int> onSelectingChangedAsSubject = new Subject<int>();
     }

@@ -6,9 +6,11 @@ namespace WPF_Core.Infrastructure.Database
 {
     public static class MessageDAO
     {
-        public static DataTable Get(int channelId)
+        public static DataTable? Get(int channelId)
         {
             using var mySqlConnection = Connection.Connect();
+
+            if (mySqlConnection is null) return null;
 
             mySqlConnection.Open();
 
@@ -27,6 +29,8 @@ namespace WPF_Core.Infrastructure.Database
             dataAdapter.Fill(dataSet);
 
             mySqlConnection.Close();
+
+            if (dataSet.Tables[0].Rows.Count == 0) return null;
 
             return dataSet.Tables[0];
         }

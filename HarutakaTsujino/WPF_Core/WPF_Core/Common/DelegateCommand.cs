@@ -1,28 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace WPF_Core.Common
 {
     public class DelegateCommand : ICommand
     {
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
-        public DelegateCommand(Action<object> onExecute)
+        public DelegateCommand(Action<object?> onExecute)
         {
             this.onExecute = onExecute;
         }
 
-        public DelegateCommand(Action<object> onExecute, Func<object, bool> onCanExecute)
+        public DelegateCommand(Action<object?> onExecute, Func<object?, bool> onCanExecute)
         {
             this.onExecute = onExecute;
             OnCanExecute = onCanExecute;
         }
 
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
-            if (OnCanExecute == null)
+            if (OnCanExecute is null)
             {
                 return true;
             }
@@ -32,9 +30,9 @@ namespace WPF_Core.Common
             }
         }
 
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
-            onExecute(parameter);
+            onExecute?.Invoke(parameter);
         }
 
         public void RaiseCanExecuteChanged()
@@ -42,10 +40,10 @@ namespace WPF_Core.Common
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private readonly Action<object> onExecute;
+        private readonly Action<object?>? onExecute;
 
-        private Func<object, bool> onCanExecute;
-        private Func<object, bool> OnCanExecute
+        private Func<object?, bool>? onCanExecute;
+        private Func<object?, bool>? OnCanExecute
         {
             get => onCanExecute;
             set

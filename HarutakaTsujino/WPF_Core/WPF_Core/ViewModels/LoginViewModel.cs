@@ -9,10 +9,10 @@ namespace WPF_Core.ViewModels
 {
     public class LogInViewModel
     {
-        public string MailAddress { get; set; }
+        public string MailAddress { get; set; } = "";
 
-        public string Password { get; set; }
-     
+        public string Password { get; set; } = "";
+
         public ICommand LogInCommand { get; set; }
 
         public IObservable<Unit> OnLogInSucceededAsObservable => onLogInSucceededAsSubject;
@@ -24,7 +24,7 @@ namespace WPF_Core.ViewModels
             LogInCommand = new DelegateCommand(LogIn);
         }
 
-        private void LogIn(object _)
+        private void LogIn(object? _)
         {
             var logInResult = LogInService.LogIn(MailAddress, Password);
 

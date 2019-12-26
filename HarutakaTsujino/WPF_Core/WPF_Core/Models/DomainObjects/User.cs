@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WPF_Core.Models.DomainObjects
+﻿namespace WPF_Core.Models.DomainObjects
 {
     class User
     {

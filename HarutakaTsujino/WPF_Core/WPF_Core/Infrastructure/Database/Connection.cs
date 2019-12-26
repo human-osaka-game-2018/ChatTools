@@ -13,7 +13,7 @@ namespace WPF_Core.Infrastructure.Database
             FetchConnectionStrings();
         }
 
-        public static MySqlConnection Connect()
+        public static MySqlConnection? Connect()
         {
             var mySqlConnection = new MySqlConnection(connectionStrings);
 
@@ -26,6 +26,6 @@ namespace WPF_Core.Infrastructure.Database
             connectionStrings = ConfigurationManager.ConnectionStrings["Default."+runMode].ConnectionString;
         }
 
-        private static string connectionStrings;
+        private static string? connectionStrings;
     }
 }

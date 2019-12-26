@@ -9,14 +9,20 @@ namespace WPF_Core.Models.Services
 {
     static class LogInService
     {
-        public static User LogInUser { get; private set; }
+        public static User? LogInUser { get; private set; }
 
         public static bool LogIn(string mailAddress, string password)
         {
             var userDataTable = UserDAO.Get(mailAddress);
 
-            if (ExtractLogInUser(mailAddress, password, userDataTable))
+            if (userDataTable is null) return false;
+
+            var existsUser = ExtractLogInUser(mailAddress, password, userDataTable);
+
+            if (existsUser)
             {
+                if (LogInUser is null) return false;
+
                 UserDAO.ChangeOnlineState(LogInUser.Id, true);
 
                 return true;
@@ -29,7 +35,11 @@ namespace WPF_Core.Models.Services
 
         public static bool LogOut()
         {
-            if (LogInUser != null)
+            if (LogInUser is null)
+            {
+                return false;
+            }
+            else
             {
                 UserDAO.ChangeOnlineState(LogInUser.Id, false);
 
@@ -37,40 +47,29 @@ namespace WPF_Core.Models.Services
 
                 return true;
             }
-            else
-            {
-                return false;
-            }
         }
 
         private static bool ExtractLogInUser(string mailAddress, string password, DataTable userDataTable)
         {
-            foreach (DataRow userData in userDataTable.Rows)
+            // 引数のメアドとパスに対応するユーザを取得
+            var logInUsers = userDataTable.AsEnumerable()
+                .Where(x => mailAddress == x.Field<string>("mail_address") &&
+                            password    == x.Field<string>("password"))
+                .Select(x =>
+                {
+                    return new User(
+                                x.Field<int>("id"),
+                                x.Field<string>("mail_address"),
+                                x.Field<string>("password"),
+                                x.Field<string>("user_name"));
+                });
+
+            // 対応するユーザは一人しかいないはずなので
+            foreach (var logInUser in logInUsers)
             {
-                var thisUserMailAddress = (string)userData["mail_address"];
-                var thisUserPassword = (string)userData["password"];
+                LogInUser = logInUser;
 
-                if (mailAddress == thisUserMailAddress)
-                {
-                    if (password == thisUserPassword)
-                    {
-                        LogInUser = new User(
-                            (int)userData["id"],
-                            thisUserMailAddress,
-                            thisUserPassword,
-                            (string)userData["user_name"]);
-
-                        return true;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    continue;
-                }
+                return true;
             }
 
             return false;

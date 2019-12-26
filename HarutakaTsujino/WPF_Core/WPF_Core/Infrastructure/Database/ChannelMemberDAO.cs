@@ -6,9 +6,11 @@ namespace WPF_Core.Infrastructure.Database
 {
     public static class ChannelMemberDAO
     {
-        public static DataTable GetIdsJoinedUser(int userId)
+        public static DataTable? GetIdsJoinedUser(int userId)
         {
             using var mySqlConnection = Connection.Connect();
+
+            if (mySqlConnection is null) return null;
 
             mySqlConnection.Open();
 
@@ -27,6 +29,8 @@ namespace WPF_Core.Infrastructure.Database
             dataAdapter.Fill(dataSet);
 
             mySqlConnection.Close();
+
+            if (dataSet.Tables[0].Rows.Count == 0) return null;
 
             return dataSet.Tables[0];
         }
