@@ -21,7 +21,7 @@ namespace WPF_Core.ViewModels.UserControls
                 .Subscribe(SetMessagesInChannel);
 
             var startChannel = 
-                ChannelService.GetJoinedUser(LogInService.LogInUser.Id)[0];
+                ChannelService.GetChannelsJoinedUser(LogInService.LogInUser)[0];
 
             ChannelService.SelectingChannel = startChannel;
         }
@@ -34,7 +34,7 @@ namespace WPF_Core.ViewModels.UserControls
         private void SetMessagesInChannel(int channelId)
         {
             var channels =
-                   ChannelService.GetJoinedUser(LogInService.LogInUser.Id);
+                   ChannelService.GetChannelsJoinedUser(LogInService.LogInUser);
 
             foreach (var channel in channels)
             {

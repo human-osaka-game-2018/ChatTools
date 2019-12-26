@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using WPF_Core.Infrastructure.Database;
@@ -30,18 +31,14 @@ namespace WPF_Core.Models.Services
             }
         }
 
-        public static List<Channel> GetJoinedUser(int id)
+        public static List<Channel> GetChannelsJoinedUser(User user)
         {
-            using var channelMemberTable = ChannelMemberDAO.GetIdsJoinedUser(id);
+            using var channelMemberTable = ChannelMemberDAO.GetIdsJoinedUser(user.Id);
 
-            var ids = new List<int>();
+            var ids = channelMemberTable.AsEnumerable()
+                .Select(x => x.Field<int>("channel_id"));
 
-            foreach (DataRow channelMemberRow in channelMemberTable.Rows)
-            {
-                ids.Add((int)channelMemberRow["channel_id"]);
-            }
-
-            using var channelTable = ChannelDAO.Get(ids);
+            using var channelTable = ChannelDAO.Get(ids.ToList());
 
             var channelsJoinedUser = new List<Channel>();
 

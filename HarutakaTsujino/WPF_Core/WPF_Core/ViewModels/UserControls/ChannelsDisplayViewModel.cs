@@ -21,7 +21,7 @@ namespace WPF_Core.ViewModels.UserControls
         {
             LogInUserName = LogInService.LogInUser.Name;
 
-            var channels = ChannelService.GetJoinedUser(LogInService.LogInUser.Id);
+            var channels = ChannelService.GetChannelsJoinedUser(LogInService.LogInUser);
 
             Channels = new ObservableCollection<Channel>(channels);
         }
