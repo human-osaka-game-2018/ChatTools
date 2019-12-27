@@ -13,7 +13,7 @@ namespace ChatTool.Models.DomainObjects
         public Channel(int id, string? name)
         {
             Id = id;
-            Name = name;
+            Name = (name == null) ? "" : name;
         }
         public Channel() { }
 

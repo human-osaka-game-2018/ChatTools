@@ -33,14 +33,9 @@ namespace ChatTool.ViewModels.Main
         }
         #endregion
         public event PropertyChangedEventHandler? PropertyChanged;
-        private void NotifyPropertyChanged(string adress)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(adress));
-        }
-
         public void SetPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void CallMessages(int channelId)

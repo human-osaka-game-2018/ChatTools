@@ -22,10 +22,5 @@ namespace ChatTool.Views.Main
             var viewModel = new ChannelViewModel();
             this.DataContext = viewModel;
         }
-
-        private void SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           ((ChannelViewModel)DataContext).ChannelSelected();
-        }
     }
 }

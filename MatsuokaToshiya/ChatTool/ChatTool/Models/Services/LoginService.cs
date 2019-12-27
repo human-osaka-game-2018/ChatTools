@@ -9,14 +9,14 @@ namespace ChatTool.Models.Services
 {
     static class LoginService
     {
-        public static User? user;
+        public static User? User;
 
         public static void EndLoginService()
         {
-            if (user != null)
+            if (User != null)
             {
-                user.IsOnline = false;
-                new UserDAO().Online(user);
+                User.IsOnline = false;
+                new UserDAO().Online(User);
             }
         }
         public static User[] LoadUserTable()
@@ -31,11 +31,11 @@ namespace ChatTool.Models.Services
         public static bool LoadUser(string mailAdress, string password)
         {
             var userDAO = new UserDAO();
-            user = userDAO.User(mailAdress, password);
+            User = userDAO.User(mailAdress, password);
 
-            if (null == user) return false;
-            userDAO.Online(user);
-            return user.IsOnline;
+            if (null == User) return false;
+            userDAO.Online(User);
+            return User.IsOnline;
         }
     }
     

@@ -11,18 +11,24 @@ using System.Windows.Controls;
 
 namespace ChatTool.ViewModels.Main
 {
-    class ChannelViewModel: INotifyPropertyChanged
+    class ChannelViewModel
     {
         public ChannelViewModel()
         {
-            var channelDao = new ChannelDAO();
-            if (null == LoginService.user || null == LoginService.user.Name) return;
-            _UserName = LoginService.user.Name;
-            channelDao.ParticipatedUser(Channels, LoginService.user.Id);
+            var channelService = new ChannelService();
+            UserName = channelService.ParticipatedUser(Channels);
         }
-        public Channel? SelectItem { get; set; }
+        private Channel _SelectItem  = new Channel();
+        public Channel? SelectItem { 
+            get { return _SelectItem; } 
+            set {
+                if (null == value) return;
+                _SelectItem = value;
+                ChannelSelected(); 
+            } 
+        }
         private string _UserName = "";
-        public string UserName { get { return _UserName; }  }
+        public string UserName { get { return _UserName; } set { _UserName = value; } }
         private ObservableCollection<Channel> _Channels = new ObservableCollection<Channel>();
         public ObservableCollection<Channel> Channels
         {
@@ -35,13 +41,9 @@ namespace ChatTool.ViewModels.Main
             }
         }
         public event PropertyChangedEventHandler? PropertyChanged;
-        private void NotifyPropertyChanged(string adress)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(adress));
-        }
         public void SetPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void ChannelSelected()
@@ -49,7 +51,7 @@ namespace ChatTool.ViewModels.Main
             if (null != SelectItem)
             {
                 Debug.Write(SelectItem.Name + "Select\n");
-                MessageLogService.Fire(SelectItem.Id);
+                SelectChannelService.CallMessageLogs(SelectItem.Id);
             }
         }
     }

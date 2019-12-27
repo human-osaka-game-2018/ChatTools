@@ -24,7 +24,7 @@ namespace ChatTool.Views
         {
             InitializeComponent();
             var viewModel = new LoginViewModel();
-            viewModel.LoginSucceed += (_, __) => { new MainView().Show(); };
+            viewModel.LoginSucceed += (_, __) => { new MainView().Show(); this.Close(); };
             viewModel.LoginFailed += (_, __) => { MessageBox.Show("ログイン情報に間違いがあります。");
         };
             this.DataContext = viewModel;

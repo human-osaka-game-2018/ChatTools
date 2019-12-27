@@ -17,7 +17,7 @@
         <TextBlock Grid.Row="0" x:Name="UserName" Text="{Binding UserName}" Margin="5,21,5,20" FontFamily="Meiryo" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontStyle="Normal" LineStackingStrategy="BlockLineHeight"/>
         <TextBlock Grid.Row="0" Text="Channel" VerticalAlignment="Bottom" FontFamily="Meiryo" Margin="10,0,0,0" Height="18" />
         <ListBox Grid.Row="1" x:Name="ChannelList"
-             ItemsSource ="{Binding Channels}" SelectedItem="{Binding SelectItem}" SelectionChanged="SelectionChanged" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+             ItemsSource ="{Binding Channels}" SelectedItem="{Binding SelectItem}" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel  >

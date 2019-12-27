@@ -9,22 +9,23 @@
              Height="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
              Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}" 
              Background="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" d:DesignWidth="398.539" d:DesignHeight="232.769">
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="24*"/>
             <RowDefinition Height="209*"/>
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Left" Text="MessageLog" TextWrapping="Wrap" Height="16" Width="107" Margin="0,4,0,4"/>
-        <ListBox Grid.Row="1"
-                 ItemsSource ="{Binding Messages}" SelectedItem="{Binding SelectItem}"
-                 ScrollViewer.CanContentScroll="False"
+        <ListBox x:Name="listBox" Grid.Row="1"
+                 ItemsSource ="{Binding Messages}" SelectedItem="{Binding SelectItem}" ScrollViewer.CanContentScroll="False"
                  ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel >
-                        <TextBlock Text="{Binding UserName}" FontSize="9"  FontFamily="Meiryo"/>
-                        <TextBlock Text="{Binding Text}" FontSize="10" FontFamily="Meiryo" TextWrapping="Wrap"/>
-                        <TextBlock Text="{Binding Time}" FontSize="8" FontFamily="Meiryo" HorizontalAlignment="Right" FlowDirection="RightToLeft" />
+                        <TextBlock x:Name="UserName" Text="{Binding UserName}" FontSize="9"  FontFamily="Meiryo"/>
+                        <TextBlock x:Name="Message" Text="{Binding Text}" FontSize="12" FontFamily="Meiryo" TextWrapping="Wrap"/>
+                        <DockPanel Width="{Binding ActualWidth, ElementName=listBox, Mode=OneWay}">
+                            <TextBlock x:Name="Time" Text="{Binding Time}" FontSize="8" FontFamily="Meiryo" HorizontalAlignment="Right" />
+                        </DockPanel>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
