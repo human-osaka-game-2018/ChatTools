@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ChatTool.Views.Main.InputAreaView"
+﻿<UserControl x:Name="userControl" x:Class="ChatTool.Views.Main.InputAreaView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,9 +7,14 @@
              mc:Ignorable="d" 
              Height="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
              Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}},XPath=local:MainView}" 
-             BorderBrush="#FF27F906" BorderThickness="2,2,2,2" d:DesignWidth="277.629" d:DesignHeight="172.62">
-    <UserControl.Background>
-        <ImageBrush/>
-    </UserControl.Background>
-    <TextBlock HorizontalAlignment="Left" Margin="10,50,0,0" Text="InputArea" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.134,-3.258"/>
+             BorderBrush="#FF27F906" BorderThickness="2,2,2,2" d:DesignWidth="276.933" d:DesignHeight="133.661">
+    <Grid Background="#FF37F3A6" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="35"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" Margin="10,50,0,0" Text="InputArea" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.134,-3.258" Height="16" Width="52"/>
+        <TextBox x:Name="textBox" Text="{Binding InputText,UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Grid.Column="0"/>
+        <Button Content="送信" Command="{Binding SendButtonCommand}" FontFamily="Meiryo" Padding="3,1,3,1" Grid.Column="1"/>
+    </Grid>
 </UserControl>

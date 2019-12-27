@@ -1,4 +1,5 @@
 ﻿using ChatTool.Models.DomainObjects;
+using ChatTool.Models.Services;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -32,5 +33,23 @@ namespace ChatTool.Infrastructure.Database
             }
         }
 
+
+        public void SendMessage(string inputText,int channelId)
+        {
+            if (null == LoginService.User) return;
+            var command = new StringBuilder();
+            command.Append("insert into t_message( text, channel_id, user_id, time) values ( @text, @channel_id, @user_id, @time);");
+            MySqlCommand cmd = new MySqlCommand(command.ToString(), Conection.ConnectDB());
+
+            cmd.Parameters.Add(CreateParameter("@text", inputText, MySqlDbType.VarChar, 280));
+            cmd.Parameters.Add(CreateParameter("@channel_id", channelId, MySqlDbType.Int32, 16));
+            cmd.Parameters.Add(CreateParameter("@user_id", LoginService.User.Id, MySqlDbType.Int32, 16));
+            cmd.Parameters.Add(CreateParameter("@time",DateTime.Now, MySqlDbType.DateTime, 16));
+
+            cmd.ExecuteNonQuery();
+
+            Conection.DisConnectDB();
+
+        }
     }
 }

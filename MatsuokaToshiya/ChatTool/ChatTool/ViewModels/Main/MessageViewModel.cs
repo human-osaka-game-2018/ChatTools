@@ -15,7 +15,8 @@ namespace ChatTool.ViewModels.Main
     {
         public MessageViewModel()
         {
-            MessageLogService.CallMessageLog += (int eventNum) => { CallMessages(eventNum); };
+            SelectChannelService.CallMessageLog += (int channelId) => { CallMessages(channelId); };
+            CallMessageService.RefleshMessageLog += () => { CallMessageService.CallMessages(Messages, SelectChannelService.SelectingChannelId); };
         }
         public Message? SelectItem { get; set; }
         #region
@@ -40,8 +41,7 @@ namespace ChatTool.ViewModels.Main
 
         public void CallMessages(int channelId)
         {
-            var messageDao = new MessageDAO();
-            messageDao.MessageList(Messages, channelId);
+            CallMessageService.CallMessages(Messages, channelId);
         }
 
     }
