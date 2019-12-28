@@ -19,14 +19,12 @@ namespace WPF_Core.ViewModels.UserControls
         {
             SubscribeDisposable =
                 ChannelService.OnSelectingChangedAsObservable
-                .Subscribe(SetMessagesInChannel);
+                .Subscribe(ch => 
+                {
+                    if (ch is null) return;
 
-            if (LogInService.LogInUser is null) return;
-
-            var startChannel = 
-                ChannelService.GetChannelsJoinedUser(LogInService.LogInUser).ToList()[0];
-
-            ChannelService.SelectingChannel = startChannel;
+                    SetMessagesInChannel(ch);
+                });
         }
 
         ~MessagesDisplayViewModel()
@@ -34,28 +32,11 @@ namespace WPF_Core.ViewModels.UserControls
             SubscribeDisposable.Dispose();
         }
 
-        private void SetMessagesInChannel(int channelId)
+        private void SetMessagesInChannel(Channel channel)
         {
-            if (LogInService.LogInUser is null) return; 
-
-            var channels =
-                   ChannelService.GetChannelsJoinedUser(LogInService.LogInUser);
-
-            if (channels is null) return;
-
-            var channel = channels.SingleOrDefault(x => channelId == x.Id);
-
-            if (channel is null) return;
-
-            ChannelService.SelectingChannel = channel;
-
-            var messages = 
-                MessageService
-                .GetMessagesInChannel(ChannelService.SelectingChannel);
+            var messages = MessageService.GetMessagesInChannel(channel);
 
             Messages.Clear();
-
-            if (messages is null) return;
 
             foreach (var message in messages)
             {

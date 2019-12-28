@@ -10,24 +10,20 @@ namespace WPF_Core.Models.Services
 {
     static class ChannelService
     {
-        public static IObservable<int> OnSelectingChangedAsObservable => onSelectingChangedAsSubject;
+        public static IObservable<Channel?> OnSelectingChangedAsObservable => onSelectingChangedAsSubject;
 
         public static Channel? SelectingChannel
         {
-            get
-            {
-                return selectingChannel;
-            }
-
+            get => selectingChannel;
             set
             {
-                if (value is null) return;
-
-                if (selectingChannel is null || selectingChannel.Id != value.Id)
+                if (selectingChannel?.Id != value?.Id)
                 {
                     selectingChannel = value;
 
-                    onSelectingChangedAsSubject?.OnNext(selectingChannel.Id);
+                    if (selectingChannel is null) return;
+
+                    onSelectingChangedAsSubject?.OnNext(selectingChannel);
                 }
             }
         }
@@ -51,13 +47,11 @@ namespace WPF_Core.Models.Services
                        x.Field<string>("channel_name"));
                 });
 
-            if (channelsJoinedUser.Count() <= 0) return null;
-
             return channelsJoinedUser;
         }
 
         private static Channel? selectingChannel;
 
-        private static readonly Subject<int> onSelectingChangedAsSubject = new Subject<int>();
+        private static readonly BehaviorSubject<Channel?> onSelectingChangedAsSubject = new BehaviorSubject<Channel?>(null);
     }
 }
