@@ -10,22 +10,23 @@ namespace WPF_Core.Infrastructure.Database
     {
         static Connection()
         {
-            FetchConnectionStrings();
+            connectionString = FetchConnectionString();
         }
 
-        public static MySqlConnection? Connect()
+        public static MySqlConnection Connect()
         {
-            var mySqlConnection = new MySqlConnection(connectionStrings);
+            var mySqlConnection = new MySqlConnection(connectionString);
 
             return mySqlConnection;
         }
 
-        private static void FetchConnectionStrings()
+        private static string FetchConnectionString()
         {
             var runMode = ConfigurationManager.AppSettings["RunMode"];
-            connectionStrings = ConfigurationManager.ConnectionStrings["Default."+runMode].ConnectionString;
+
+            return ConfigurationManager.ConnectionStrings["Default." + runMode].ConnectionString;
         }
 
-        private static string? connectionStrings;
+        private static readonly string connectionString;
     }
 }
