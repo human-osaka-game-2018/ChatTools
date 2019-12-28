@@ -6,11 +6,9 @@ namespace WPF_Core.Infrastructure.Database
 {
     public static class UserDAO
     {
-        public static DataTable? Get(string mailAddress)
+        public static DataTable Get(string mailAddress)
         {
             using var mySqlConnection = Connection.Connect();
-
-            if (mySqlConnection is null) return null;
 
             mySqlConnection.Open();
 
@@ -25,21 +23,15 @@ namespace WPF_Core.Infrastructure.Database
             cmd.Parameters.Add(mailAddressParam);
 
             using var dataAdapter = new MySqlDataAdapter(cmd);
-            using var dataSet = new DataSet();
-            dataAdapter.Fill(dataSet);
+            using var ret = new DataTable();
+            dataAdapter.Fill(ret);
 
-            mySqlConnection.Close();
-
-            if (dataSet.Tables[0].Rows.Count == 0) return null;
-
-            return dataSet.Tables[0];
+            return ret;
         }
 
         public static void ChangeOnlineState(int id, bool isOnline)
         {
             using var mySqlConnection = Connection.Connect();
-
-            if (mySqlConnection is null) return;
 
             mySqlConnection.Open();
 
@@ -48,8 +40,6 @@ namespace WPF_Core.Infrastructure.Database
             using var cmd = mySqlConnection.CreateCommand();
             cmd.CommandText = $"UPDATE m_user SET is_online = {onlineStateCode} WHERE(id = {id});";
             using var dataAdapter = new MySqlDataAdapter(cmd);
-
-            mySqlConnection.Close();
         }
 
         private const string MAIL_ADDRESS_PARAM_NAME = "@mail_address";

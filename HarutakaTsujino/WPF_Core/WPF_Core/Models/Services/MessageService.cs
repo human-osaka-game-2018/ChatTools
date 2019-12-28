@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Reactive.Subjects;
-using System.Text;
 using WPF_Core.Infrastructure.Database;
 using WPF_Core.Models.DomainObjects;
 
@@ -11,11 +9,9 @@ namespace WPF_Core.Models.Services
 {
     static class MessageService
     { 
-        public static IEnumerable<Message>? GetMessagesInChannel(Channel channel)
+        public static IEnumerable<Message> GetMessagesInChannel(Channel channel)
         {
             using var messageTable = MessageDAO.Get(channel.Id);
-
-            if (messageTable is null) return null;
 
             var messagesInChannel = new List<Message>();
 
@@ -32,8 +28,6 @@ namespace WPF_Core.Models.Services
                         x.Field<DateTime>("time"),
                         DBNull.Value.Equals(parentMessageId) ? null : (int?)parentMessageId);
                 });
-
-            if (messages.Count() <= 0) return null;
 
             return messages;
         }

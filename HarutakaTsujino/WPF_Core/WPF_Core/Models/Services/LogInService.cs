@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
-using System.Text;
 using WPF_Core.Infrastructure.Database;
 using WPF_Core.Models.DomainObjects;
 
@@ -15,16 +12,11 @@ namespace WPF_Core.Models.Services
         public static bool LogIn(string mailAddress, string password)
         {
             var userDataTable = UserDAO.Get(mailAddress);
-
-            if (userDataTable is null) return false;
-
             var existsUser = ExtractLogInUser(mailAddress, password, userDataTable);
 
             if (existsUser)
             {
-                if (LogInUser is null) return false;
-
-                UserDAO.ChangeOnlineState(LogInUser.Id, true);
+                UserDAO.ChangeOnlineState(LogInUser!.Id, true);
 
                 return true;
             }
