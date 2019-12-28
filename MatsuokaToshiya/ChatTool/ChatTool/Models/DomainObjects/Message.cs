@@ -24,6 +24,21 @@ namespace ChatTool.Models.DomainObjects
 
         public DateTime Time { get; set; } = DateTime.Parse("1970 - 01 - 01 00:00:00");
 
+        public Visibility ExistChild { get; set; } = Visibility.Hidden;
+
+        public int ParentId { get; set; }
+
+        private ObservableCollection<Message> _Child = new ObservableCollection<Message>();
+        public ObservableCollection<Message> Child
+        {
+            get { return _Child; }
+            set
+            {
+                if (value != this._Child)
+                    _Child = value;
+            }
+        }
+
         public Message() { }
         public Message(int id)
         {

@@ -8,13 +8,26 @@
              Height="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
              Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}},XPath=local:MainView}" 
              BorderBrush="#FF27F906" BorderThickness="2,2,2,2" d:DesignWidth="276.933" d:DesignHeight="133.661">
-    <Grid Background="#FF37F3A6" >
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="35"/>
         </Grid.ColumnDefinitions>
-        <TextBlock HorizontalAlignment="Left" Margin="10,50,0,0" Text="InputArea" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.134,-3.258" Height="16" Width="52"/>
-        <TextBox x:Name="textBox" Text="{Binding InputText,UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Grid.Column="0"/>
-        <Button Content="送信" Command="{Binding SendButtonCommand}" FontFamily="Meiryo" Padding="3,1,3,1" Grid.Column="1"/>
+        <Button Command="{Binding EraseButtonCommand}" Grid.Row="0" Grid.Column="0">
+        <StackPanel  >
+            <TextBlock x:Name="RepliedUserName" Text="{Binding RepliedUserName}" FontSize="9"  FontFamily="Meiryo"/>
+            <TextBlock x:Name="RepliedMessage" Text="{Binding RepliedMessage}" FontSize="12" FontFamily="Meiryo" TextWrapping="NoWrap"/>
+            <DockPanel Width="{Binding ActualWidth, ElementName=textBox, Mode=OneWay}">
+                <TextBlock x:Name="RepliedMessageTime" Text="{Binding RepliedMessageTime}" FontSize="8" FontFamily="Meiryo" HorizontalAlignment="Right" />
+            </DockPanel>
+        </StackPanel>
+        </Button>
+
+        <TextBox Grid.Row="1" x:Name="textBox" Text="{Binding InputText,UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Grid.Column="0"/>
+        <Button Grid.RowSpan="2" Content="送信" Command="{Binding SendButtonCommand}" FontFamily="Meiryo" Padding="3,1,3,1" Grid.Column="1"/>
     </Grid>
 </UserControl>

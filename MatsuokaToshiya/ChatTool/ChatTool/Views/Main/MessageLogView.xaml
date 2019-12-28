@@ -29,6 +29,26 @@
                         <DockPanel Width="{Binding ActualWidth, ElementName=listBox, Mode=OneWay}">
                             <TextBlock x:Name="Time" Text="{Binding Time}" FontSize="8" FontFamily="Meiryo" HorizontalAlignment="Right" />
                         </DockPanel>
+                        <ListBox x:Name="listBoxChild" Visibility="{Binding ExistChild}"
+                 ItemsSource ="{Binding Child}" ScrollViewer.CanContentScroll="False"
+                 ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel >
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="{Binding IconPath}" MaxWidth="20"  />
+                                            <TextBlock x:Name="UserName" Text="{Binding UserName}" FontSize="9"  FontFamily="Meiryo"/>
+                                        </StackPanel>
+                                        <TextBlock x:Name="Message" Text="{Binding Text}" FontSize="12" FontFamily="Meiryo" TextWrapping="Wrap"/>
+                                        <DockPanel Width="{Binding ActualWidth, ElementName=listBox, Mode=OneWay}">
+                                            <TextBlock x:Name="Time" Text="{Binding Time}" FontSize="8" FontFamily="Meiryo" HorizontalAlignment="Right" />
+                                        </DockPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                        </ListBox>
+
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

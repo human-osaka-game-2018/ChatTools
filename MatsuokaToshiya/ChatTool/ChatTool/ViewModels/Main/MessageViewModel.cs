@@ -18,7 +18,17 @@ namespace ChatTool.ViewModels.Main
             SelectChannelService.CallMessageLog += (int channelId) => { CallMessages(channelId); };
             CallMessageService.RefleshMessageLog += () => { CallMessageService.CallMessages(Messages, SelectChannelService.SelectingChannelId); };
         }
-        public Message? SelectItem { get; set; }
+        private Message _SelectItem = new Message();
+        public Message? SelectItem
+        {
+            get { return _SelectItem; }
+            set
+            {
+                if (null == value) return;
+                _SelectItem = value;
+                ReplyMessageService.ChangedSelectingMessage.Invoke(_SelectItem);
+            }
+        }
         #region
 
         private ObservableCollection<Message> _Messages = new ObservableCollection<Message>();
