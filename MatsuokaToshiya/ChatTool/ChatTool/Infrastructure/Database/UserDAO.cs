@@ -42,11 +42,12 @@ namespace ChatTool.Infrastructure.Database
             }
             var user = new User();
             user.Id = DBNull.Value != reader["Id"] ? Convert.ToInt32(reader.GetString("Id")) : 0;
+            user.IconId = DBNull.Value != reader["icon_id"] ? Convert.ToInt32(reader.GetString("icon_id")) : 0;
             user.Name = DBNull.Value != reader["user_name"] ? reader.GetString("user_name") : "";
             user.MailAddress = DBNull.Value != reader["mail_address"] ? reader.GetString("mail_address") : "";
             user.Password = DBNull.Value != reader["password"] ? reader.GetString("password") : "";
             user.IsOnline = true;
-
+            user.IconPath = System.Configuration.ConfigurationManager.AppSettings[user.IconId];
             Conection.DisConnectDB();
 
             return user;
@@ -71,6 +72,16 @@ namespace ChatTool.Infrastructure.Database
             var str =  DBNull.Value != reader["user_name"] ? reader.GetString("user_name") : "";
             Conection.DisConnectDB();
             return str;
+        }
+        public int UserIconId(int userId)
+        {
+            var cmd = new MySqlCommand("select * from m_user where id = @user_id;", Conection.ConnectDB());
+            cmd.Parameters.Add(CreateParameter("@user_id", userId, MySqlDbType.Int32, 10));
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            int val = DBNull.Value != reader["icon_id"] ? Convert.ToInt32(reader.GetString("icon_id")) : 0;
+            Conection.DisConnectDB();
+            return val;
         }
     }
 }

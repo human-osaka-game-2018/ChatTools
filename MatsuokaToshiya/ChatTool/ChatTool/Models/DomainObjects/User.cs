@@ -16,6 +16,8 @@ namespace ChatTool.Models.DomainObjects
 
         public int IconId { get; set; }
 
+        public string IconPath { get; set; } = "";
+
         public bool IsOnline { get; set; }
 
     }

@@ -17,7 +17,12 @@ namespace ChatTool.ViewModels.Main
         {
             var channelService = new ChannelService();
             UserName = channelService.ParticipatedUser(Channels);
+            var user = LoginService.User;
+            if(user != null){
+                IconPath = System.Configuration.ConfigurationManager.AppSettings[new UserDAO().UserIconId(user.Id)];
+            }
         }
+        public string IconPath { get; set; } = "";
         private Channel _SelectItem  = new Channel();
         public Channel? SelectItem { 
             get { return _SelectItem; } 

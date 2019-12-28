@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows;
 
 namespace ChatTool.Models.DomainObjects
 {
@@ -8,11 +10,15 @@ namespace ChatTool.Models.DomainObjects
     {
         public int Id { get; set; }
 
-        public string? UserName { get; set; }
+        public string UserName { get; set; } = "";
 
         public int UserId { get; set; }
 
-        public string? Text { get; set; }
+        public string IconPath { get; set; } = "";
+
+        public int ChannelId { get; set; }
+
+        public string Text { get; set; } = "";
 
         public bool IsDisplay { get; set; }
 

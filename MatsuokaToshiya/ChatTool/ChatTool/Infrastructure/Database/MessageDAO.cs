@@ -30,6 +30,7 @@ namespace ChatTool.Infrastructure.Database
             {
                 var userDao = new UserDAO();
                 message.UserName = userDao.UserName(message.UserId);
+                message.IconPath = System.Configuration.ConfigurationManager.AppSettings[userDao.UserIconId(message.UserId)];
             }
         }
 
