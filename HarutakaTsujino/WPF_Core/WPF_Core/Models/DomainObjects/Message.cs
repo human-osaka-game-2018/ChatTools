@@ -4,31 +4,33 @@ namespace WPF_Core.Models.DomainObjects
 {
     public class Message
     {
-        public Message(int id, int channelId, int userId, string text, DateTime time, int? parentMessageId)
+        public Message(int id, Channel channel, User user, string text, DateTime time, Message? parentMessage = null)
         {
             Id = id;
 
-            ChannelId = channelId;
+            Channel = channel;
 
-            UserId = userId;
+            User = user;
 
             Text = text;
 
             Time = time;
 
-            ParentMessageId = parentMessageId;
+            ParentMessage = parentMessage;
         }
 
         public int Id { get; }
 
-        public int ChannelId { get; }
+        public Channel Channel { get; }
 
-        public int UserId { get; }
+        public User User { get; }
+
+        public string UserName => User.Name;
         
         public string Text { get; }
 
         public DateTime Time { get; }
 
-        public int? ParentMessageId { get; }
+        public Message? ParentMessage { get; }
     }
 }
