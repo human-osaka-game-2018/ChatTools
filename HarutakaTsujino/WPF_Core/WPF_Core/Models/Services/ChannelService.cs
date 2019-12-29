@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive.Subjects;
 using WPF_Core.Infrastructure.Database;
 using WPF_Core.Models.DomainObjects;
+using WPF_Core.Models.Services.Factories;
 
 namespace WPF_Core.Models.Services
 {
@@ -40,12 +41,7 @@ namespace WPF_Core.Models.Services
             if (channelTable is null) return null;
 
             var channelsJoinedUser = channelTable.AsEnumerable()
-                .Select(x =>
-                {
-                    return new Channel(
-                       x.Field<int>("id"),
-                       x.Field<string>("channel_name"));
-                });
+                .Select(x => ChannelFactory.Create(x));
 
             return channelsJoinedUser;
         }

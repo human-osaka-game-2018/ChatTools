@@ -8,7 +8,7 @@ namespace WPF_Core.ViewModels.UserControls
 {
     public class MessagesDisplayViewModel : BindableBase
     {
-        public ObservableCollection<Message> Messages 
+        public ObservableCollection<Message?> Messages 
         {
             get => messages;
             set => SetValue(ref messages, value);
@@ -43,10 +43,10 @@ namespace WPF_Core.ViewModels.UserControls
             var latestMessages = MessageService.Get(channel);
 
             Messages.Clear();
-            Messages = new ObservableCollection<Message>(latestMessages);
+            Messages = new ObservableCollection<Message?>(latestMessages);
         }
 
-        private ObservableCollection<Message> messages = new ObservableCollection<Message>();
+        private ObservableCollection<Message?> messages = new ObservableCollection<Message?>();
 
         private readonly List<IDisposable> subscribeDisposables = new List<IDisposable>();
     }

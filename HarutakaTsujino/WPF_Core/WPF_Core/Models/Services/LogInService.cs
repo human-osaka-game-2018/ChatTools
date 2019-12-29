@@ -2,6 +2,7 @@
 using System.Linq;
 using WPF_Core.Infrastructure.Database;
 using WPF_Core.Models.DomainObjects;
+using WPF_Core.Models.Services.Factories;
 
 namespace WPF_Core.Models.Services
 {
@@ -11,7 +12,7 @@ namespace WPF_Core.Models.Services
 
         public static bool LogIn(string mailAddress, string password)
         {
-            var userDataTable = UserDAO.Get(mailAddress);
+            var userDataTable = UserDAO.GetWithMailAddress(mailAddress);
             var existsUser = ExtractLogInUser(mailAddress, password, userDataTable);
 
             if (existsUser)
@@ -50,11 +51,7 @@ namespace WPF_Core.Models.Services
 
             if (logInUser is null) return false;
 
-            LogInUser = new User(
-                logInUser.Field<int>("id"),
-                logInUser.Field<string>("mail_address"),
-                logInUser.Field<string>("password"),
-                logInUser.Field<string>("user_name"));
+            LogInUser = UserFactory.Create(logInUser);
 
             return true;
         }
