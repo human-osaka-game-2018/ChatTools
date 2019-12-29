@@ -1,6 +1,6 @@
 ﻿namespace WPF_Core.Models.DomainObjects
 {
-    class User
+    public class User
     {
         public User(int id, string mailAddress, string password, string name)
         {
