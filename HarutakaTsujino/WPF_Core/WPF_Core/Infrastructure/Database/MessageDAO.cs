@@ -6,21 +6,30 @@ namespace WPF_Core.Infrastructure.Database
 {
     public static class MessageDAO
     {
-        public static DataTable Get(int channelId)
+        public static DataTable GetWithId(int id)
         {
             using var mySqlConnection = Connection.Connect();
 
             mySqlConnection.Open();
 
             using var cmd = mySqlConnection.CreateCommand();
-            cmd.CommandText = $"SELECT * FROM t_message WHERE channel_id = @{CHANNEL_ID};";
+            cmd.CommandText = $"SELECT * FROM {TABLE} WHERE {ID} = id;";
 
-            var channelIdParam = cmd.CreateParameter();
-            channelIdParam.ParameterName = $"@{CHANNEL_ID}";
-            channelIdParam.MySqlDbType = MySqlDbType.Int64;
-            channelIdParam.Direction = ParameterDirection.Input;
-            channelIdParam.Value = channelId;
-            cmd.Parameters.Add(channelIdParam);
+            using var dataAdapter = new MySqlDataAdapter(cmd);
+            using var ret = new DataTable();
+            dataAdapter.Fill(ret);
+
+            return ret;
+        }
+
+        public static DataTable GetWithChannelId(int channelId)
+        {
+            using var mySqlConnection = Connection.Connect();
+
+            mySqlConnection.Open();
+
+            using var cmd = mySqlConnection.CreateCommand();
+            cmd.CommandText = $"SELECT * FROM {TABLE} WHERE {CHANNEL_ID} = {channelId};";
 
             using var dataAdapter = new MySqlDataAdapter(cmd);
             using var ret = new DataTable();
@@ -36,23 +45,9 @@ namespace WPF_Core.Infrastructure.Database
             using var cmd = mySqlConnection.CreateCommand();
             cmd.Connection.Open();
 
-            cmd.CommandText = $"INSERT INTO t_message " +
+            cmd.CommandText = $"INSERT INTO {TABLE} " +
                 $"({CHANNEL_ID}, {USER_ID}, {TEXT}, {TIME}, {PARENT_MESSAGE_ID}) " +
-                $"VALUES (@{CHANNEL_ID}, @{USER_ID}, @{TEXT}, @{TIME}, @{PARENT_MESSAGE_ID});";
-
-            var channelIdParam = cmd.CreateParameter();
-            channelIdParam.ParameterName = $"@{CHANNEL_ID}";
-            channelIdParam.MySqlDbType = MySqlDbType.Int64;
-            channelIdParam.Direction = ParameterDirection.Input;
-            channelIdParam.Value = channelId;
-            cmd.Parameters.Add(channelIdParam);
-
-            var userIdParam = cmd.CreateParameter();
-            userIdParam.ParameterName = $"@{USER_ID}";
-            userIdParam.MySqlDbType = MySqlDbType.Int64;
-            userIdParam.Direction = ParameterDirection.Input;
-            userIdParam.Value = userId;
-            cmd.Parameters.Add(userIdParam);
+                $"VALUES ({channelId}, {userId}, @{TEXT}, @{TIME}, @{PARENT_MESSAGE_ID});";
 
             var textParam = cmd.CreateParameter();
             textParam.ParameterName = $"@{TEXT}";
@@ -78,6 +73,8 @@ namespace WPF_Core.Infrastructure.Database
             cmd.ExecuteNonQuery();
         }
 
+        private const string TABLE = "t_message";
+        private const string ID = "id";
         private const string CHANNEL_ID = "channel_id";
         private const string USER_ID = "user_id";
         private const string TEXT = "text";

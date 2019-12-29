@@ -6,17 +6,33 @@ namespace WPF_Core.Infrastructure.Database
 {
     public static class UserDAO
     {
-        public static DataTable Get(string mailAddress)
+        public static DataTable GetWithId(int id)
         {
             using var mySqlConnection = Connection.Connect();
 
             mySqlConnection.Open();
 
             using var cmd = mySqlConnection.CreateCommand();
-            cmd.CommandText = $"SELECT * FROM m_user WHERE mail_address = {MAIL_ADDRESS_PARAM_NAME};";
+            cmd.CommandText = $"SELECT * FROM {TABLE} WHERE {ID} = {id};";
+
+            using var dataAdapter = new MySqlDataAdapter(cmd);
+            using var ret = new DataTable();
+            dataAdapter.Fill(ret);
+
+            return ret;
+        }
+
+        public static DataTable GetWithMailAddress(string mailAddress)
+        {
+            using var mySqlConnection = Connection.Connect();
+
+            mySqlConnection.Open();
+
+            using var cmd = mySqlConnection.CreateCommand();
+            cmd.CommandText = $"SELECT * FROM {TABLE} WHERE {MAIL_ADDRESS} = @{MAIL_ADDRESS};";
 
             var mailAddressParam = cmd.CreateParameter();
-            mailAddressParam.ParameterName = MAIL_ADDRESS_PARAM_NAME;
+            mailAddressParam.ParameterName = MAIL_ADDRESS;
             mailAddressParam.MySqlDbType = MySqlDbType.VarChar;
             mailAddressParam.Direction = ParameterDirection.Input;
             mailAddressParam.Value = mailAddress;
@@ -38,10 +54,12 @@ namespace WPF_Core.Infrastructure.Database
             var onlineStateCode = isOnline ? 1 : 0;
 
             using var cmd = mySqlConnection.CreateCommand();
-            cmd.CommandText = $"UPDATE m_user SET is_online = {onlineStateCode} WHERE(id = {id});";
+            cmd.CommandText = $"UPDATE {TABLE} SET is_online = {onlineStateCode} WHERE({ID} = {id});";
             using var dataAdapter = new MySqlDataAdapter(cmd);
         }
 
-        private const string MAIL_ADDRESS_PARAM_NAME = "@mail_address";
+        private const string TABLE = "m_user";
+        private const string ID = "id";
+        private const string MAIL_ADDRESS = "mail_address";
     }
 }

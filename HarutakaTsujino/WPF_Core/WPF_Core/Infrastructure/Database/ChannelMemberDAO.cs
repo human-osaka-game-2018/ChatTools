@@ -13,14 +13,7 @@ namespace WPF_Core.Infrastructure.Database
             mySqlConnection.Open();
 
             using var cmd = mySqlConnection.CreateCommand();
-            cmd.CommandText = $"SELECT channel_id FROM m_channel_member WHERE user_id = {USER_ID};";
-
-            var userIdParam = cmd.CreateParameter();
-            userIdParam.ParameterName = USER_ID;
-            userIdParam.MySqlDbType = MySqlDbType.Int64;
-            userIdParam.Direction = ParameterDirection.Input;
-            userIdParam.Value = userId;
-            cmd.Parameters.Add(userIdParam);
+            cmd.CommandText = $"SELECT channel_id FROM m_channel_member WHERE {USER_ID} = {userId};";
 
             using var dataAdapter = new MySqlDataAdapter(cmd);
             using var ret = new DataTable();
@@ -29,6 +22,6 @@ namespace WPF_Core.Infrastructure.Database
             return ret;
         }
 
-        private const string USER_ID = "@user_id";
+        private const string USER_ID = "user_id";
     }
 }

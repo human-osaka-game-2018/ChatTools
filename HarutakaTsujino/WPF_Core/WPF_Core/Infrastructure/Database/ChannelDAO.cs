@@ -9,6 +9,19 @@ namespace WPF_Core.Infrastructure.Database
 {
     public static class ChannelDAO
     {
+        public static DataTable Get(int id)
+        {
+            using var mySqlConnection = Connection.Connect();
+
+            mySqlConnection.Open();
+
+            using var dataAdapter = new MySqlDataAdapter(CreateCmdWithId(id, mySqlConnection));
+            using var ret = new DataTable();
+            dataAdapter.Fill(ret);
+
+            return ret;
+        }
+
         public static DataTable? Get(IEnumerable<int> ids)
         {
             if (!ids.Any()) return null;
@@ -35,16 +48,7 @@ namespace WPF_Core.Infrastructure.Database
         {
             using var cmd = mySqlConnection.CreateCommand();
 
-            cmd.CommandText = $"SELECT * FROM m_channel WHERE id = {CHANNEL_ID};";
-
-            var channelIdParam = cmd.CreateParameter();
-            channelIdParam.MySqlDbType = MySqlDbType.Int64;
-            channelIdParam.Direction = ParameterDirection.Input;
-
-            channelIdParam.ParameterName = CHANNEL_ID;
-            channelIdParam.Value = id;
-
-            cmd.Parameters.Add(channelIdParam);
+            cmd.CommandText = $"SELECT * FROM m_channel WHERE {ID} = id;";
 
             return cmd;
         }
@@ -54,22 +58,11 @@ namespace WPF_Core.Infrastructure.Database
             using var cmd = mySqlConnection.CreateCommand();
 
             var commandTextSB = new StringBuilder();
-            commandTextSB.Append("SELECT * FROM m_channel WHERE id IN(");
+            commandTextSB.Append($"SELECT * FROM m_channel WHERE {ID} IN(");
 
             foreach (var id in ids)
             {
-                var channelIdParam = cmd.CreateParameter();
-                channelIdParam.MySqlDbType = MySqlDbType.Int64;
-                channelIdParam.Direction = ParameterDirection.Input;
-
-                var commandName = $"{CHANNEL_ID}_{id.ToString()}";
-
-                commandTextSB.Append($"{commandName}, ");
-
-                channelIdParam.ParameterName = commandName;
-                channelIdParam.Value = id;
-
-                cmd.Parameters.Add(channelIdParam);
+                commandTextSB.Append($"{id}, ");
             }
 
             // 一番最後のカンマとスペースはいらない
@@ -83,6 +76,6 @@ namespace WPF_Core.Infrastructure.Database
             return cmd;
         }
 
-        private const string CHANNEL_ID = "@channel_id";
+        private const string ID = "id";
     }
 }
