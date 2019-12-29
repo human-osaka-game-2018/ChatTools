@@ -48,7 +48,7 @@ namespace WPF_Core.Infrastructure.Database
         {
             using var cmd = mySqlConnection.CreateCommand();
 
-            cmd.CommandText = $"SELECT * FROM m_channel WHERE {ID} = id;";
+            cmd.CommandText = $"SELECT * FROM m_channel WHERE {ID} = {id};";
 
             return cmd;
         }

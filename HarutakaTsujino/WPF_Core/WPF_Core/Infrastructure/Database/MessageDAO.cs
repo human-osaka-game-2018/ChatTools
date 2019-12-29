@@ -13,7 +13,7 @@ namespace WPF_Core.Infrastructure.Database
             mySqlConnection.Open();
 
             using var cmd = mySqlConnection.CreateCommand();
-            cmd.CommandText = $"SELECT * FROM {TABLE} WHERE {ID} = id;";
+            cmd.CommandText = $"SELECT * FROM {TABLE} WHERE {ID} = {id};";
 
             using var dataAdapter = new MySqlDataAdapter(cmd);
             using var ret = new DataTable();
