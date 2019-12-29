@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPF_Core.ViewModels.UserControls;
 
 namespace WPF_Core.Views.UserControls
 {
@@ -21,6 +22,8 @@ namespace WPF_Core.Views.UserControls
         public TextAreaUC()
         {
             InitializeComponent();
+
+            DataContext = new TextAreaViewModel();
         }
     }
 }

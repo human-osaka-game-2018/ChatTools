@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF_Core.Views.UserControls"
+             xmlns:vm="clr-namespace:WPF_Core.ViewModels.UserControls"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:TextAreaViewModel}" 
              d:DesignHeight="120" d:DesignWidth="1070" Background="#FF3D807C">
     <Grid>
         <Grid.RowDefinitions>
@@ -19,8 +21,9 @@
             <ColumnDefinition Width="6*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Text="TextBox" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Background="#59FFFFFF" FontSize="20" Foreground="Black"/>
-        <Button Content="送信" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Background="#FF006666" FontSize="22" Foreground="White"/>
-
+        <TextBox TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Background="#59FFFFFF" FontSize="20" Foreground="Black"
+                 Text="{Binding Text}"/>
+        <Button Content="送信" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Background="#FF006666" FontSize="22" Foreground="White"
+                Command="{Binding PostCommand}"/>
     </Grid>
 </UserControl>
