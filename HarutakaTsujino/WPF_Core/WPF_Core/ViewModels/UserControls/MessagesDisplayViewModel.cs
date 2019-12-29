@@ -1,50 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
-using WPF_Core.Infrastructure.Database;
 using WPF_Core.Models.DomainObjects;
 using WPF_Core.Models.Services;
 
 namespace WPF_Core.ViewModels.UserControls
 {
-    public class MessagesDisplayViewModel
+    public class MessagesDisplayViewModel : BindableBase
     {
-        public ObservableCollection<Message> Messages { get; private set; } =
-            new ObservableCollection<Message>();
+        public ObservableCollection<Message> Messages 
+        {
+            get => messages;
+            set => SetValue(ref messages, value);
+        }
 
         public MessagesDisplayViewModel()
         {
-            SubscribeDisposable =
+            subscribeDisposables.Add(
                 ChannelService.OnSelectingChangedAsObservable
                 .Subscribe(ch => 
                 {
                     if (ch is null) return;
 
                     SetMessagesInChannel(ch);
-                });
+                }));
+
+            subscribeDisposables.Add(
+                MessageService.OnMessagePostedAsObservable
+                .Subscribe(_ =>
+                {
+                    SetMessagesInChannel(ChannelService.SelectingChannel!);
+                }));
         }
 
         ~MessagesDisplayViewModel()
         {
-            SubscribeDisposable.Dispose();
+            subscribeDisposables.ForEach(diposable => diposable.Dispose());
         }
 
         private void SetMessagesInChannel(Channel channel)
         {
-            var messages = MessageService.GetMessagesInChannel(channel);
+            var latestMessages = MessageService.Get(channel);
 
             Messages.Clear();
-
-            foreach (var message in messages)
-            {
-                // Addしているから今は表示されている
-                Messages.Add(message);
-            }
+            Messages = new ObservableCollection<Message>(latestMessages);
         }
 
-        private IDisposable SubscribeDisposable { get; set; }
+        private ObservableCollection<Message> messages = new ObservableCollection<Message>();
+
+        private readonly List<IDisposable> subscribeDisposables = new List<IDisposable>();
     }
 }
