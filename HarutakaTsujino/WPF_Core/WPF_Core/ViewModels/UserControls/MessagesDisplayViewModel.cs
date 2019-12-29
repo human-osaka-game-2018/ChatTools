@@ -27,10 +27,7 @@ namespace WPF_Core.ViewModels.UserControls
 
             subscribeDisposables.Add(
                 MessageService.OnMessagePostedAsObservable
-                .Subscribe(_ =>
-                {
-                    SetMessagesInChannel(ChannelService.SelectingChannel!);
-                }));
+                .Subscribe(_ => SetMessagesInChannel(ChannelService.SelectingChannel!)));
         }
 
         ~MessagesDisplayViewModel()

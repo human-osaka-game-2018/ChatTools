@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using WPF_Core.Common;
 using WPF_Core.Models.DomainObjects;
 using WPF_Core.Models.Services;
 

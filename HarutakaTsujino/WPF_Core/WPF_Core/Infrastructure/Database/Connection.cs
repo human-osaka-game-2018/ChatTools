@@ -1,8 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Text;
 
 namespace WPF_Core.Infrastructure.Database
 {

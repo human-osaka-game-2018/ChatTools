@@ -19,10 +19,7 @@ namespace WPF_Core.Models.Services
             using var messageTable = MessageDAO.GetWithChannelId(channel.Id);
 
             var messages = messageTable.AsEnumerable()
-                .Select(x =>
-                {            
-                    return MessageFactory.Create(x);
-                });
+                .Select(x => MessageFactory.Create(x));
 
             return messages;
         }
