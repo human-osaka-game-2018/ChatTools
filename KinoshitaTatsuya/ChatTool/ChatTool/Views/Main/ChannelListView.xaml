@@ -4,10 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatTool.Views.Main"
-             mc:Ignorable="d" 
-             Width="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Grid}},Path=ActualWidth}"
-             Height="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Grid}},Path=ActualHeight}"             
-             Background="Black">
+             mc:Ignorable="d">
     <Grid>
         <ListBox ItemsSource="{Binding Channels}" x:Name="ListChannelName" SelectionChanged="OnSelected">
             <ListBox.ItemTemplate>

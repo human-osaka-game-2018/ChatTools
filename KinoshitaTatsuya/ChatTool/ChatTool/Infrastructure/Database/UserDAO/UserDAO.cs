@@ -76,9 +76,9 @@ namespace ChatTool.Infrastructure.Database.UserDAO
         /// ログインに必要な情報を取ってくる
         /// </summary>
         /// <returns>メールアドレスがキーになっているDictionary</returns>
-        public static Dictionary<string,Tuple<string, int>> GetLoginInfos()
+        public static Dictionary<string,Tuple<string?, int>> GetLoginInfos()
         {
-            var loginInfos = new Dictionary<string, Tuple<string, int>>();
+            var loginInfos = new Dictionary<string, Tuple<string?, int>>();
             using (var con = Connection.Connection.OpenDB())
             {
                 string sql = "select id, mail_address, password from m_user;";
@@ -88,7 +88,7 @@ namespace ChatTool.Infrastructure.Database.UserDAO
 
                 while (reader.Read())
                 {
-                    loginInfos.Add((string)reader["mail_address"], new Tuple<string, int>((string)reader["password"],(int)reader["id"]));
+                    loginInfos.Add((string)reader["mail_address"], new Tuple<string?, int>((string)reader["password"],(int)reader["id"]));
                 }
             }
             return loginInfos;

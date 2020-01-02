@@ -13,8 +13,8 @@ namespace ChatTool.ViewModels.Main
         public List<Channel> Channels { get; set; } = new List<Channel>();
 
         public ChannelListViewModel()
-        {            
-            Channels = ChannelDAO.GetLoginUserChannels(LoginService.LoginUser.Id);            
+        {
+            Channels = ChannelService.GetChannels(LoginService.LoginUser.Id);                        
         }
         
         public void UpdateCurrentChannel(int selectItemIndex)

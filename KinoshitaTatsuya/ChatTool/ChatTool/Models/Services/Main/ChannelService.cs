@@ -1,4 +1,5 @@
-﻿using ChatTool.Models.DomainObjects.Channel;
+﻿using ChatTool.Infrastructure.Database.ChannelDAO;
+using ChatTool.Models.DomainObjects.Channel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,11 @@ namespace ChatTool.Models.Services.Main
                 currentChannel = value;
                 CurrentChannelChanged?.Invoke();
             }
+        }
+
+        public static List<Channel> GetChannels(int userId)
+        {
+            return ChannelDAO.GetLoginUserChannels(userId);
         }
 
         public static event Action? CurrentChannelChanged;               
