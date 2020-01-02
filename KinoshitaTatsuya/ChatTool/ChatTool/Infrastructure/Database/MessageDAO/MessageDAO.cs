@@ -42,5 +42,26 @@ namespace ChatTool.Infrastructure.Database.MessageDAO
 
             return messages;
         }
+
+        public static void SendMessage(Message message)
+        {
+            using (var con = Connection.Connection.OpenDB())
+            {
+                var sql = new StringBuilder();
+                sql.Append("insert into t_message (channel_id, user_id, text, time, parent_message_id, displays_to_channel) ");
+                sql.Append("values (");
+                sql.Append("@channel_id, @user_id, @text, @time, @parent_message_id, @displays_to_channel)");
+
+                var command = new MySqlCommand(sql.ToString(), con);
+                command.Parameters.Add(new MySqlParameter("channel_id", message.ChannelId));
+                command.Parameters.Add(new MySqlParameter("user_id", message.User?.Id));
+                command.Parameters.Add(new MySqlParameter("text", message.Text));
+                command.Parameters.Add(new MySqlParameter("time", message.Time));
+                command.Parameters.Add(new MySqlParameter("parent_message_id", message.ParentMessageId));
+                command.Parameters.Add(new MySqlParameter("displays_to_channel", message.DisplaysToChannel));
+
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

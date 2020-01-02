@@ -28,7 +28,12 @@ namespace ChatTool.ViewModels.Main
         {            
             ChannelService.CurrentChannelChanged += () =>
             {               
-                Messages = MessageDAO.GetMessages(ChannelService.CurrentChannel.Id);
+                Messages = MessageService.GetMessages();
+            };
+
+            MessageService.MessageSent += () =>
+            {
+                Messages = MessageService.GetMessages();
             };
         }
     }
