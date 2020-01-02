@@ -20,7 +20,19 @@ namespace ChatTool.ViewModels.Main
                 messages = value;                
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Messages"));                               
             }
-        }        
+        }
+
+        private Message selectMessage = new Message();
+        public Message SelectMessage 
+        {
+            get { return selectMessage; }
+            set 
+            {
+                selectMessage = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectMessage"));
+                MessageService.ReplyMessage = selectMessage;
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -34,7 +46,7 @@ namespace ChatTool.ViewModels.Main
             MessageService.MessageSent += () =>
             {
                 Messages = MessageService.GetMessages();
-            };
+            };            
         }
     }
 }

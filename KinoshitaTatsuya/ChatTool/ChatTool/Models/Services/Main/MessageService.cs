@@ -21,7 +21,7 @@ namespace ChatTool.Models.Services.Main
             message.User = LoginService.LoginService.LoginUser;
             message.Text = text;
             message.Time = DateTime.Now;
-            message.ParentMessageId = 1;
+            message.ParentMessageId = ReplyMessage.Id;
             message.DisplaysToChannel = true;
 
             MessageDAO.SendMessage(message);
@@ -35,5 +35,6 @@ namespace ChatTool.Models.Services.Main
         }
 
         public static event Action? MessageSent;
+        public static Message ReplyMessage { get; set; } = new Message();
     }
 }

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ChatTool.Views.Main"
              mc:Ignorable="d">
     <Grid>
-        <ListBox ItemsSource="{Binding Messages}" x:Name="ListMessage">
+        <ListBox ItemsSource="{Binding Messages}" SelectedItem="{Binding SelectMessage}" x:Name="ListMessage">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>

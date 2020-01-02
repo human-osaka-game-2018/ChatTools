@@ -22,7 +22,7 @@ namespace ChatTool.Views.Main
         public MessageListView()
         {
             InitializeComponent();
-            DataContext = messageListViewModel;            
+            DataContext = messageListViewModel;               
         }
 
         private MessageListViewModel messageListViewModel = new MessageListViewModel();
