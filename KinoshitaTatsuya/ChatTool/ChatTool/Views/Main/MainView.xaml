@@ -28,7 +28,7 @@
         </Grid>
 
         <Grid Grid.Column="1" Grid.Row="2" x:Name="InputAreaView">
-            <local:InputAreaView Background="Black"/>
+            <local:InputAreaView/>
         </Grid>
     </Grid>
 </Window>

@@ -7,6 +7,26 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="691*"/>
+            <ColumnDefinition Width="109*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="167*"/>
+            <RowDefinition Height="58*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.InputBindings>
+            <KeyBinding Command="{Binding SendMessageCommand}"  Gesture="Alt+Return"></KeyBinding>
+        </Grid.InputBindings>
+        
+        <Grid Grid.RowSpan="2" Grid.ColumnSpan="1">
+            <TextBox Text="{Binding InputText}" x:Name="MessageInputArea" AcceptsReturn="True"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Button x:Name="btnSendMessage" Command="{Binding SendMessageCommand}" Content="送信"/>
+        </Grid>
+
     </Grid>
 </UserControl>
