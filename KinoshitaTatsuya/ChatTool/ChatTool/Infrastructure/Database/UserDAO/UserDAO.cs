@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
 using ChatTool.Models.DomainObjects.User;
+using ChatTool.Models.Services.Main;
 
 namespace ChatTool.Infrastructure.Database.UserDAO
 {
@@ -66,6 +67,8 @@ namespace ChatTool.Infrastructure.Database.UserDAO
                     user.IsOnline = ((sbyte)reader["is_online"] == 1) ? true : false;
                     user.Password = (string)reader["password"];
                     user.MailAddress = (string)reader["mail_address"];
+
+                    user.IconPath = IconPathFactory.Create(user.IconId);
                 }              
             }
 

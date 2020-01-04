@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Text;
 using ChatTool.Infrastructure.Database.MessageDAO;
 using ChatTool.Models.DomainObjects.Message;
+using ChatTool.Models.Services.LoginService;
 using ChatTool.Models.Services.Main;
 
 namespace ChatTool.ViewModels.Main
@@ -32,7 +33,7 @@ namespace ChatTool.ViewModels.Main
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectMessage"));
                 MessageService.ReplyMessage = selectMessage;
             }
-        }
+        }        
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
