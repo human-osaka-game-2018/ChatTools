@@ -6,7 +6,7 @@
         {
             Id = id;
 
-            Mail_address = mailAddress;
+            MailAddress = mailAddress;
 
             Password = password;
             
@@ -15,7 +15,7 @@
 
         public int Id { get; }
 
-        public string Mail_address { get; }
+        public string MailAddress { get; }
 
         public string Password { get; }
         
