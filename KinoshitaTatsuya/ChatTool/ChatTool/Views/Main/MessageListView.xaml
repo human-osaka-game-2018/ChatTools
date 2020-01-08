@@ -12,8 +12,12 @@
                 <DataTemplate>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding User.IconPath}" Width="20" Height="20"/>
-                            <TextBlock Text="{Binding User.Name}" Margin="10"/>
+                            <Border Margin="5" Width="20" Height="20" CornerRadius="5" BorderThickness="0" >
+                                <Border.Background>
+                                    <ImageBrush ImageSource="{Binding User.IconPath}"/>
+                                </Border.Background>
+                            </Border>
+                            <TextBlock Text="{Binding User.Name}" Margin="5"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Text}"/>
                     </StackPanel>

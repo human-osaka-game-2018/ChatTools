@@ -30,5 +30,14 @@
         <Grid Grid.Column="1" Grid.Row="2" x:Name="InputAreaView">
             <local:InputAreaView/>
         </Grid>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+            <Border Margin="20" Width="25" Height="25" CornerRadius="5" BorderThickness="0 0 2 2" BorderBrush="Gray">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding IconPath}"/>
+                </Border.Background>
+            </Border>
+            <TextBlock Text="{Binding UserName}" Margin="10" FontSize="16" Height="32" Width="100"/>
+        </StackPanel>
     </Grid>
 </Window>
