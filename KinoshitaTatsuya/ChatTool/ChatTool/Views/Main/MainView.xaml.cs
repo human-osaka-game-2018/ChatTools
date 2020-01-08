@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatTool.ViewModels.Main;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,6 +21,7 @@ namespace ChatTool.Views.Main
         public MainView()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
         }        
     }
 }
