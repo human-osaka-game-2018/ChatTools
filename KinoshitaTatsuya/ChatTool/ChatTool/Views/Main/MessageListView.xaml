@@ -17,7 +17,7 @@
                                     <ImageBrush ImageSource="{Binding User.IconPath}"/>
                                 </Border.Background>
                             </Border>
-                            <TextBlock Text="{Binding User.Name}" Margin="5"/>
+                            <TextBlock Text="{Binding User.Name}" Margin="5" FontWeight="ExtraLight" FontFamily="Meiryo"/>
                         </StackPanel>
                         <TextBlock Text="{Binding Text}"/>
                     </StackPanel>
