@@ -8,7 +8,7 @@ namespace WPF_Core.ViewModels.UserControls
 {
     public class MessagesDisplayViewModel : BindableBase
     {
-        public ObservableCollection<Message?> Messages 
+        public ObservableCollection<Message?> Messages
         {
             get => messages;
             set => SetValue(ref messages, value);
@@ -18,7 +18,7 @@ namespace WPF_Core.ViewModels.UserControls
         {
             subscribeDisposables.Add(
                 ChannelService.OnSelectingChangedAsObservable
-                .Subscribe(ch => 
+                .Subscribe(ch =>
                 {
                     if (ch is null) return;
 

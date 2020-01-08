@@ -18,14 +18,9 @@ namespace WPF_Core.Models.Services
             get => selectingChannel;
             set
             {
-                if (selectingChannel?.Id != value?.Id)
-                {
-                    selectingChannel = value;
+                if (selectingChannel?.Id == value?.Id) return;
 
-                    if (selectingChannel is null) return;
-
-                    onSelectingChangedAsSubject?.OnNext(selectingChannel);
-                }
+                onSelectingChangedAsSubject?.OnNext(selectingChannel = value);
             }
         }
 
