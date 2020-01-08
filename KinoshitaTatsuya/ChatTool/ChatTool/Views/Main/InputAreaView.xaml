@@ -17,11 +17,11 @@
         </Grid.RowDefinitions>
 
         <Grid.InputBindings>
-            <KeyBinding Command="{Binding SendMessageCommand}"  Gesture="Alt+Return"></KeyBinding>
+            <KeyBinding Command="{Binding SendMessageCommand}"  Gesture="Alt+Return"/>
         </Grid.InputBindings>
         
         <Grid Grid.RowSpan="2" Grid.ColumnSpan="1">
-            <TextBox Text="{Binding InputText}" x:Name="MessageInputArea" AcceptsReturn="True"/>
+            <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" x:Name="MessageInputArea" AcceptsReturn="True" TextWrapping="Wrap"/>
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="1">
