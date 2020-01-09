@@ -1,6 +1,8 @@
 ﻿using ChatTool.ViewModels.Main;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,9 +24,18 @@ namespace ChatTool.Views.Main
         public MessageListView()
         {
             InitializeComponent();
-            DataContext = messageListViewModel;               
-        }
+            DataContext = messageListViewModel;
+        }                
 
         private MessageListViewModel messageListViewModel = new MessageListViewModel();
+
+        private void ListMessage_TargetUpdated(object sender, DataTransferEventArgs e)
+        {            
+            var Items = this.ListMessage.Items;
+
+            if (Items.Count <= 0) return;
+
+            ListMessage.ScrollIntoView(Items[Items.Count - 1]);
+        }
     }
 }
