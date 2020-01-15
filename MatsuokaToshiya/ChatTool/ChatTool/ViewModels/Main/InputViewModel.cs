@@ -10,11 +10,11 @@ namespace ChatTool.ViewModels.Main
 {
     class InputViewModel : INotifyPropertyChanged
     {
-        private string _InputText = "";
+        private string inputText = "";
         public string InputText {
-            get { return _InputText; }
+            get { return inputText; }
             set {
-                _InputText = value;
+                inputText = value;
                 SendButtonCommand.RaiseCanExecuteChanged();
             }
         }
@@ -22,7 +22,7 @@ namespace ChatTool.ViewModels.Main
         {
             SendButtonCommand = new DelegateCommand(SendMessage, CanExecute);
             EraseButtonCommand  = new DelegateCommand(EraseReply);
-            ReplyMessageService.ChangedSelectingMessage = (message) => { ReplyMessage = message; };
+            ReplyMessageService.SelectingMessageChanged += (message) => { ReplyMessage = message; };
         }
         public DelegateCommand SendButtonCommand { get; }
 
@@ -31,6 +31,7 @@ namespace ChatTool.ViewModels.Main
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public void SendMessage()
         {
             var sendMessageService = new SendMessageService();
@@ -41,68 +42,70 @@ namespace ChatTool.ViewModels.Main
             }
             sendMessageService.SendReplyMessage(InputText, ReplyMessage.Id);
         }
+
         private bool CanExecute()
         {
             if ("" == InputText) return false;
             return true;
         }
         #region
-        private static string _RepliedUserName = "";
+        private static string repliedUserName = "";
         public string RepliedUserName {
             get
             {
-                return _RepliedUserName;
+                return repliedUserName;
             }
             set
             {
-                _RepliedUserName = value;
+                repliedUserName = value;
                 SetPropertyChanged("RepliedUserName");
             }
         }
-        private static string _RepliedMessage = "";
+        private static string repliedMessage = "";
         public string RepliedMessage
         {
             get
             {
-                return _RepliedMessage;
+                return repliedMessage;
             }
             set
             {
-                _RepliedMessage = value;
+                repliedMessage = value;
                 SetPropertyChanged("RepliedMessage");
             }
         }
-        private static DateTime _RepliedMessageTime = DateTime.Now;
+        private static DateTime repliedMessageTime = DateTime.Now;
         public DateTime RepliedMessageTime
         {
             get
             {
-                return _RepliedMessageTime;
+                return repliedMessageTime;
             }
             set
             {
-                _RepliedMessageTime = value;
+                repliedMessageTime = value;
                 SetPropertyChanged("RepliedMessageTime");
             }
 
         }
         #endregion
-        private Message? _ReplyMessage = null;
+        private Message? replyMessage = null;
         public Message? ReplyMessage
         {
             get
             {
-                return _ReplyMessage;
+                return replyMessage;
             }
             set
             {
-                _ReplyMessage = value;
-                if (_ReplyMessage == null) return;
-                RepliedUserName = _ReplyMessage.UserName;
-                RepliedMessage = _ReplyMessage.Text;
-                RepliedMessageTime = _ReplyMessage.Time;
+                replyMessage = value;
+                if (replyMessage == null) return;
+                RepliedUserName = replyMessage.UserName;
+                RepliedMessage = replyMessage.Text;
+                RepliedMessageTime = replyMessage.Time;
             }
         }
+
         public DelegateCommand EraseButtonCommand { get; }
         public void EraseReply()
         {
@@ -110,7 +113,6 @@ namespace ChatTool.ViewModels.Main
             RepliedMessage = "";
             RepliedMessageTime = DateTime.MinValue;
             ReplyMessage = null;
-
         }
     }
 }

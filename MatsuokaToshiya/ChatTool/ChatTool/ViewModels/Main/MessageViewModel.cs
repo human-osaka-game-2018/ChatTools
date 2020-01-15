@@ -15,30 +15,29 @@ namespace ChatTool.ViewModels.Main
     {
         public MessageViewModel()
         {
-            SelectChannelService.CallMessageLog += (int channelId) => { CallMessages(channelId); };
-            CallMessageService.RefleshMessageLog += () => { CallMessageService.CallMessages(Messages, SelectChannelService.SelectingChannelId); };
+            SelectChannelService.ChangeSelectChannel += (int channelId) => { ReadMessages(channelId); };
+            ReadMessageService.RefleshMessageLog += () => { ReadMessages( SelectChannelService.SelectingChannelId); };
         }
-        private Message _SelectItem = new Message();
+        private Message? selectItem = new Message();
         public Message? SelectItem
         {
-            get { return _SelectItem; }
+            get { return selectItem; }
             set
             {
-                if (null == value) return;
-                _SelectItem = value;
-                ReplyMessageService.ChangedSelectingMessage.Invoke(_SelectItem);
+                selectItem = value;
+                ReplyMessageService.SelectingMessageChanged.Invoke(selectItem);
             }
         }
         #region
 
-        private ObservableCollection<Message> _Messages = new ObservableCollection<Message>();
+        private ObservableCollection<Message> messages = new ObservableCollection<Message>();
         public ObservableCollection<Message> Messages
         {
-            get { return _Messages; }
+            get { return messages; }
             set
             {
-                if (value != this._Messages)
-                    _Messages = value;
+                if (value != this.messages)
+                    messages = value;
                 this.SetPropertyChanged("Messages");
             }
         }
@@ -49,10 +48,13 @@ namespace ChatTool.ViewModels.Main
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void CallMessages(int channelId)
+        public void ReadMessages( int channelId)
         {
-            CallMessageService.CallMessages(Messages, channelId);
+            messages.Clear();
+            var messageDao = new MessageDAO();
+            messageDao.MessageList(messages, channelId);
         }
+        
 
     }
 }

@@ -28,23 +28,17 @@ namespace ChatTool.Models.DomainObjects
 
         public int ParentId { get; set; }
 
-        private ObservableCollection<Message> _Child = new ObservableCollection<Message>();
+        private ObservableCollection<Message> child = new ObservableCollection<Message>();
         public ObservableCollection<Message> Child
         {
-            get { return _Child; }
+            get { return child; }
             set
             {
-                if (value != this._Child)
-                    _Child = value;
+                if (value != this.child)
+                    child = value;
             }
         }
 
         public Message() { }
-        public Message(int id)
-        {
-            Id = id;
-            UserName = "User" + Id.ToString();
-            Text = "Test_Message";
-        }
     }
 }

@@ -5,10 +5,9 @@ using System.Text;
 
 namespace ChatTool.Models.Services
 {
-    delegate void SelectingMessageChangedEvent(Message message);
     static class ReplyMessageService
     {
-        public static SelectingMessageChangedEvent ChangedSelectingMessage = (_) => { };
-
+        public static Action<Message?> SelectingMessageChanged = (_) => { };
+        public static Action<int> EraseSelectingReply = (_) => { };
     }
 }

@@ -10,11 +10,6 @@ namespace ChatTool.Models.DomainObjects
 
         public string Name { get; set; } = "";
 
-        public Channel(int id, string? name)
-        {
-            Id = id;
-            Name = (name == null) ? "" : name;
-        }
         public Channel() { }
 
     }

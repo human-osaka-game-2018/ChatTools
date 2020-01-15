@@ -26,6 +26,7 @@ namespace ChatTool.Infrastructure.Database
 
             return list;
         }
+
         public User? User(string mailAdress, string password)
         {
             var command = new StringBuilder();
@@ -47,11 +48,12 @@ namespace ChatTool.Infrastructure.Database
             user.MailAddress = DBNull.Value != reader["mail_address"] ? reader.GetString("mail_address") : "";
             user.Password = DBNull.Value != reader["password"] ? reader.GetString("password") : "";
             user.IsOnline = true;
-            user.IconPath = System.Configuration.ConfigurationManager.AppSettings[user.IconId];
+            user.IconPath = System.Configuration.ConfigurationManager.AppSettings[0]+"icon0"+user.IconId.ToString()+".png";
             Conection.DisConnectDB();
 
             return user;
         }
+
         public void Online(User? user)
         {
             if (user == null) return;
@@ -63,6 +65,7 @@ namespace ChatTool.Infrastructure.Database
             cmd.ExecuteNonQuery();
             Conection.DisConnectDB();
         }
+
         public string UserName(int userId)
         {
             var cmd = new MySqlCommand("select * from m_user where id = @user_id;", Conection.ConnectDB());
@@ -73,6 +76,7 @@ namespace ChatTool.Infrastructure.Database
             Conection.DisConnectDB();
             return str;
         }
+
         public int UserIconId(int userId)
         {
             var cmd = new MySqlCommand("select * from m_user where id = @user_id;", Conection.ConnectDB());

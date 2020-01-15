@@ -19,21 +19,24 @@ namespace ChatTool.ViewModels.Main
             UserName = channelService.ParticipatedUser(Channels);
             var user = LoginService.User;
             if(user != null){
-                IconPath = System.Configuration.ConfigurationManager.AppSettings[new UserDAO().UserIconId(user.Id)];
+                IconPath = user.IconPath;
             }
         }
+
         public string IconPath { get; set; } = "";
-        private Channel _SelectItem  = new Channel();
+        private Channel selectItem  = new Channel();
         public Channel? SelectItem { 
-            get { return _SelectItem; } 
+            get { return selectItem; } 
             set {
                 if (null == value) return;
-                _SelectItem = value;
+                selectItem = value;
                 ChannelSelected(); 
             } 
         }
-        private string _UserName = "";
-        public string UserName { get { return _UserName; } set { _UserName = value; } }
+
+        private string userName = "";
+        public string UserName { get { return userName; } set { userName = value; } }
+        #region
         private ObservableCollection<Channel> _Channels = new ObservableCollection<Channel>();
         public ObservableCollection<Channel> Channels
         {
@@ -45,6 +48,7 @@ namespace ChatTool.ViewModels.Main
                 this.SetPropertyChanged("Channels");
             }
         }
+        #endregion
         public event PropertyChangedEventHandler? PropertyChanged;
         public void SetPropertyChanged(string propertyName)
         {
@@ -55,7 +59,6 @@ namespace ChatTool.ViewModels.Main
         {
             if (null != SelectItem)
             {
-                Debug.Write(SelectItem.Name + "Select\n");
                 SelectChannelService.CallMessageLogs(SelectItem.Id);
             }
         }

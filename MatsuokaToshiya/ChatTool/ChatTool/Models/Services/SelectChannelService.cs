@@ -8,15 +8,14 @@ using System.Text;
 
 namespace ChatTool.Models.Services
 {
-    delegate void SelectedChannelHandler(int value);
     static class SelectChannelService
     {
+        public static Action<int> ChangeSelectChannel = (_) => { };
         public static int SelectingChannelId { get; set; }
-        public static event SelectedChannelHandler CallMessageLog = (_) => { };
         public static void CallMessageLogs(int channelId)
         {
             SelectingChannelId = channelId;
-            CallMessageLog?.Invoke(channelId);
+            ChangeSelectChannel.Invoke(channelId);
         }
     }
 }

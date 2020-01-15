@@ -12,7 +12,7 @@ namespace ChatTool.Infrastructure.Database
     {
         public void MessageList(ObservableCollection<Message> list , int channelId)
         {
-            var cmd = new MySqlCommand("select * from t_message where channel_id = @channel_id;", Conection.ConnectDB());
+            var cmd = new MySqlCommand("select * from t_message where channel_id = @channel_id  order by time;", Conection.ConnectDB());
             cmd.Parameters.Add(CreateParameter("@channel_id", channelId, MySqlDbType.Int32, 16));
 
             var reader = cmd.ExecuteReader();
@@ -34,11 +34,23 @@ namespace ChatTool.Infrastructure.Database
                 GetChildMessages(message);
                 var userDao = new UserDAO();
                 message.UserName = userDao.UserName(message.UserId);
-                message.IconPath = System.Configuration.ConfigurationManager.AppSettings[userDao.UserIconId(message.UserId)];
+                int iconId = userDao.UserIconId(message.UserId);
+                string iconNum = iconId.ToString();
+                if (10 > iconId)
+                {
+                    iconNum = "0" + iconNum;
+                }
+                message.IconPath = System.Configuration.ConfigurationManager.AppSettings[0] + "icon" + iconNum + ".png";
                 foreach (Message child in message.Child)
                 {
+                    int childIconId = userDao.UserIconId(child.UserId);
+                    string childIconNum = childIconId.ToString();
+                    if (10 > childIconId)
+                    {
+                        childIconNum = "0" + childIconNum;
+                    }
                     child.UserName = userDao.UserName(child.UserId);
-                    child.IconPath = System.Configuration.ConfigurationManager.AppSettings[userDao.UserIconId(child.UserId)];
+                    child.IconPath = System.Configuration.ConfigurationManager.AppSettings[0] + "icon" + childIconNum + ".png";
 
                 }
 
@@ -47,7 +59,7 @@ namespace ChatTool.Infrastructure.Database
 
         private void GetChildMessages(Message message)
         {
-            var cmd = new MySqlCommand("select * from t_message where parent_message_id = @parent_message_id;", Conection.ConnectDB());
+            var cmd = new MySqlCommand("select * from t_message where parent_message_id = @parent_message_id order by time;", Conection.ConnectDB());
             cmd.Parameters.Add(CreateParameter("@parent_message_id", message.Id, MySqlDbType.Int32, 16));
 
             var reader = cmd.ExecuteReader();
@@ -58,6 +70,7 @@ namespace ChatTool.Infrastructure.Database
                 childMessage.Text = DBNull.Value != reader["text"] ? reader.GetString("text") : "";
                 childMessage.Time = DateTime.Parse(DBNull.Value != reader["time"] ? reader.GetString("time") : "");
                 childMessage.UserId = DBNull.Value != reader["user_id"] ? Convert.ToInt32(reader.GetString("user_id")) : 0;
+                childMessage.ParentId = message.Id;
                 message.Child.Add(childMessage);
                 message.ExistChild = System.Windows.Visibility.Visible;
             }

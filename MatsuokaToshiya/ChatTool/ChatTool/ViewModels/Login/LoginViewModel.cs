@@ -10,24 +10,24 @@ using System.Windows.Input;
 
 namespace ChatTool.ViewModels.Login
 {
-    public class LoginViewModel : INotifyPropertyChanged
+    public class LoginViewModel 
     {
-        private string AddressValue = "aaa.com";
+        private string address = "aaa.com";
         public string Address
         {
-            get { return AddressValue; }
+            get { return address; }
             set {
-                AddressValue = value;
+                address = value;
                 LoginButtonCommand.RaiseCanExecuteChanged();
             }
         }
 
-        private string PasswordValue = "0000";
+        private string password = "0000";
         public string Password
         {
-            get { return PasswordValue; }
+            get { return password; }
             set { 
-                PasswordValue = value;
+                password = value;
                 LoginButtonCommand.RaiseCanExecuteChanged();
             }
         }
@@ -38,12 +38,6 @@ namespace ChatTool.ViewModels.Login
             LoginButtonCommand = new DelegateCommand(OnClick_btnLogin, CanExecute);
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void NotifyPropertyChanged(string adress)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(adress));
-        }
         public event EventHandler? LoginSucceed;
         public event EventHandler? LoginFailed;
         //TODO:staticの位置をpublicの後ろ等にする
@@ -70,6 +64,7 @@ namespace ChatTool.ViewModels.Login
                 LoginFailed?.Invoke(this, EventArgs.Empty);
             }
         }
+
         private bool CanExecute()
         {
             if ("" == Address|| "" == Password) return false;

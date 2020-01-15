@@ -22,6 +22,7 @@ namespace ChatTool.Infrastructure.Database
             }
             Conection.DisConnectDB();
         }
+
         public void ParticipatedUser(ObservableCollection<Channel> list,int id)
         {
             var cmd = new MySqlCommand("select * from m_channel_member where user_id = @user_id;", Conection.ConnectDB());
