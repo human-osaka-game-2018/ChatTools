@@ -16,6 +16,7 @@ namespace ChatTool.ViewModels.Main
             set {
                 inputText = value;
                 SendButtonCommand.RaiseCanExecuteChanged();
+                PropertyChanged?.Invoke(this,new PropertyChangedEventArgs("InputText"));
             }
         }
         public InputViewModel()
@@ -35,12 +36,17 @@ namespace ChatTool.ViewModels.Main
         public void SendMessage()
         {
             var sendMessageService = new SendMessageService();
+            if (!CanExecute()) return;
             if (ReplyMessage == null)
             {
                 sendMessageService.SendMessage(InputText);
-                return;
             }
-            sendMessageService.SendReplyMessage(InputText, ReplyMessage.Id);
+            else
+            {
+                sendMessageService.SendReplyMessage(InputText, ReplyMessage.Id);
+            }
+            InputText = string.Empty;
+            EraseReply();
         }
 
         private bool CanExecute()
@@ -109,6 +115,8 @@ namespace ChatTool.ViewModels.Main
         public DelegateCommand EraseButtonCommand { get; }
         public void EraseReply()
         {
+            if (replyMessage == null) return;
+            ReplyMessageService.EraseSelectingReply.Invoke(0);
             RepliedUserName = "";
             RepliedMessage = "";
             RepliedMessageTime = DateTime.MinValue;

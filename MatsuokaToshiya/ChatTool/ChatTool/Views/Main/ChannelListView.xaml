@@ -15,8 +15,12 @@
             <RowDefinition Height="355*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" >
-            <Image Source="{Binding IconPath}" HorizontalAlignment="Left" Width="40" VerticalAlignment="Center"/>
-        <TextBlock x:Name="UserName" Text="{Binding UserName}" FontFamily="Meiryo" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontStyle="Normal" LineStackingStrategy="BlockLineHeight" VerticalAlignment="Center"/>
+            <Image Source="{Binding IconPath}" Width="50" Height="50" HorizontalAlignment="Left" >
+                <Image.Clip >
+                    <EllipseGeometry RadiusX="25" RadiusY="25" Center="25,25"/>
+                </Image.Clip>
+            </Image>
+            <TextBlock x:Name="UserName" Text="{Binding UserName}" FontFamily="Meiryo" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" FontStyle="Normal" LineStackingStrategy="BlockLineHeight" VerticalAlignment="Center"/>
         </StackPanel>
         <TextBlock Grid.Row="0" Text="Channel" VerticalAlignment="Bottom" FontFamily="Meiryo" Margin="10,0,0,0" Height="18" />
         <ListBox Grid.Row="1" x:Name="ChannelList"

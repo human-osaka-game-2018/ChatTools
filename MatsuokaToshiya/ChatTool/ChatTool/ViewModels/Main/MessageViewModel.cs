@@ -17,6 +17,7 @@ namespace ChatTool.ViewModels.Main
         {
             SelectChannelService.ChangeSelectChannel += (int channelId) => { ReadMessages(channelId); };
             ReadMessageService.RefleshMessageLog += () => { ReadMessages( SelectChannelService.SelectingChannelId); };
+            ReplyMessageService.EraseSelectingReply += (_) => { SelectItem = null; };
         }
         private Message? selectItem = new Message();
         public Message? SelectItem

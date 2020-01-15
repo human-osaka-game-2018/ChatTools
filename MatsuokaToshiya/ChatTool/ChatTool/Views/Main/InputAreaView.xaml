@@ -9,6 +9,9 @@
              Width="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}},XPath=local:MainView}" 
              BorderBrush="#FF27F906" BorderThickness="2,2,2,2" d:DesignWidth="276.933" d:DesignHeight="133.661">
     <Grid >
+        <Grid.InputBindings>
+            <KeyBinding Command="{Binding SendButtonCommand}" Gesture="Alt+Return"/>
+        </Grid.InputBindings>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.2*"/>
             <RowDefinition Height="2*"/>
@@ -27,7 +30,7 @@
         </StackPanel>
         </Button>
 
-        <TextBox Grid.Row="1" x:Name="textBox" Text="{Binding InputText,UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Grid.Column="0"/>
+        <TextBox Grid.Row="1" x:Name="textBox" Text="{Binding InputText,UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Grid.Column="0" AcceptsReturn="True"/>
         <Button Grid.RowSpan="2" Content="送信" Command="{Binding SendButtonCommand}" FontFamily="Meiryo" Padding="3,1,3,1" Grid.Column="1"/>
     </Grid>
 </UserControl>
