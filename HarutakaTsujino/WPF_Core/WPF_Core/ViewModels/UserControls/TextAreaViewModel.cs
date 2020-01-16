@@ -15,9 +15,21 @@ namespace WPF_Core.ViewModels.UserControls
 
         public ICommand PostCommand { get; set; }
 
+        public ICommand KeyCheckCommand { get; set; }
+
         public TextAreaViewModel()
         {
             PostCommand = new DelegateCommand(_ => PostMessage());
+
+            KeyCheckCommand = new DelegateCommand(_ => PostMessageOnCtrlEnter());
+        }
+
+        private void PostMessageOnCtrlEnter()
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control && Keyboard.IsKeyDown(Key.Enter))
+            {
+                PostMessage();
+            }
         }
 
         private void PostMessage()

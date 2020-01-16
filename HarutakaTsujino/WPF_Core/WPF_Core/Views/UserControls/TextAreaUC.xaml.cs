@@ -12,7 +12,14 @@ namespace WPF_Core.Views.UserControls
         {
             InitializeComponent();
 
-            DataContext = new TextAreaViewModel();
+            DataContext = textAreaViewModel;
         }
+
+        private void TB_textBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            textAreaViewModel.KeyCheckCommand.Execute(null);
+        }
+
+        TextAreaViewModel textAreaViewModel = new TextAreaViewModel();
     }
 }

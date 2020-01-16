@@ -21,8 +21,8 @@
             <ColumnDefinition Width="6*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Background="#59FFFFFF" FontSize="20" Foreground="Black"
-                 Text="{Binding Text}"/>
+        <TextBox x:Name="TB_textBox" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1" Background="#59FFFFFF" FontSize="20" Foreground="Black" AcceptsReturn="True" AcceptsTab="True" PreviewKeyDown="TB_textBox_KeyDown"
+                 Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"/>
         <Button Content="送信" Grid.Column="3" HorizontalAlignment="Stretch" Grid.Row="1" VerticalAlignment="Stretch" Background="#FF006666" FontSize="22" Foreground="White"
                 Command="{Binding PostCommand}"/>
     </Grid>
