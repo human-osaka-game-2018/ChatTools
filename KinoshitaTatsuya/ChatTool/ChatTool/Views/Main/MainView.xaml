@@ -37,7 +37,7 @@
                     <ImageBrush ImageSource="{Binding IconPath}"/>
                 </Border.Background>
             </Border>
-            <TextBlock Text="{Binding UserName}" Margin="10" FontSize="16" Height="32" Width="100" FontWeight="ExtraBlack" FontFamily="Meiryo"/>
+            <TextBlock Text="{Binding UserName}" Margin="10" FontSize="16" Height="32" Width="100" FontWeight="ExtraBlack" FontFamily="Microsoft JhengHei Light"/>
         </StackPanel>
     </Grid>
 </Window>

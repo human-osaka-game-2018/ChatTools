@@ -10,6 +10,12 @@
         <ListBox ItemsSource="{Binding Messages, NotifyOnTargetUpdated=True}" SelectedItem="{Binding SelectedMessage}" x:Name="ListMessage"
                  TargetUpdated="ListMessage_TargetUpdated"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
+            <ListBox.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF9DE04E"/>
+                    <GradientStop Color="#FF23FF17" Offset="1"/>
+                </LinearGradientBrush>
+            </ListBox.Background>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -19,7 +25,7 @@
                                     <ImageBrush ImageSource="{Binding User.IconPath}"/>
                                 </Border.Background>
                             </Border>
-                            <TextBlock Text="{Binding User.Name}" Margin="5" FontWeight="ExtraLight" FontFamily="Meiryo"/>
+                            <TextBlock Text="{Binding User.Name}" Margin="5" FontWeight="ExtraLight" FontFamily="Microsoft JhengHei Light"/>
                         </StackPanel>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -30,7 +36,7 @@
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Grid.Row="0" Grid.ColumnSpan="1"/>
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Grid.Row="0" Grid.ColumnSpan="1" FontFamily="Microsoft JhengHei Light"/>
                             <TextBlock Text="{Binding Time}" HorizontalAlignment="Right" FontSize="10" Foreground="Gray" Grid.Row="1" Grid.Column="1"/>
                         </Grid>
                     </StackPanel>

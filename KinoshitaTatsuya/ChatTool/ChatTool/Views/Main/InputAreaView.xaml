@@ -21,7 +21,15 @@
         </Grid.InputBindings>
         
         <Grid Grid.RowSpan="2" Grid.ColumnSpan="1">
-            <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" x:Name="MessageInputArea" AcceptsReturn="True" TextWrapping="Wrap"/>
+            <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" x:Name="MessageInputArea"
+                     MaxLength="140" AcceptsReturn="True" TextWrapping="Wrap" FontFamily="Microsoft JhengHei Light">
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF21B2" Offset="0"/>
+                        <GradientStop Color="#FFF768C6" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="1">
