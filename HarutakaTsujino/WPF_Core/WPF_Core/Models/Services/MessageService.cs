@@ -55,7 +55,8 @@ namespace WPF_Core.Models.Services
             while (true)
             {
                 // UIスレッドで扱う必要のあるメソッドがあるためConfigureAwaitは使わない
-                await Task.Run(() => System.Threading.Thread.Sleep((int)(MESSAGE_UPDATE_TIME_SPAN_S * 1000)));
+
+                await Task.Delay((int)(MESSAGE_UPDATE_TIME_SPAN_S * 1000));
 
                 var messagesTask = await Task.Run(() =>
                 {
