@@ -2,9 +2,13 @@
 {
     public class User
     {
-        public User(int id, string mailAddress, string password, string name)
+        public User(int id, int iconId, string iconPath, string mailAddress, string password, string name)
         {
             Id = id;
+
+            IconId = iconId;
+
+            IconPath = iconPath;
 
             MailAddress = mailAddress;
 
@@ -14,6 +18,10 @@
         }
 
         public int Id { get; }
+
+        public int IconId { get; }
+
+        public string IconPath { get; }
 
         public string MailAddress { get; }
 

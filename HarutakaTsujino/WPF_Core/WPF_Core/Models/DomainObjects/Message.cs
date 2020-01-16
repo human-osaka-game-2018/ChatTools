@@ -26,7 +26,9 @@ namespace WPF_Core.Models.DomainObjects
         public User User { get; }
 
         public string UserName => User.Name;
-        
+
+        public string UserIconPath => User.IconPath;
+
         public string Text { get; }
 
         public DateTime Time { get; }
