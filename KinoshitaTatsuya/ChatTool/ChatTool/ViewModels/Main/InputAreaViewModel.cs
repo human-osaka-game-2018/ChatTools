@@ -1,4 +1,5 @@
-﻿using ChatTool.Command;
+﻿using ChatTool.Bases;
+using ChatTool.Command;
 using ChatTool.Models.Services.Main;
 using System;
 using System.Collections.Generic;
@@ -7,23 +8,20 @@ using System.Text;
 
 namespace ChatTool.ViewModels.Main
 {
-    public class InputAreaViewModel : INotifyPropertyChanged
-    {
+    public class InputAreaViewModel : BindableBase
+    {       
         private string inputText = "";
         public string InputText 
         {
             get { return inputText; }
             set 
-            { 
-                inputText = value;
+            {                   
+                SetProperty(ref inputText, value);
                 SendMessageCommand.RaiseCanExecuteChanged();
-                PropertyChanged?.Invoke(this,new PropertyChangedEventArgs("InputText"));
             }
-        }
+        }        
 
-        public DelegateCommand SendMessageCommand { get; set; }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public DelegateCommand SendMessageCommand { get; set; }       
 
         public InputAreaViewModel()
         {
@@ -32,15 +30,19 @@ namespace ChatTool.ViewModels.Main
 
         private void SendMessage()
         {
+            if (!CanSendMessage) return;
+
             MessageService.SendMessage(InputText);
             InputText = "";
         }
 
         private bool HasInputText()
         {
-            if (InputText == "") return false;
-
-            return true;
+            return this.InputText.Length > 0;
         }
+
+        private bool CanSendMessage => inputText.Length < MaxStringLength;
+
+        private const int MaxStringLength = 140;
     }
 }

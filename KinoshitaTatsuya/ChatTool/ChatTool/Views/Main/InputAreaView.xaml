@@ -28,5 +28,7 @@
             <Button x:Name="btnSendMessage" Command="{Binding SendMessageCommand}" Content="送信"/>
         </Grid>
 
+        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Text="{Binding InputText.Length}" 
+                   FontSize="25"/>
     </Grid>
 </UserControl>
