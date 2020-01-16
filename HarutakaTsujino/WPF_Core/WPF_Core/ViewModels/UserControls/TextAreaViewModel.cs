@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive;
+using System.Reactive.Subjects;
 using System.Windows.Input;
 using WPF_Core.Common;
 using WPF_Core.Models.Services;
@@ -42,6 +44,8 @@ namespace WPF_Core.ViewModels.UserControls
 
             Text = "";
         }
+
+        private Subject<string> onMessagePostedAsSubject = new Subject<string>();
 
         private string text = "";
     }

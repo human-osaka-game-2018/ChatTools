@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using WPF_Core.ViewModels.UserControls;
 
 namespace WPF_Core.Views.UserControls
@@ -12,6 +14,18 @@ namespace WPF_Core.Views.UserControls
         {
             InitializeComponent();
             DataContext = messagesDisplayViewModel;
+
+            messagesDisplayViewModel.OnMessagePostedAsObservable
+                .Subscribe(_ => ScrollToLatest());
+
+            Loaded += new RoutedEventHandler((s, e) => ScrollToLatest());
+        }
+
+        public void ScrollToLatest()
+        {
+            var messages = LB_messages.Items;
+
+            LB_messages.ScrollIntoView(messages[messages.Count - 1]);
         }
 
         private readonly MessagesDisplayViewModel messagesDisplayViewModel = new MessagesDisplayViewModel();

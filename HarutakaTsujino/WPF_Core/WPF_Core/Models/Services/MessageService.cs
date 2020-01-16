@@ -14,6 +14,8 @@ namespace WPF_Core.Models.Services
 {
     static class MessageService
     {
+        public static IObservable<IEnumerable<Message?>> OnMessagesFetchedAsObservable => onMessagesFetchedAsSubject;
+
         public static IObservable<Unit> OnMessagePostedAsObservable => onMessagePostedAsSubject;
 
         static MessageService()
@@ -42,6 +44,8 @@ namespace WPF_Core.Models.Services
         public static void Post(string text, User user, Channel channel, Message? parentMessage = null)
         {
             MessageDAO.Post(text, user.Id, channel.Id, parentMessage?.Id);
+
+            onMessagesFetchedAsSubject.OnNext(Get(channel));
 
             onMessagePostedAsSubject.OnNext(Unit.Default);
         }

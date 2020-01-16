@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Windows.Input;
 using WPF_Core.Models.DomainObjects;
 using WPF_Core.Models.Services;
 
@@ -14,37 +16,27 @@ namespace WPF_Core.ViewModels.UserControls
             set => SetValue(ref messages, value);
         }
 
+        public IObservable<Unit> OnMessagePostedAsObservable => MessageService.OnMessagePostedAsObservable;
+
         public MessagesDisplayViewModel()
         {
-            subscribeDisposables.Add(
-                ChannelService.OnSelectingChangedAsObservable
-                .Subscribe(ch =>
-                {
-                    if (ch is null) return;
-
-                    SetMessagesInChannel(ch);
-                }));
-
-            subscribeDisposables.Add(
-                MessageService.OnMessagePostedAsObservable
-                .Subscribe(_ => SetMessagesInChannel(ChannelService.SelectingChannel!)));
+            subscription = MessageService.OnMessagesFetchedAsObservable
+                .Subscribe(messages => SetMessagesInChannel(messages));
         }
 
         ~MessagesDisplayViewModel()
         {
-            subscribeDisposables.ForEach(diposable => diposable.Dispose());
+            subscription!.Dispose();
         }
 
-        private void SetMessagesInChannel(Channel channel)
+        private void SetMessagesInChannel(IEnumerable<Message?> messages)
         {
-            var latestMessages = MessageService.Get(channel);
-
             Messages.Clear();
-            Messages = new ObservableCollection<Message?>(latestMessages);
+            Messages = new ObservableCollection<Message?>(messages);
         }
 
         private ObservableCollection<Message?> messages = new ObservableCollection<Message?>();
 
-        private readonly List<IDisposable> subscribeDisposables = new List<IDisposable>();
+        private readonly IDisposable? subscription = null;
     }
 }
