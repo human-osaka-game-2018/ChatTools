@@ -12,7 +12,7 @@ namespace ChatTool.ViewModels.Login
 {
     public class LoginViewModel 
     {
-        private string address = "aaa.com";
+        private string address = "";
         public string Address
         {
             get { return address; }
@@ -22,7 +22,7 @@ namespace ChatTool.ViewModels.Login
             }
         }
 
-        private string password = "0000";
+        private string password = "";
         public string Password
         {
             get { return password; }
@@ -40,7 +40,7 @@ namespace ChatTool.ViewModels.Login
 
         public event EventHandler? LoginSucceed;
         public event EventHandler? LoginFailed;
-        //TODO:staticの位置をpublicの後ろ等にする
+
         public static void ChangeView()
         {
             new MainWindow().Show();
@@ -49,12 +49,6 @@ namespace ChatTool.ViewModels.Login
         private void OnClick_btnLogin()
         {
             bool succeedLogin = LoginService.LoadUser(Address, Password);
-            //bool succeedLogin = LoginService.LoadUser("aaa.co.jp", "0000");
-            //var sr = new StreamReader("../../../../longestAddress.txt", Encoding.Default);
-            //bool succeedLogin = LoginService.LoadUser(sr.ReadToEnd(), "0001");
-            //sr.Close();
-            //LoginService.LoadUserTable();
-            Debug.WriteLine(succeedLogin.ToString());
             if (succeedLogin)
             {
                 LoginSucceed?.Invoke(this, EventArgs.Empty);

@@ -25,10 +25,6 @@ namespace ChatTool.Views.Main
 
         private void ScrollToBottom()
         {
-            //var items = listBox.Items;
-            //var item = items.GetItemAt(items.Count - 1);
-            //listBox.ScrollIntoView(item);
-
             var peer = UIElementAutomationPeer.CreatePeerForElement(this.listBox);
             // GetPatternでIScrollProviderを取得
             var scrollProvider = peer.GetPattern(PatternInterface.Scroll) as IScrollProvider;

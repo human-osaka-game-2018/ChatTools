@@ -8,26 +8,8 @@ namespace ChatTool.Infrastructure.Database
 {
     class UserDAO : DAO
     {
-        public User[] UserList(User[] list)
-        {
-            var cmd = new MySqlCommand("select * from m_user;", Conection.ConnectDB());
-            var reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                var user = new User();
-                user.Id = DBNull.Value != reader["Id"] ? Convert.ToInt32(reader.GetString("Id")) : 0;
-                user.Name = DBNull.Value != reader["user_name"] ? reader.GetString("user_name") : "";
-                user.MailAddress = DBNull.Value != reader["mail_address"] ? reader.GetString("mail_address") : "";
-                user.Password = DBNull.Value != reader["password"] ? reader.GetString("password") : "";
-                Array.Resize(ref list, list.Length + 1);
-                list[list.Length - 1] = user;
-            }
-            Conection.DisConnectDB();
 
-            return list;
-        }
-
-        public User? User(string mailAdress, string password)
+        public static User? User(string mailAdress, string password)
         {
             var command = new StringBuilder();
             command.Append("select * from m_user where mail_address = @mail and password = @pass;");
@@ -54,7 +36,7 @@ namespace ChatTool.Infrastructure.Database
             return user;
         }
 
-        public void Online(User? user)
+        public static void Online(User? user)
         {
             if (user == null) return;
             var command = new StringBuilder();
@@ -66,7 +48,7 @@ namespace ChatTool.Infrastructure.Database
             Conection.DisConnectDB();
         }
 
-        public string UserName(int userId)
+        public static string UserName(int userId)
         {
             var cmd = new MySqlCommand("select * from m_user where id = @user_id;", Conection.ConnectDB());
             cmd.Parameters.Add(CreateParameter("@user_id", userId, MySqlDbType.Int32, 10));
@@ -77,7 +59,7 @@ namespace ChatTool.Infrastructure.Database
             return str;
         }
 
-        public int UserIconId(int userId)
+        public static int UserIconId(int userId)
         {
             var cmd = new MySqlCommand("select * from m_user where id = @user_id;", Conection.ConnectDB());
             cmd.Parameters.Add(CreateParameter("@user_id", userId, MySqlDbType.Int32, 10));

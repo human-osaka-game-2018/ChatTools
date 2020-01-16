@@ -10,16 +10,14 @@ namespace ChatTool.Models.Services
         public void SendMessage(string inputText)
         {
             var channelId = SelectChannelService.SelectingChannelId;
-            var messageDao = new MessageDAO();
-            messageDao.SendMessage(inputText, channelId);
+            MessageDAO.SendMessage(inputText, channelId);
             ReadMessageService.RefleshMessageLog?.Invoke();
         }
 
         public void SendReplyMessage(string inputText,int parentId)
         {
             var channelId = SelectChannelService.SelectingChannelId;
-            var messageDao = new MessageDAO();
-            messageDao.SendReplyMessage(inputText, channelId,parentId);
+            MessageDAO.SendReplyMessage(inputText, channelId,parentId);
             ReadMessageService.RefleshMessageLog?.Invoke();
         }
 

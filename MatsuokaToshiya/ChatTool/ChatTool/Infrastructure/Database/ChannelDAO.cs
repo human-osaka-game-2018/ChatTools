@@ -9,7 +9,7 @@ namespace ChatTool.Infrastructure.Database
 {
     class ChannelDAO : DAO
     {
-        public void ChannelList(ObservableCollection<Channel> list)
+        public static void ChannelList(ObservableCollection<Channel> list)
         {
             var cmd = new MySqlCommand("select * from m_channel;", Conection.ConnectDB());
             var reader = cmd.ExecuteReader();
@@ -23,7 +23,7 @@ namespace ChatTool.Infrastructure.Database
             Conection.DisConnectDB();
         }
 
-        public void ParticipatedUser(ObservableCollection<Channel> list,int id)
+        public static void ParticipatedUser(ObservableCollection<Channel> list,int id)
         {
             var cmd = new MySqlCommand("select * from m_channel_member where user_id = @user_id;", Conection.ConnectDB());
             cmd.Parameters.Add(CreateParameter("@user_id", id, MySqlDbType.Int32, 16));

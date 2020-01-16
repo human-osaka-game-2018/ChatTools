@@ -52,10 +52,8 @@ namespace ChatTool.ViewModels.Main
         public void ReadMessages( int channelId)
         {
             messages.Clear();
-            var messageDao = new MessageDAO();
-            messageDao.MessageList(messages, channelId);
+            MessageDAO.MessageList(messages, channelId);
         }
-        
 
     }
 }

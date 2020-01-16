@@ -16,25 +16,16 @@ namespace ChatTool.Models.Services
             if (User != null)
             {
                 User.IsOnline = false;
-                new UserDAO().Online(User);
+                UserDAO.Online(User);
             }
         }
-        public static User[] LoadUserTable()
-        {
 
-            User[] list = new User[0];
-            var userDAO = new UserDAO();
-            list = userDAO.UserList(list);
-
-            return list;
-        }
         public static bool LoadUser(string mailAdress, string password)
         {
-            var userDAO = new UserDAO();
-            User = userDAO.User(mailAdress, password);
+            User = UserDAO.User(mailAdress, password);
 
             if (null == User) return false;
-            userDAO.Online(User);
+            UserDAO.Online(User);
             return User.IsOnline;
         }
     }

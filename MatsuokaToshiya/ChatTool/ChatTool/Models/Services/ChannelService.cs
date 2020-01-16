@@ -11,9 +11,8 @@ namespace ChatTool.Models.Services
     {
         public string ParticipatedUser(ObservableCollection<Channel> Channels)
         {
-            var channelDao = new ChannelDAO();
             if (null == LoginService.User || null == LoginService.User.Name) return "";
-            channelDao.ParticipatedUser(Channels, LoginService.User.Id);
+            ChannelDAO.ParticipatedUser(Channels, LoginService.User.Id);
             return LoginService.User.Name;
 
         }

@@ -10,7 +10,7 @@ namespace ChatTool.Infrastructure.Database
 {
     class MessageDAO : DAO
     {
-        public void MessageList(ObservableCollection<Message> list , int channelId)
+        public static void MessageList(ObservableCollection<Message> list , int channelId)
         {
             var cmd = new MySqlCommand("select * from t_message where channel_id = @channel_id  order by time;", Conection.ConnectDB());
             cmd.Parameters.Add(CreateParameter("@channel_id", channelId, MySqlDbType.Int32, 16));
@@ -32,9 +32,8 @@ namespace ChatTool.Infrastructure.Database
             foreach (Message message in list)
             {
                 GetChildMessages(message);
-                var userDao = new UserDAO();
-                message.UserName = userDao.UserName(message.UserId);
-                int iconId = userDao.UserIconId(message.UserId);
+                message.UserName = UserDAO.UserName(message.UserId);
+                int iconId = UserDAO.UserIconId(message.UserId);
                 string iconNum = iconId.ToString();
                 if (10 > iconId)
                 {
@@ -43,13 +42,13 @@ namespace ChatTool.Infrastructure.Database
                 message.IconPath = System.Configuration.ConfigurationManager.AppSettings[0] + "icon" + iconNum + ".png";
                 foreach (Message child in message.Child)
                 {
-                    int childIconId = userDao.UserIconId(child.UserId);
+                    int childIconId = UserDAO.UserIconId(child.UserId);
                     string childIconNum = childIconId.ToString();
                     if (10 > childIconId)
                     {
                         childIconNum = "0" + childIconNum;
                     }
-                    child.UserName = userDao.UserName(child.UserId);
+                    child.UserName = UserDAO.UserName(child.UserId);
                     child.IconPath = System.Configuration.ConfigurationManager.AppSettings[0] + "icon" + childIconNum + ".png";
 
                 }
@@ -57,7 +56,7 @@ namespace ChatTool.Infrastructure.Database
             }
         }
 
-        private void GetChildMessages(Message message)
+        private static void GetChildMessages(Message message)
         {
             var cmd = new MySqlCommand("select * from t_message where parent_message_id = @parent_message_id order by time;", Conection.ConnectDB());
             cmd.Parameters.Add(CreateParameter("@parent_message_id", message.Id, MySqlDbType.Int32, 16));
@@ -78,7 +77,7 @@ namespace ChatTool.Infrastructure.Database
 
         }
 
-        public void SendMessage(string inputText,int channelId)
+        public static void SendMessage(string inputText,int channelId)
         {
             if (null == LoginService.User) return;
             var command = new StringBuilder();
@@ -96,7 +95,7 @@ namespace ChatTool.Infrastructure.Database
 
         }
 
-        public void SendReplyMessage(string inputText, int channelId,int parentId)
+        public static void SendReplyMessage(string inputText, int channelId,int parentId)
         {
             if (null == LoginService.User) return;
             var command = new StringBuilder();
