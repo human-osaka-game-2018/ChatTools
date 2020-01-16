@@ -115,11 +115,11 @@ namespace ChatTool.ViewModels.Main
         public DelegateCommand EraseButtonCommand { get; }
         public void EraseReply()
         {
-            if (replyMessage == null) return;
-            ReplyMessageService.EraseSelectingReply.Invoke(0);
             RepliedUserName = "";
             RepliedMessage = "";
             RepliedMessageTime = DateTime.MinValue;
+            if (ReplyMessage == null) return;
+            ReplyMessageService.EraseSelectingReply.Invoke(0);
             ReplyMessage = null;
         }
     }

@@ -18,6 +18,9 @@ namespace ChatTool.Infrastructure.Database
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
+                bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+                if (isDeleted) continue;
+
                 var message = new Message();
                 message.ChannelId = channelId;
                 message.Id = DBNull.Value != reader["Id"] ? Convert.ToInt32(reader.GetString("Id")) : 0;
@@ -64,6 +67,8 @@ namespace ChatTool.Infrastructure.Database
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
+                bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+                if (isDeleted) continue;
                 var childMessage = new Message();
                 childMessage.Id = DBNull.Value != reader["Id"] ? Convert.ToInt32(reader.GetString("Id")) : 0;
                 childMessage.Text = DBNull.Value != reader["text"] ? reader.GetString("text") : "";

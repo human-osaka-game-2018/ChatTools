@@ -23,6 +23,9 @@ namespace ChatTool.Infrastructure.Database
                 Conection.DisConnectDB();
                 return null; 
             }
+            bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+            if (isDeleted) return null;
+
             var user = new User();
             user.Id = DBNull.Value != reader["Id"] ? Convert.ToInt32(reader.GetString("Id")) : 0;
             user.IconId = DBNull.Value != reader["icon_id"] ? Convert.ToInt32(reader.GetString("icon_id")) : 0;
@@ -30,7 +33,12 @@ namespace ChatTool.Infrastructure.Database
             user.MailAddress = DBNull.Value != reader["mail_address"] ? reader.GetString("mail_address") : "";
             user.Password = DBNull.Value != reader["password"] ? reader.GetString("password") : "";
             user.IsOnline = true;
-            user.IconPath = System.Configuration.ConfigurationManager.AppSettings[0]+"icon0"+user.IconId.ToString()+".png";
+            string iconNum = user.IconId.ToString();
+            if (10 > user.IconId)
+            {
+                iconNum = "0" + iconNum;
+            }
+            user.IconPath = System.Configuration.ConfigurationManager.AppSettings[0] + "icon" + iconNum + ".png";
             Conection.DisConnectDB();
 
             return user;

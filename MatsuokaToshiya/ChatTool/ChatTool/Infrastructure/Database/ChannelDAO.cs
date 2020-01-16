@@ -15,6 +15,9 @@ namespace ChatTool.Infrastructure.Database
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
+                bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+                if (isDeleted) continue;
+
                 var channel = new Channel();
                 channel.Id = DBNull.Value != reader["Id"] ? Convert.ToInt32(reader.GetString("Id")) : 0;
                 channel.Name = DBNull.Value != reader["channel_name"] ? reader.GetString("channel_name") : "";
@@ -52,6 +55,9 @@ namespace ChatTool.Infrastructure.Database
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
+                bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+                if (isDeleted) continue;
+
                 var channel = new Channel();
                 channel.Id = DBNull.Value != reader["Id"] ? Convert.ToInt32(reader.GetString("Id")) : 0;
                 channel.Name = DBNull.Value != reader["channel_name"] ? reader.GetString("channel_name") : "";
