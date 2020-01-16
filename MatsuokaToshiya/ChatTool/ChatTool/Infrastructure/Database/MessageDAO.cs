@@ -77,6 +77,19 @@ namespace ChatTool.Infrastructure.Database
 
         }
 
+        public static int GetMaxMessageIdInChannel(int channelId)
+        {
+            var cmd = new MySqlCommand("select max(id)as maxId from t_message where channel_id = @channel_id;", Conection.ConnectDB());
+            cmd.Parameters.Add(CreateParameter("@channel_id", channelId, MySqlDbType.Int32, 16));
+            
+            var reader = cmd.ExecuteReader();
+            reader.Read();
+            int value;
+            value =  DBNull.Value != reader["maxId"] ? Convert.ToInt32(reader.GetString("maxId")) : 0;
+            Conection.DisConnectDB();
+            return value;
+        }
+
         public static void SendMessage(string inputText,int channelId)
         {
             if (null == LoginService.User) return;

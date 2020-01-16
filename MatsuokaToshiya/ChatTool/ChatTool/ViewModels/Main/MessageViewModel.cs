@@ -7,6 +7,8 @@ using ChatTool.Models.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace ChatTool.ViewModels.Main
 {
@@ -18,6 +20,8 @@ namespace ChatTool.ViewModels.Main
             SelectChannelService.ChangeSelectChannel += (int channelId) => { ReadMessages(channelId); };
             ReadMessageService.RefleshMessageLog += () => { ReadMessages( SelectChannelService.SelectingChannelId); };
             ReplyMessageService.EraseSelectingReply += (_) => { SelectItem = null; };
+            BindingOperations.EnableCollectionSynchronization(Messages, new object());
+            Task.Run(PeriodicRenewAsync);
         }
         private Message? selectItem = new Message();
         public Message? SelectItem
@@ -30,6 +34,8 @@ namespace ChatTool.ViewModels.Main
             }
         }
         #region
+
+        private int MaxMessageId { get; set; } = 0;
 
         private ObservableCollection<Message> messages = new ObservableCollection<Message>();
         public ObservableCollection<Message> Messages
@@ -53,7 +59,21 @@ namespace ChatTool.ViewModels.Main
         {
             messages.Clear();
             MessageDAO.MessageList(messages, channelId);
+            MaxMessageId = MessageDAO.GetMaxMessageIdInChannel(channelId);
         }
 
+        #region
+        async private Task PeriodicRenewAsync()
+        {
+            while (true)
+            {
+                await Task.Delay(5000);
+                if (MessageDAO.GetMaxMessageIdInChannel(SelectChannelService.SelectingChannelId) != MaxMessageId)
+                {
+                    ReadMessages(SelectChannelService.SelectingChannelId);
+                }
+            }
+        }
+        #endregion
     }
 }
