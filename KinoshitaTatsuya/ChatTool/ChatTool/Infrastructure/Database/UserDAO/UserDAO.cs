@@ -64,11 +64,9 @@ namespace ChatTool.Infrastructure.Database.UserDAO
                     user.Id = id;
                     user.Name = (string)reader["user_name"];
                     user.IconId = (int)reader["icon_id"];
-                    user.IsOnline = ((sbyte)reader["is_online"] == 1) ? true : false;
+                    user.IsOnline = ((sbyte)reader["is_online"] == 1);
                     user.Password = (string)reader["password"];
-                    user.MailAddress = (string)reader["mail_address"];
-
-                    user.IconPath = IconPathFactory.Create(user.IconId);
+                    user.MailAddress = (string)reader["mail_address"];                    
                 }              
             }
 
