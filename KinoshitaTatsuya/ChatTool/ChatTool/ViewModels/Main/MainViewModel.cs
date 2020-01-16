@@ -1,4 +1,5 @@
-﻿using ChatTool.Models.Services.LoginService;
+﻿using ChatTool.Bases;
+using ChatTool.Models.Services.LoginService;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,29 +7,21 @@ using System.Text;
 
 namespace ChatTool.ViewModels.Main
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : BindableBase
 
     {
         private string? iconPath = "";
         public string? IconPath
         {
             get { return iconPath; }
-            set 
-            {
-                iconPath = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IconPath"));
-            }
+            set { SetProperty(ref iconPath, value); }
         }
 
         private string? userName = "";
         public string? UserName
         {
             get { return userName; }
-            set
-            {
-                userName = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UserName"));
-            }
+            set { SetProperty(ref userName, value); }            
         }
 
         public MainViewModel()
@@ -38,8 +31,6 @@ namespace ChatTool.ViewModels.Main
             UserName = user.Name;
             IconPath = user.IconPath;
             
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
+        }        
     }
 }
