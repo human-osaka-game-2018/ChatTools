@@ -45,8 +45,6 @@ namespace WPF_Core.ViewModels.UserControls
             Text = "";
         }
 
-        private Subject<string> onMessagePostedAsSubject = new Subject<string>();
-
         private string text = "";
     }
 }

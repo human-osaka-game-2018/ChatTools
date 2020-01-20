@@ -20,6 +20,6 @@ namespace WPF_Core.Views.UserControls
             textAreaViewModel.KeyCheckCommand.Execute(null);
         }
 
-        TextAreaViewModel textAreaViewModel = new TextAreaViewModel();
+        readonly TextAreaViewModel textAreaViewModel = new TextAreaViewModel();
     }
 }
