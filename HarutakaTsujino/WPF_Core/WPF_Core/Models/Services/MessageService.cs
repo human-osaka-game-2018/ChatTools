@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading;
 using System.Threading.Tasks;
 using WPF_Core.Infrastructure.Database;
 using WPF_Core.Models.DomainObjects;
@@ -55,11 +56,13 @@ namespace WPF_Core.Models.Services
             while (true)
             {
                 // UIスレッドで扱う必要のあるメソッドがあるためConfigureAwaitは使わない
-
-                await Task.Delay((int)(MESSAGE_UPDATE_TIME_SPAN_S * 1000));
+                
+                // await Task.Delay((int)(MESSAGE_UPDATE_TIME_SPAN_S * 1000));
 
                 var messagesTask = await Task.Run(() =>
                 {
+                    Thread.Sleep((int)(MESSAGE_UPDATE_TIME_SPAN_S * 1000));
+
                     var currentChannel = ChannelService.SelectingChannel;
 
                     return currentChannel is null ? new List<Message?>() : Get(currentChannel);
