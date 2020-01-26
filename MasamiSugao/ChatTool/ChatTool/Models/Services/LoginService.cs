@@ -3,7 +3,7 @@ using System.Linq;
 using ChatTool.Infrastructure.Database;
 using ChatTool.Models.DomainObjects;
 
-namespace ChatTool.Services {
+namespace ChatTool.Models.Services {
 	/// <summary>
 	/// ログイン関連の処理を行うサービスクラス。
 	/// </summary>

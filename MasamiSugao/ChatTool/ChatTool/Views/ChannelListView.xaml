@@ -22,7 +22,10 @@
         <ListView Background="{x:Null}"
                   BorderThickness="0"
                   Padding="8"
-                  ItemsSource="{Binding Channels}" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                  ItemsSource="{Binding Channels}"
+                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                  SelectedItem="{Binding SelectedChannel}"
+                  HorizontalContentAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="m:Channel">
                    <TextBlock Text="{Binding ChannelName, StringFormat=# {0}}"

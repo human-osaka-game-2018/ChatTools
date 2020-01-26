@@ -6,7 +6,7 @@ using MySql.Data.MySqlClient;
 
 namespace ChatTool.Infrastructure.Database {
 	/// <summary>
-	/// ユーザ情報テーブルにアクセスするクラス。
+	/// ユーザマスタにアクセスするクラス。
 	/// </summary>
 	public class UserDAO {
 
@@ -24,7 +24,7 @@ namespace ChatTool.Infrastructure.Database {
 		/// <param name="mailAddress">検索条件となるメールアドレス</param>
 		/// <returns>取得したユーザ情報一覧</returns>
 		public List<User> Select(string mailAddress) {
-			string sql = $"SELECT * FROM {TableName} WHERE mail_address = @mail_address;";
+			string sql = $"SELECT * FROM {TableName} WHERE mail_address = @mail_address AND is_deleted = 0;";
 
 			using var con = Connection.Create();
 			using var cmd = con.CreateCommand();
@@ -69,6 +69,27 @@ namespace ChatTool.Infrastructure.Database {
 
 			// SQL実行
 			var ret = (cmd.ExecuteNonQuery() > 0);
+
+			return ret;
+		}
+
+		/// <summary>
+		/// 削除済みを含む全てのユーザを取得する。
+		/// </summary>
+		/// <returns>取得したユーザ情報一覧</returns>
+		public List<User> SelectAll() {
+			StringBuilder sql = new StringBuilder();
+			sql.Append($"SELECT * FROM {TableName};");
+
+			using var con = Connection.Create();
+			using var cmd = con.CreateCommand();
+			cmd.CommandText = sql.ToString();
+
+			using var da = new MySqlDataAdapter(cmd);
+			var dt = new DataTable();
+			da.Fill(dt);
+
+			var ret = User.ConvertFrom(dt);
 
 			return ret;
 		}

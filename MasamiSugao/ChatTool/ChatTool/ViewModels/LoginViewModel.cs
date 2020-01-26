@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Windows;
-using ChatTool.Services;
+using ChatTool.Models.Services;
 
 namespace ChatTool.ViewModels {
 	/// <summary>

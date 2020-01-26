@@ -1,13 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using ChatTool.Infrastructure.Database;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
-using ChatTool.Infrastructure.Database;
+using System.Windows.Media.Imaging;
 
 namespace ChatTool.Models.DomainObjects {
 	/// <summary>
 	/// ユーザ情報クラス。
 	/// </summary>
 	public class User {
+
+		#region constants
+		/// <summary>
+		/// アイコンフォルダパス。
+		/// </summary>
+		private const string IconFolderName = "UserIcons";
+		#endregion
 
 		#region constructors
 		/// <summary>
@@ -19,7 +29,7 @@ namespace ChatTool.Models.DomainObjects {
 		}
 		#endregion
 
-		#region parameters
+		#region properties
 		/// <summary>
 		/// ユーザID。
 		/// </summary>
@@ -43,7 +53,25 @@ namespace ChatTool.Models.DomainObjects {
 		/// <summary>
 		/// アイコンID。
 		/// </summary>
-		public int IconId { get; }
+		public int IconId { get; set; }
+
+		/// <summary>
+		/// アイコン画像パス。
+		/// </summary>
+		public BitmapSource IconPath {
+			get {
+				var folderPath = Path.GetFullPath(Path.Combine(AppSettings.ResourceDirectoryPath, IconFolderName, this.IconId.ToString("00000")));
+				Uri uri;
+				if (!Directory.Exists(folderPath)) {
+					uri = new Uri("pack://application:,,,/Images/UserDefaultIcon.png");
+				} else {
+					uri = new Uri(Directory.GetFiles(folderPath, "*.*")[0]);
+				}
+
+				var bmp = new BitmapImage(uri);
+				return bmp;
+			}
+		}
 
 		/// <summary>
 		/// オンラインフラグ。
@@ -60,10 +88,12 @@ namespace ChatTool.Models.DomainObjects {
 		public static List<User> ConvertFrom(DataTable dt) {
 			var ret = new List<User>();
 			foreach (var dr in dt.AsEnumerable()) {
-				var user = new User((int)dr["id"]);
-				user.UserName = dr["user_name"].ToString()!;
-				user.MailAddress = dr["mail_address"].ToString()!;
-				user.Password = dr["password"].ToString()!;
+				var user = new User((int)dr["id"]) {
+					UserName = dr.Field<string>("user_name"),
+					MailAddress = dr.Field<string>("mail_address"),
+					IconId = dr.Field<int>("icon_id"),
+					Password = dr.Field<string?>("password") ?? string.Empty
+				};
 
 				ret.Add(user);
 			}

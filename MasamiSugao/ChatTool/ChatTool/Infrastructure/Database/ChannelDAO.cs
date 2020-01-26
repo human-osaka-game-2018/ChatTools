@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace ChatTool.Infrastructure.Database {
 	/// <summary>
-	/// チャンネル情報テーブルにアクセスするクラス。
+	/// チャンネルマスタにアクセスするクラス。
 	/// </summary>
 	public class ChannelDAO {
 
@@ -34,7 +34,7 @@ namespace ChatTool.Infrastructure.Database {
 			sql.Append($"SELECT * FROM {ChannelTableName} AS ch ");
 			sql.Append($"INNER JOIN {ChannelMemberTableName} as member ");
 			sql.Append("ON ch.ID = member.channel_id ");
-			sql.Append("WHERE member.user_id = @user_id;");
+			sql.Append("WHERE member.user_id = @user_id AND is_deleted = 0;");
 
 			using var con = Connection.Create();
 			using var cmd = con.CreateCommand();

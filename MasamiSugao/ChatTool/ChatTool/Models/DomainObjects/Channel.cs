@@ -38,8 +38,9 @@ namespace ChatTool.Models.DomainObjects {
 		public static List<Channel> ConvertFrom(DataTable dt) {
 			var ret = new List<Channel>();
 			foreach (var dr in dt.AsEnumerable()) {
-				var channel = new Channel((int)dr["id"]);
-				channel.ChannelName = dr["channel_name"].ToString()!;
+				var channel = new Channel((int)dr["id"]) {
+					ChannelName = dr.Field<string>("channel_name")
+				};
 
 				ret.Add(channel);
 			}
@@ -47,5 +48,6 @@ namespace ChatTool.Models.DomainObjects {
 			return ret;
 		}
 		#endregion
+
 	}
 }
