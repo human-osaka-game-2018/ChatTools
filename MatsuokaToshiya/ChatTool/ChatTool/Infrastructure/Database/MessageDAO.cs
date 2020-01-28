@@ -18,7 +18,7 @@ namespace ChatTool.Infrastructure.Database
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+                bool isDeleted = DBNull.Value != reader["is_deleted"] ? reader.GetBoolean("is_deleted") : false;
                 if (isDeleted) continue;
 
                 var message = new Message();
@@ -37,20 +37,12 @@ namespace ChatTool.Infrastructure.Database
                 GetChildMessages(message);
                 message.UserName = UserDAO.UserName(message.UserId);
                 int iconId = UserDAO.UserIconId(message.UserId);
-                string iconNum = iconId.ToString();
-                if (10 > iconId)
-                {
-                    iconNum = "0" + iconNum;
-                }
+                string iconNum = iconId.ToString("D2");
                 message.IconPath = System.Configuration.ConfigurationManager.AppSettings[0] + "icon" + iconNum + ".png";
                 foreach (Message child in message.Child)
                 {
                     int childIconId = UserDAO.UserIconId(child.UserId);
-                    string childIconNum = childIconId.ToString();
-                    if (10 > childIconId)
-                    {
-                        childIconNum = "0" + childIconNum;
-                    }
+                    string childIconNum = childIconId.ToString("D2");
                     child.UserName = UserDAO.UserName(child.UserId);
                     child.IconPath = System.Configuration.ConfigurationManager.AppSettings[0] + "icon" + childIconNum + ".png";
 
@@ -67,7 +59,7 @@ namespace ChatTool.Infrastructure.Database
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+                bool isDeleted = DBNull.Value != reader["is_deleted"] ? reader.GetBoolean("is_deleted") : false;
                 if (isDeleted) continue;
                 var childMessage = new Message();
                 childMessage.Id = DBNull.Value != reader["Id"] ? Convert.ToInt32(reader.GetString("Id")) : 0;

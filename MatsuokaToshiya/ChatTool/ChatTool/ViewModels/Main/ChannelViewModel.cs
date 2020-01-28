@@ -16,9 +16,10 @@ namespace ChatTool.ViewModels.Main
         public ChannelViewModel()
         {
             var channelService = new ChannelService();
-            UserName = channelService.ParticipatedUser(Channels);
             var user = LoginService.User;
             if(user != null){
+            UserName = user.Name;
+            channelService.GetAvailableByUserid(Channels,user.Id);
                 IconPath = user.IconPath;
             }
         }

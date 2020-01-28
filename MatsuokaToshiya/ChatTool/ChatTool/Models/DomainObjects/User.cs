@@ -8,11 +8,11 @@ namespace ChatTool.Models.DomainObjects
     {
         public int Id { get; set; }
 
-        public string? Name { get; set; }
+        public string Name { get; set; } = "";
 
-        public string? MailAddress { get; set; }
+        public string MailAddress { get; set; } = "";
 
-        public string? Password { get; set; }
+        public string Password { get; set; } = "";
 
         public int IconId { get; set; }
 

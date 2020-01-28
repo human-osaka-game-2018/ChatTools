@@ -23,7 +23,7 @@ namespace ChatTool.Infrastructure.Database
                 Conection.DisConnectDB();
                 return null; 
             }
-            bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+            bool isDeleted = DBNull.Value != reader["is_deleted"] ? reader.GetBoolean("is_deleted") : false;
             if (isDeleted) return null;
 
             var user = new User();

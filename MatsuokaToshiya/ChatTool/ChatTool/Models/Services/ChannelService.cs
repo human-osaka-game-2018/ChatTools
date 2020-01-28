@@ -9,11 +9,9 @@ namespace ChatTool.Models.Services
 {
     class ChannelService
     {
-        public string ParticipatedUser(ObservableCollection<Channel> Channels)
+        public void GetAvailableByUserid(ObservableCollection<Channel> Channels,int userId)
         {
-            if (null == LoginService.User || null == LoginService.User.Name) return "";
-            ChannelDAO.ParticipatedUser(Channels, LoginService.User.Id);
-            return LoginService.User.Name;
+            ChannelDAO.GetAvailableByUserid(Channels, userId);
 
         }
     }

@@ -28,8 +28,11 @@ namespace ChatTool.Views.Main
             var peer = UIElementAutomationPeer.CreatePeerForElement(this.listBox);
             // GetPatternでIScrollProviderを取得
             var scrollProvider = peer.GetPattern(PatternInterface.Scroll) as IScrollProvider;
-            scrollProvider?.SetScrollPercent(scrollProvider.HorizontalScrollPercent, 100);
-            scrollProvider?.Scroll(ScrollAmount.NoAmount,ScrollAmount.LargeIncrement);
+            if (scrollProvider != null && scrollProvider.VerticallyScrollable)
+            {
+                scrollProvider?.SetScrollPercent(scrollProvider.HorizontalScrollPercent, 100);
+                scrollProvider?.Scroll(ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
+            }
         }
 
         private void ClearSelectedItem()

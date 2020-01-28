@@ -15,7 +15,7 @@ namespace ChatTool.Infrastructure.Database
             var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+                bool isDeleted = DBNull.Value != reader["is_deleted"] ? reader.GetBoolean("is_deleted") : false;
                 if (isDeleted) continue;
 
                 var channel = new Channel();
@@ -26,7 +26,7 @@ namespace ChatTool.Infrastructure.Database
             Conection.DisConnectDB();
         }
 
-        public static void ParticipatedUser(ObservableCollection<Channel> list,int id)
+        public static void GetAvailableByUserid(ObservableCollection<Channel> list,int id)
         {
             var cmd = new MySqlCommand("select * from m_channel_member where user_id = @user_id;", Conection.ConnectDB());
             cmd.Parameters.Add(CreateParameter("@user_id", id, MySqlDbType.Int32, 16));
@@ -43,10 +43,12 @@ namespace ChatTool.Infrastructure.Database
             
             var command = new StringBuilder();
             command.Append("select * from m_channel where id in( ");
-            for (int i=0;i< channelMembers.Count;i++) {
+            for (int i = 0; i < channelMembers.Count; i++)
+            {
                 if (i == 0)
                 {
                     command.Append($"{channelMembers[i].ChannelId}");
+                    continue;
                 }
                 command.Append("," + $"{channelMembers[i].ChannelId}");
             }
@@ -55,7 +57,7 @@ namespace ChatTool.Infrastructure.Database
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                bool isDeleted = DBNull.Value != reader["is_deleted"] ? Convert.ToBoolean(reader.GetString("is_deleted")) : false;
+                bool isDeleted = DBNull.Value != reader["is_deleted"] ? reader.GetBoolean("is_deleted") : false;
                 if (isDeleted) continue;
 
                 var channel = new Channel();

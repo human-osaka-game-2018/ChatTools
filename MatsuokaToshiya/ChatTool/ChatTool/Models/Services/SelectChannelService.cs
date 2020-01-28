@@ -10,12 +10,12 @@ namespace ChatTool.Models.Services
 {
     static class SelectChannelService
     {
-        public static Action<int> ChangeSelectChannel = (_) => { };
+        public static event Action<int> OnChangeSelecting = (_) => { };
         public static int SelectingChannelId { get; set; }
         public static void CallMessageLogs(int channelId)
         {
             SelectingChannelId = channelId;
-            ChangeSelectChannel.Invoke(channelId);
+            OnChangeSelecting(channelId);
         }
     }
 }
