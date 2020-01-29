@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using ChatTool.Infrastructure.Database;
+﻿using ChatTool.Infrastructure.Database;
 using ChatTool.Models.DomainObjects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ChatTool.Models.Services {
 	/// <summary>
-	/// チャンネルに関するサービスクラス。
+	/// メッセージに関するサービスクラス。
 	/// </summary>
-	public static class MessageService {
+	public class MessageService {
 
 		/// <summary>
 		/// 現在選択中のメッセージ。
@@ -18,6 +19,11 @@ namespace ChatTool.Models.Services {
 		/// メッセージ選択イベント。
 		/// </summary>
 		public static event EventHandler<Message?>? OnMessageSelected;
+
+		/// <summary>
+		/// メッセージ投稿イベント。
+		/// </summary>
+		public static event EventHandler? OnMessagePosted;
 
 		/// <summary>
 		/// 現在選択中のメッセージ。
@@ -37,11 +43,38 @@ namespace ChatTool.Models.Services {
 		/// </summary>
 		/// <param name="channel">対象チャンネル</param>
 		/// <returns>一覧データ</returns>
-		public static List<Message> ListMessagesBy(Channel channel) {
+		public List<Message> ListMessagesBy(Channel channel) {
 			var userDAO = new UserDAO();
 			var messageDAO = new MessageDAO();
 			return messageDAO.SelectMessages(channel, userDAO.SelectAll());
 		}
 
+		/// <summary>
+		/// メッセージ一覧データを取得し、既存のリストより新しいものを末尾に追加する。
+		/// </summary>
+		/// <param name="target">追加対象のリスト</param>
+		/// <param name="channel">対象チャンネル</param>
+		public void AddNewerMessagesTo(IEnumerable<Message> target, Channel channel) {
+			// 最新のユーザ情報も取得しておく
+			var userDAO = new UserDAO();
+			var messageDAO = new MessageDAO();
+			var messages = messageDAO.SelectMessages(channel, userDAO.SelectAll());
+
+			// IDが大きいもののみ追加
+			messages.Where(x => x.Id > target.Max(y => y.Id)).ToList().ForEach(x => target.Append(x));
+		}
+
+		/// <summary>
+		/// メッセージを投稿する。
+		/// </summary>
+		/// <param name="message">投稿メッセージ</param>
+		public void Post(Message message) {
+			var messageDAO = new MessageDAO();
+			var isSuccess =  messageDAO.Insert(message);
+
+			if (isSuccess) {
+				OnMessagePosted?.Invoke(null, EventArgs.Empty);
+			}
+		}
 	}
 }

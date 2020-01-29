@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using ChatTool.Models.DomainObjects;
+using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using ChatTool.Models.DomainObjects;
-using MySql.Data.MySqlClient;
 
 namespace ChatTool.Infrastructure.Database {
 	/// <summary>
@@ -34,7 +33,8 @@ namespace ChatTool.Infrastructure.Database {
 			sql.Append($"SELECT * FROM {ChannelTableName} AS ch ");
 			sql.Append($"INNER JOIN {ChannelMemberTableName} as member ");
 			sql.Append("ON ch.ID = member.channel_id ");
-			sql.Append("WHERE member.user_id = @user_id AND is_deleted = 0;");
+			sql.Append("WHERE member.user_id = @user_id AND is_deleted = 0 ");
+			sql.Append("ORDER BY ch.id;");
 
 			using var con = Connection.Create();
 			using var cmd = con.CreateCommand();

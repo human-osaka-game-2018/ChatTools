@@ -9,11 +9,14 @@ namespace ChatTool.Views {
 	/// </summary>
 	public partial class LoginView : Window {
 
+		#region field members
 		/// <summary>
 		/// ViewModel.
 		/// </summary>
 		private LoginViewModel viewModel = new LoginViewModel();
+		#endregion
 
+		#region constructors
 		/// <summary>
 		/// コンストラクタ。
 		/// </summary>
@@ -23,7 +26,9 @@ namespace ChatTool.Views {
 			this.DataContext = this.viewModel;
 			this.viewModel.SuccessOfLoginEvent += this.OnSuccessOfLogin;
 		}
+		#endregion
 
+		#region private methods
 		/// <summary>
 		/// PasswordBox変更イベントハンドラ。
 		/// </summary>
@@ -52,6 +57,8 @@ namespace ChatTool.Views {
 		private void OnFailureOfLogin(object? sender, EventArgs e) {
 			MessageBox.Show("メールアドレス又はパスワードが違います。", "ログイン", MessageBoxButton.OK, MessageBoxImage.Warning);
 		}
+		#endregion
 
 	}
 }
+

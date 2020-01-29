@@ -17,13 +17,30 @@ namespace ChatTool.Models.DomainObjects {
 		public Message(int id) {
 			this.Id = id;
 		}
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		/// <param name="channel">投稿チャンネル</param>
+		/// <param name="user">投稿ユーザ</param>
+		/// <param name="text">メッセージ文</param>
+		public Message(Channel channel, User user, string text) {
+			this.Channel = channel;
+			this.User = user;
+			this.Text = text;
+		}
 		#endregion
 
 		#region parameters
 		/// <summary>
 		/// メッセージID。
 		/// </summary>
-		public int Id { get; }
+		public int? Id { get; }
+
+		/// <summary>
+		/// 投稿チャンネル。
+		/// </summary>
+		public Channel? Channel { get; set; }
 
 		/// <summary>
 		/// 投稿ユーザ。
@@ -52,13 +69,15 @@ namespace ChatTool.Models.DomainObjects {
 		/// <see cref="DataTable"/> を <see cref="Message"/> の <see cref="List{T}"/> に変換する。
 		/// </summary>
 		/// <param name="dt">変換元</param>
+		/// <param name="channel">チャンネル</param>
 		/// <param name="users">ユーザ情報一覧</param>
 		/// <param name="parentMessage">親メッセージ情報</param>
 		/// <returns>変換したオブジェクト</returns>
-		public static List<Message> ConvertFrom(DataTable dt, List<User> users, Message? parentMessage = null) {
+		public static List<Message> ConvertFrom(DataTable dt, Channel channel, List<User> users, Message? parentMessage = null) {
 			var ret = new List<Message>();
 			foreach (var dr in dt.AsEnumerable()) {
 				var message = new Message((int)dr["id"]) {
+					Channel = channel,
 					User = users.First(x => x.Id == dr.Field<int>("user_id")),
 					Text = dr.Field<string>("text"),
 					PostedDate = dr.Field<DateTime>("time"),

@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using ChatTool.ViewModels;
+﻿using ChatTool.ViewModels;
+using System.Windows.Controls;
 
 namespace ChatTool.Views {
 	/// <summary>
@@ -18,7 +18,17 @@ namespace ChatTool.Views {
 		public MessageLogView() {
 			InitializeComponent();
 
-			this.DataContext = viewModel;
+			this.DataContext = this.viewModel;
+			this.viewModel.ScrollToBottomAction = this.ScrollToBottom;
+		}
+
+		/// <summary>
+		/// 1番下までスクロールする。
+		/// </summary>
+		private void ScrollToBottom() {
+			if (this.messageListView.Items.Count > 0) {
+				this.messageListView.ScrollIntoView(this.messageListView.Items[this.messageListView.Items.Count - 1]);
+			}
 		}
 
 	}

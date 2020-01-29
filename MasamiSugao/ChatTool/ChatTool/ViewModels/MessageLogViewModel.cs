@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using ChatTool.Models;
 using ChatTool.Models.DomainObjects;
 using ChatTool.Models.Services;
@@ -10,9 +11,10 @@ namespace ChatTool.ViewModels {
 	public class MessageLogViewModel : BindableBase {
 
 		#region field members
-		/// <summary>
-		/// 選択中のメッセージ。
-		/// </summary>
+		/// <summary>サービスクラス。</summary>
+		private MessageService service = new MessageService();
+
+		/// <summary>選択中のメッセージ。</summary>
 		private Message? selectedMessage;
 		#endregion
 
@@ -21,16 +23,16 @@ namespace ChatTool.ViewModels {
 		/// コンストラクタ。
 		/// </summary>
 		public MessageLogViewModel() {
-			// デザイナでのエラーを防ぐために、初期表示処理はLoadedイベントで行うようにする
-//			this.LoadedCommand = new DelegateCommand(this.OnLoaded);
-
 			ChannelService.OnChannelChanged += (_, channel) => this.OnChannelChanged(channel);
+			MessageService.OnMessagePosted += (_, __) => this.OnMessagePosted();
 
-			this.Messages.Add(new Message(0) { Text = "message", User = new User(0) { UserName = "user" } });
+			this.Messages.Add(new Message(0) { Text = "チャンネルを選択してください。", User = new User(0) { UserName = "ChatTool Bot" } });
 		}
 		#endregion
 
 		#region properties
+		public Action? ScrollToBottomAction { get; set; }
+
 		/// <summary>
 		/// メッセージリスト。
 		/// </summary>
@@ -53,12 +55,19 @@ namespace ChatTool.ViewModels {
 		/// 画面ロードイベントハンドラ。
 		/// </summary>
 		private void OnChannelChanged(Channel channel) {
-			//var channelList = ChannelService.ListAvailableChannelsBy(LoginService.CurrentUser!);
-			//// 再描画が行われるように、ObservableCollectionの再生成ではなく、1件ずつ追加していく
-			//channelList.ForEach(x => this.Channels.Add(x));
-			var messages = MessageService.ListMessagesBy(channel);
+			var messages = this.service.ListMessagesBy(channel);
 			this.Messages.Clear();
+			// 再描画が行われるように、ObservableCollectionの再生成ではなく、1件ずつ追加していく
 			messages.ForEach(x => this.Messages.Add(x));
+			this.ScrollToBottomAction?.Invoke();
+		}
+
+		/// <summary>
+		/// メッセージ投稿時の処理。
+		/// </summary>
+		private void OnMessagePosted() {
+			this.service.AddNewerMessagesTo(this.Messages, ChannelService.CurrentChannel!);
+			this.ScrollToBottomAction?.Invoke();
 		}
 		#endregion
 

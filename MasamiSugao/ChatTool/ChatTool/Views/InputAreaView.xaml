@@ -4,9 +4,59 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChatTool.Views"
+             xmlns:vm="clr-namespace:ChatTool.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             Background="Black"
+             Foreground="White"
+             d:DesignHeight="250" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance {x:Type vm:InputAreaViewModel}, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <Style x:Key="ButtonContentStyle" TargetType="TextBlock">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Foreground" Value="#88ffffff" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="#88000000" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid Margin="16px" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" 
+                     Background="#33ffffff" 
+                     Text="{Binding InputMessage, UpdateSourceTrigger=PropertyChanged}"
+                     Foreground="#88ffffff">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="#88ffffff" />
+                        <Setter Property="CornerRadius" Value="3" />
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            <Button Grid.Column="1" 
+                    Margin="8,0,0,0" 
+                    Padding="20px,10px" 
+                    Background="#33ffffff"
+                    BorderThickness="0"
+                    VerticalAlignment="Bottom" 
+                    Command="{Binding BtnSendClickedCommand}">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="3" />
+                    </Style>
+                </Button.Resources>
+                <TextBlock Text="送信" 
+                           FontSize="16"
+                           FontWeight="Bold" 
+                           Style="{StaticResource ButtonContentStyle}" />
+            </Button>
+
+        </Grid>
     </Grid>
 </UserControl>

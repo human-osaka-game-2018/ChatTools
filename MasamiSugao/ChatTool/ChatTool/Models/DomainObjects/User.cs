@@ -63,7 +63,7 @@ namespace ChatTool.Models.DomainObjects {
 				var folderPath = Path.GetFullPath(Path.Combine(AppSettings.ResourceDirectoryPath, IconFolderName, this.IconId.ToString("00000")));
 				Uri uri;
 				if (!Directory.Exists(folderPath)) {
-					uri = new Uri("pack://application:,,,/Images/UserDefaultIcon.png");
+					uri = new Uri(AppSettings.UserDefaultIconUri);
 				} else {
 					uri = new Uri(Directory.GetFiles(folderPath, "*.*")[0]);
 				}
