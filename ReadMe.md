@@ -4,3 +4,5 @@
 
 個人ごとのfolderを作成しsolutionを置いて下さい。  
 IssueやWikiなどは自由に活用して下さい。
+
+ER図は[こちら](https://github.com/human-osaka-game-2018/NWAndToolHomework/tree/master/ChatToolERDiagram/)。
