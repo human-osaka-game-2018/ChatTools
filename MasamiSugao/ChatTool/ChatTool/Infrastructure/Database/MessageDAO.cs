@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using ChatTool.Models.DomainObjects;
@@ -48,6 +49,34 @@ namespace ChatTool.Infrastructure.Database {
 		}
 
 		/// <summary>
+		/// <paramref name="channel"/> に表示するメッセージのIDの最大値を取得する。
+		/// </summary>
+		/// <param name="channel">対象チャンネル</param>
+		/// <returns>メッセージIDの最大値。存在しない場合は-1。</returns>
+		public int SelectMaxMessageId(Channel channel) {
+			int ret = -1;
+
+			StringBuilder sql = new StringBuilder();
+			sql.Append($"SELECT MAX(id) FROM {MessageTableName} ");
+			sql.Append("WHERE channel_id = @channel_id AND displays_to_channel = 1 AND is_deleted = 0; ");
+
+			using var con = Connection.Create();
+			using var cmd = con.CreateCommand();
+			cmd.CommandText = sql.ToString();
+
+			cmd.Parameters.Add("@channel_id", MySqlDbType.Int32);
+			cmd.Prepare();
+			cmd.Parameters["@channel_id"].Value = channel.Id;
+
+			var maxId = cmd.ExecuteScalar();
+			if (maxId != DBNull.Value) {
+				ret = (int)maxId;
+			}
+
+			return ret;
+		}
+
+		/// <summary>
 		/// INSERTを実行する。
 		/// </summary>
 		/// <param name="target">INSERT対象</param>
@@ -84,3 +113,4 @@ namespace ChatTool.Infrastructure.Database {
 
 	}
 }
+

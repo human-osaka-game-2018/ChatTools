@@ -31,7 +31,8 @@
             <TextBox Grid.Column="0" 
                      Background="#33ffffff" 
                      Text="{Binding InputMessage, UpdateSourceTrigger=PropertyChanged}"
-                     Foreground="#88ffffff">
+                     Foreground="#88ffffff"
+                     CaretBrush="#88ffffff">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="BorderBrush" Value="#88ffffff" />

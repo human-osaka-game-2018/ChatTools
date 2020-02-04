@@ -18,14 +18,14 @@
                   Padding="8"
                   ItemsSource="{Binding Messages}"
                   SelectedItem="{Binding SelectedMessage}"
-                  HorizontalContentAlignment="Stretch" >
+                  HorizontalContentAlignment="Stretch"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="m:Message">
                     <local:MessagePanelView Message="{Binding}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
-
         </ListView>
-
     </Grid>
 </UserControl>
+

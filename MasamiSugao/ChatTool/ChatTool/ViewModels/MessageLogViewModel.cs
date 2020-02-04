@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Data;
+using System.Windows.Threading;
 using ChatTool.Models;
 using ChatTool.Models.DomainObjects;
 using ChatTool.Models.Services;
@@ -9,7 +13,6 @@ namespace ChatTool.ViewModels {
 	/// メッセージ画面のViewModel.
 	/// </summary>
 	public class MessageLogViewModel : BindableBase {
-
 		#region field members
 		/// <summary>サービスクラス。</summary>
 		private MessageService service = new MessageService();
@@ -23,8 +26,11 @@ namespace ChatTool.ViewModels {
 		/// コンストラクタ。
 		/// </summary>
 		public MessageLogViewModel() {
+			// 複数スレッドからコレクション操作できるようにする
+			BindingOperations.EnableCollectionSynchronization(this.Messages, new object());
+
 			ChannelService.OnChannelChanged += (_, channel) => this.OnChannelChanged(channel);
-			MessageService.OnMessagePosted += (_, __) => this.OnMessagePosted();
+			PeriodicMessageCheckService.OnNewMessagePosted += (_, __) => this.OnNewMessagePosted();
 
 			this.Messages.Add(new Message(0) { Text = "チャンネルを選択してください。", User = new User(0) { UserName = "ChatTool Bot" } });
 		}
@@ -52,20 +58,25 @@ namespace ChatTool.ViewModels {
 
 		#region private methods
 		/// <summary>
-		/// 画面ロードイベントハンドラ。
+		/// チャンネル変更イベントハンドラ。
 		/// </summary>
 		private void OnChannelChanged(Channel channel) {
+			PeriodicMessageCheckService.Enabled = false;
 			var messages = this.service.ListMessagesBy(channel);
-			this.Messages.Clear();
+
 			// 再描画が行われるように、ObservableCollectionの再生成ではなく、1件ずつ追加していく
+			this.Messages.Clear();
 			messages.ForEach(x => this.Messages.Add(x));
+
 			this.ScrollToBottomAction?.Invoke();
+
+			PeriodicMessageCheckService.Enabled = true;
 		}
 
 		/// <summary>
-		/// メッセージ投稿時の処理。
+		/// メッセージが増えた場合の処理。
 		/// </summary>
-		private void OnMessagePosted() {
+		private void OnNewMessagePosted() {
 			this.service.AddNewerMessagesTo(this.Messages, ChannelService.CurrentChannel!);
 			this.ScrollToBottomAction?.Invoke();
 		}
@@ -73,3 +84,4 @@ namespace ChatTool.ViewModels {
 
 	}
 }
+

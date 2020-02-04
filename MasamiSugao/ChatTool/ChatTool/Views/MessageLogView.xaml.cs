@@ -26,10 +26,13 @@ namespace ChatTool.Views {
 		/// 1番下までスクロールする。
 		/// </summary>
 		private void ScrollToBottom() {
-			if (this.messageListView.Items.Count > 0) {
-				this.messageListView.ScrollIntoView(this.messageListView.Items[this.messageListView.Items.Count - 1]);
-			}
+			this.messageListView.Dispatcher.Invoke(() => {
+				if (this.messageListView.Items.Count > 0) {
+					this.messageListView.ScrollIntoView(this.messageListView.Items[this.messageListView.Items.Count - 1]);
+				}
+			});
 		}
 
 	}
 }
+
