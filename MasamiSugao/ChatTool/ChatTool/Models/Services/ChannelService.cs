@@ -9,9 +9,7 @@ namespace ChatTool.Models.Services {
 	/// </summary>
 	public static class ChannelService {
 
-		/// <summary>
-		/// 現在選択中のチャンネル。
-		/// </summary>
+		/// <summary>現在選択中のチャンネル。</summary>
 		private static Channel? currentChannel;
 
 		/// <summary>
@@ -45,3 +43,4 @@ namespace ChatTool.Models.Services {
 
 	}
 }
+

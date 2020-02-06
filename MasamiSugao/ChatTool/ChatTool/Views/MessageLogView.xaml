@@ -7,18 +7,18 @@
              xmlns:vm="clr-namespace:ChatTool.ViewModels"
              xmlns:m="clr-namespace:ChatTool.Models.DomainObjects"
              mc:Ignorable="d"
-             Background="Black"
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance {x:Type vm:MessageLogViewModel}, IsDesignTimeCreatable=True}">
     <Grid>
         <ListView x:Name="messageListView"
                   Background="{x:Null}"
-                  Foreground="White"
+                  Foreground="{StaticResource mainForegroundColor}"
                   BorderThickness="0"
                   Padding="8"
                   ItemsSource="{Binding Messages}"
                   SelectedItem="{Binding SelectedMessage}"
                   HorizontalContentAlignment="Stretch"
+                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="m:Message">

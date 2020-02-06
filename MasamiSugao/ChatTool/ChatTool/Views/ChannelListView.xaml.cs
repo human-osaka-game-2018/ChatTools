@@ -7,9 +7,7 @@ namespace ChatTool.Views {
 	/// </summary>
 	public partial class ChannelListView : UserControl {
 
-		/// <summary>
-		/// ViewModel.
-		/// </summary>
+		/// <summary>ViewModel.</summary>
 		private ChannelListViewModel viewModel = new ChannelListViewModel();
 
 		/// <summary>
@@ -17,8 +15,9 @@ namespace ChatTool.Views {
 		/// </summary>
 		public ChannelListView() {
 			InitializeComponent();
-
 			this.DataContext = this.viewModel;
 		}
+
 	}
 }
+

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace ChatTool.Models.DomainObjects {
 	/// <summary>
@@ -36,18 +37,13 @@ namespace ChatTool.Models.DomainObjects {
 		/// <param name="dt">変換元</param>
 		/// <returns>変換したオブジェクト</returns>
 		public static List<Channel> ConvertFrom(DataTable dt) {
-			var ret = new List<Channel>();
-			foreach (var dr in dt.AsEnumerable()) {
-				var channel = new Channel((int)dr["id"]) {
-					ChannelName = dr.Field<string>("channel_name")
-				};
+			var channels = dt.AsEnumerable().Select(dr =>
+				new Channel(dr.Field<int>("id")) { ChannelName = dr.Field<string>("channel_name") });
 
-				ret.Add(channel);
-			}
-
-			return ret;
+			return channels.ToList();
 		}
 		#endregion
 
 	}
 }
+

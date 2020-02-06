@@ -4,23 +4,70 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChatTool.Views"
+        xmlns:vm="clr-namespace:ChatTool.ViewModels"
         mc:Ignorable="d"
-        Title="ChatTool"
-        Height="450" Width="800"
-        Background="{x:Null}"
+        Title="{Binding Title}"
+        Height="500" Width="800"
+        Background="{StaticResource mainBackgroundColor}"
+        WindowStyle="ThreeDBorderWindow"
         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-        WindowStyle="ThreeDBorderWindow">
+        MinHeight="400"
+        MinWidth="450"
+        d:DataContext="{d:DesignInstance {x:Type vm:MainViewModel}, IsDesignTimeCreatable=True}">
+    <Window.Resources>
+        <SolidColorBrush x:Key="borderColor" Color="#88ffffff" />
+    </Window.Resources>
+
     <Grid>
-        <DockPanel LastChildFill="True">
+        <DockPanel x:Name="dockPanel" LastChildFill="True">
+            <!-- チャンネル一覧ペイン -->
             <local:ChannelListView DockPanel.Dock="Left"
                                    Width="auto"
                                    MinWidth="100"
-                                   BorderBrush="White"
+                                   BorderBrush="{StaticResource borderColor}"
                                    BorderThickness="0,0,1,0" />
-            <local:InputAreaView DockPanel.Dock="Bottom"
-                                 Height="100" />
-            <local:MessageLogView />
-        </DockPanel>
 
+            <!-- スレッドペイン -->
+            <Border DockPanel.Dock="Right"
+                    Width="{Binding ThreadPaneWidth}"
+                    BorderBrush="{StaticResource borderColor}"
+                    BorderThickness="1,0,0,0" >
+                <DockPanel LastChildFill="True">
+                    <Border DockPanel.Dock="Top"
+                            Background="#22ffffff"
+                            BorderBrush="{StaticResource borderColor}"
+                            BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="スレッド"
+                                       Foreground="{StaticResource mainForegroundColor}"
+                                       FontSize="20px"
+                                       Padding="16,8" />
+                            <Button Grid.Column="1"
+                                    Content="×"
+                                    Command="{Binding BtnCloseThreadPainClickCommand}"
+                                    Background="{x:Null}"
+                                    Foreground="{StaticResource mainForegroundColor}"
+                                    FontSize="30px"
+                                    BorderThickness="0"
+                                    VerticalAlignment="Center"
+                                    Margin="8,0"
+                                    Padding="8,0" />
+                        </Grid>
+                    </Border>
+                    <local:MessageRWView x:Name="threadPainMessageRWView"
+                                         MessageLogType="Thread"/>
+                </DockPanel>
+            </Border>
+
+            <!-- メインメッセージペイン -->
+            <local:MessageRWView x:Name="mainMessagePaneView"
+                                 MessageLogType="Main"/>
+        </DockPanel>
     </Grid>
 </Window>
+

@@ -7,6 +7,11 @@ namespace ChatTool.ViewModels {
 	/// </summary>
 	public class LoginViewModel {
 
+		#region constants
+		/// <summary>画面名。</summary>
+		private const string ViewName = "ログイン";
+		#endregion
+
 		#region constructors
 		/// <summary>
 		/// コンストラクタ。
@@ -32,7 +37,7 @@ namespace ChatTool.ViewModels {
 		/// <summary>
 		/// タイトルバー表示文字列。
 		/// </summary>
-		public string Title { get; set; } = $"{App.AppName}-ログイン";
+		public string Title { get; } = $"{App.AppName}-{ViewName}";
 
 		/// <summary>
 		/// メールアドレス入力内容。
@@ -65,3 +70,4 @@ namespace ChatTool.ViewModels {
 
 	}
 }
+

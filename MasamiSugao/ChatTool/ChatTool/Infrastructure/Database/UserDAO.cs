@@ -2,6 +2,7 @@
 using System.Data;
 using System.Text;
 using ChatTool.Models.DomainObjects;
+using ChatTool.Models.Extentions;
 using MySql.Data.MySqlClient;
 
 namespace ChatTool.Infrastructure.Database {
@@ -11,9 +12,7 @@ namespace ChatTool.Infrastructure.Database {
 	public class UserDAO {
 
 		#region constants
-		/// <summary>
-		/// テーブル名。
-		/// </summary>
+		/// <summary>テーブル名。</summary>
 		private const string TableName = "m_user";
 		#endregion
 
@@ -64,7 +63,7 @@ namespace ChatTool.Infrastructure.Database {
 			cmd.Prepare();
 
 			// パラメータに値設定
-			cmd.Parameters["@is_online"].Value = isOnline ? 1 : 0;
+			cmd.Parameters["@is_online"].Value = isOnline.ToInt();
 			cmd.Parameters["@id"].Value = user.Id;
 
 			// SQL実行
@@ -97,3 +96,4 @@ namespace ChatTool.Infrastructure.Database {
 
 	}
 }
+

@@ -8,14 +8,10 @@ namespace ChatTool.ViewModels {
 	public class DelegateCommand : ICommand {
 
 		#region field members
-		/// <summary>
-		/// コマンド実行時の処理。
-		/// </summary>
+		/// <summary>コマンド実行時の処理。</summary>
 		private Action? execute;
 
-		/// <summary>
-		/// コマンドが実行可否の判断方法。
-		/// </summary>
+		/// <summary>コマンドが実行可否の判断方法。</summary>
 		private Func<bool> canExecute;
 		#endregion
 
@@ -81,3 +77,4 @@ namespace ChatTool.ViewModels {
 
 	}
 }
+

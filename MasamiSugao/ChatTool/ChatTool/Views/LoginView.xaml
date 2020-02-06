@@ -8,6 +8,8 @@
         mc:Ignorable="d"
         Title="{Binding Title}"
         Height="200" Width="400"
+        Background="{StaticResource mainBackgroundColor}"
+        Foreground="{StaticResource mainForegroundColor}"
         d:DataContext="{d:DesignInstance {x:Type vm:LoginViewModel}, IsDesignTimeCreatable=True}">
     <!-- 初期フォーカス設定 -->
     <Grid FocusManager.FocusedElement="{Binding ElementName=txtMailAddress}">
@@ -60,3 +62,4 @@
         </Grid>
     </Grid>
 </Window>
+

@@ -6,16 +6,17 @@ namespace ChatTool {
 	/// </summary>
 	public class AppSettings {
 
-		/// <summary>
-		/// ユーザデフォルトアイコンのURI。
-		/// </summary>
+		/// <summary>Resourceフォルダのパス文字列取得用のApp.configのキー</summary>
+		private const string KeyOfResourceDirectoryPath = "resourceDirectoryPath";
+
+		/// <summary>ユーザデフォルトアイコンのURI。</summary>
 		public const string UserDefaultIconUri = "pack://application:,,,/Images/UserDefaultIcon.png";
 
 		/// <summary>
 		/// 静的コンストラクタ。
 		/// </summary>
 		static AppSettings() {
-			ResourceDirectoryPath = ConfigurationManager.AppSettings["resourceDirectoryPath"];
+			ResourceDirectoryPath = ConfigurationManager.AppSettings[KeyOfResourceDirectoryPath];
 		}
 
 		/// <summary>
@@ -25,3 +26,4 @@ namespace ChatTool {
 
 	}
 }
+

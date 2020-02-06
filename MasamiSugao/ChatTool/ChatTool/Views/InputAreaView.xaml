@@ -1,20 +1,45 @@
 ﻿<UserControl x:Class="ChatTool.Views.InputAreaView"
+             x:Name="inputAreaView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ChatTool.Views"
              xmlns:vm="clr-namespace:ChatTool.ViewModels"
-             mc:Ignorable="d" 
-             Background="Black"
-             Foreground="White"
+             mc:Ignorable="d"
+             Foreground="{StaticResource mainForegroundColor}"
              d:DesignHeight="250" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance {x:Type vm:InputAreaViewModel}, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
+        <!--
+            MessageLogTypeによりチェックボックスの表示有無を切替
+            (ViewModelのbool値をVisivilityに変換するバージョン)
+        -->
+        <BooleanToVisibilityConverter x:Key="BoolVisibilityConverter" />
+
+        <!--
+            MessageLogTypeによりチェックボックスの表示有無を切替
+            (Viewのみで切替を行うバージョン)
+        -->
+        <!--
+        <Style x:Key="DisplaysToChannel" TargetType="CheckBox">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding MessageLogType, ElementName=inputAreaView}"
+                             Value="Main">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding MessageLogType, ElementName=inputAreaView}"
+                             Value="Thread">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        -->
+
         <Style x:Key="ButtonContentStyle" TargetType="TextBlock">
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="True">
-                    <Setter Property="Foreground" Value="#88ffffff" />
+                    <Setter Property="Foreground" Value="{StaticResource mainForegroundColor}" />
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Foreground" Value="#88000000" />
@@ -22,42 +47,57 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
+
     <Grid>
         <Grid Margin="16px" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" 
-                     Background="#33ffffff" 
-                     Text="{Binding InputMessage, UpdateSourceTrigger=PropertyChanged}"
-                     Foreground="#88ffffff"
-                     CaretBrush="#88ffffff">
-                <TextBox.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="BorderBrush" Value="#88ffffff" />
-                        <Setter Property="CornerRadius" Value="3" />
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-            <Button Grid.Column="1" 
-                    Margin="8,0,0,0" 
-                    Padding="20px,10px" 
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <TextBox Grid.Row="0"
+                         Background="#33ffffff"
+                         Text="{Binding InputMessage, UpdateSourceTrigger=PropertyChanged}"
+                         Foreground="{StaticResource mainForegroundColor}"
+                         CaretBrush="{StaticResource mainForegroundColor}">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="BorderBrush" Value="{StaticResource mainForegroundColor}" />
+                            <Setter Property="CornerRadius" Value="3" />
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <CheckBox Grid.Row="1"
+                          Margin="0,4,0,0"
+                          Foreground="{StaticResource mainForegroundColor}"
+                          Content="スレッドにも投稿する"
+                          IsChecked="{Binding DisplaysToChannel}"
+                          Visibility="{Binding IsChkDisplaysToChannelVisible,
+                                               Converter={StaticResource BoolVisibilityConverter}}" />
+            </Grid>
+            <Button Grid.Column="1"
+                    Margin="8,0,0,0"
+                    Padding="20,10"
                     Background="#33ffffff"
                     BorderThickness="0"
-                    VerticalAlignment="Bottom" 
+                    VerticalAlignment="Bottom"
                     Command="{Binding BtnSendClickedCommand}">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3" />
                     </Style>
                 </Button.Resources>
-                <TextBlock Text="送信" 
+                <TextBlock Text="送信"
                            FontSize="16"
-                           FontWeight="Bold" 
+                           FontWeight="Bold"
                            Style="{StaticResource ButtonContentStyle}" />
             </Button>
 
         </Grid>
     </Grid>
 </UserControl>
+

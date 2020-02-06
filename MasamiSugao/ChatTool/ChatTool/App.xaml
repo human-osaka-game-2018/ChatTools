@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:ChatTool"
              StartupUri="Views/LoginView.xaml">
     <Application.Resources>
-         
+        <SolidColorBrush x:Key="mainBackgroundColor" Color="Black" />
+        <SolidColorBrush x:Key="mainForegroundColor" Color="#88ffffff" />
     </Application.Resources>
 </Application>
+

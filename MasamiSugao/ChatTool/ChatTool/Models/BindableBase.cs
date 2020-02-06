@@ -7,6 +7,7 @@ namespace ChatTool.Models {
 	/// モデルを簡略化するための <see cref="INotifyPropertyChanged"/> の実装。
 	/// </summary>
 	public class BindableBase : INotifyPropertyChanged {
+
 		/// <summary>
 		/// プロパティの変更を通知するためのマルチキャスト イベント。
 		/// </summary>
@@ -42,6 +43,7 @@ namespace ChatTool.Models {
 		protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) {
 			this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
+
 	}
 
 }

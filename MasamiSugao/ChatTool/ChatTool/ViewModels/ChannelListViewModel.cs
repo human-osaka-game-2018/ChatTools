@@ -1,4 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
 using ChatTool.Models;
 using ChatTool.Models.DomainObjects;
 using ChatTool.Models.Services;
@@ -10,9 +13,7 @@ namespace ChatTool.ViewModels {
 	public class ChannelListViewModel : BindableBase {
 
 		#region field members
-		/// <summary>
-		/// 選択中のチャンネル。
-		/// </summary>
+		/// <summary>選択中のチャンネル。</summary>
 		private Channel? selectedChannel;
 		#endregion
 
@@ -21,8 +22,22 @@ namespace ChatTool.ViewModels {
 		/// コンストラクタ。
 		/// </summary>
 		public ChannelListViewModel() {
-			// デザイナでのエラーを防ぐために、初期表示処理はLoadedイベントで行うようにする
-			this.LoadedCommand = new DelegateCommand(this.OnLoaded);
+#if DEBUG
+			if ((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue) {
+				Enumerable.Range(1, 5).ToList().ForEach(i =>
+					this.Channels.Add(new Channel(i) { ChannelName = $"チャンネル名{i}" })
+				);
+				return;
+			}
+#endif
+
+			var channelList = ChannelService.ListAvailableChannelsBy(LoginService.CurrentUser!);
+			// 再描画が行われるように、ObservableCollectionの再生成ではなく、1件ずつ追加していく
+			channelList.ForEach(x => this.Channels.Add(x));
+
+			if (this.Channels.Count > 0) {
+				this.SelectedChannel = this.Channels[0];
+			}
 		}
 		#endregion
 
@@ -35,26 +50,13 @@ namespace ChatTool.ViewModels {
 		public Channel? SelectedChannel {
 			get => this.selectedChannel;
 			set {
-				base.SetProperty(ref this.selectedChannel, value);
-				ChannelService.CurrentChannel = value;
+				if (base.SetProperty(ref this.selectedChannel, value)) {
+					ChannelService.CurrentChannel = value;
+				}
 			}
-		}
-		/// <summary>
-		/// 画面ロードコマンド。
-		/// </summary>
-		public DelegateCommand LoadedCommand { get; }
-		#endregion
-
-		#region private methods
-		/// <summary>
-		/// 画面ロードイベントハンドラ。
-		/// </summary>
-		private void OnLoaded() {
-			var channelList = ChannelService.ListAvailableChannelsBy(LoginService.CurrentUser!);
-			// 再描画が行われるように、ObservableCollectionの再生成ではなく、1件ずつ追加していく
-			channelList.ForEach(x => this.Channels.Add(x));
 		}
 		#endregion
 
 	}
 }
+

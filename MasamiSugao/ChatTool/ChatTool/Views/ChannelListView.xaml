@@ -3,36 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:ChatTool.Views"
              xmlns:vm="clr-namespace:ChatTool.ViewModels"
              xmlns:m="clr-namespace:ChatTool.Models.DomainObjects"
              mc:Ignorable="d"
-             Foreground="White"
-             Background="#FF417CD1"
+             Foreground="{StaticResource mainForegroundColor}"
              d:DesignHeight="450" d:DesignWidth="100"
              d:DataContext="{d:DesignInstance {x:Type vm:ChannelListViewModel}, IsDesignTimeCreatable=True}">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-
     <Grid>
         <ListView Background="{x:Null}"
+                  Foreground="{StaticResource mainForegroundColor}"
                   BorderThickness="0"
-                  Padding="8"
+                  Padding="4"
                   ItemsSource="{Binding Channels}"
                   ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   SelectedItem="{Binding SelectedChannel}"
                   HorizontalContentAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="m:Channel">
                    <TextBlock Text="{Binding ChannelName, StringFormat=# {0}}"
-                              Padding="8" />
+                              Padding="4" />
                 </DataTemplate>
             </ListView.ItemTemplate>
-
         </ListView>
     </Grid>
 </UserControl>
+

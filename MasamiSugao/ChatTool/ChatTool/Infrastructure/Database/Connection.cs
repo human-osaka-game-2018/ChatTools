@@ -7,14 +7,10 @@ namespace ChatTool.Infrastructure.Database {
 	/// </summary>
 	public static class Connection {
 
-		/// <summary>
-		/// DB接続文字列取得用のApp.configのキー
-		/// </summary>
+		/// <summary>DB接続文字列取得用のApp.configのキー</summary>
 		private const string KeyOfDbKey = "dbKey";
 
-		/// <summary>
-		/// 接続文字列。
-		/// </summary>
+		/// <summary>接続文字列。</summary>
 		private static readonly string connectionString;
 
 		/// <summary>
@@ -36,3 +32,4 @@ namespace ChatTool.Infrastructure.Database {
 
 	}
 }
+

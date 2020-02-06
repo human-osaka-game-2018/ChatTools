@@ -1,22 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using ChatTool.ViewModels;
 
 namespace ChatTool.Views {
 	/// <summary>
 	/// MainView.xaml の相互作用ロジック
 	/// </summary>
 	public partial class MainView : Window {
+
+		/// <summary>ViewModl.</summary>
+		private MainViewModel viewModel = new MainViewModel();
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
 		public MainView() {
 			InitializeComponent();
+			this.DataContext = this.viewModel;
+
+			this.mainMessagePaneView.MessageLogType = MessageLogType.Main;
+			this.threadPainMessageRWView.MessageLogType = MessageLogType.Thread;
 		}
+
 	}
 }
+

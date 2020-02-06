@@ -11,14 +11,10 @@ namespace ChatTool.Infrastructure.Database {
 	public class ChannelDAO {
 
 		#region constants
-		/// <summary>
-		/// チャンネルテーブル名。
-		/// </summary>
+		/// <summary>チャンネルテーブル名。</summary>
 		private const string ChannelTableName = "m_channel";
 
-		/// <summary>
-		/// チャンネルメンバーテーブル名。
-		/// </summary>
+		/// <summary>チャンネルメンバーテーブル名。</summary>
 		private const string ChannelMemberTableName = "m_channel_member";
 		#endregion
 
@@ -56,3 +52,4 @@ namespace ChatTool.Infrastructure.Database {
 
 	}
 }
+

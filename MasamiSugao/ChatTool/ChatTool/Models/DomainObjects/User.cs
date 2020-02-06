@@ -1,9 +1,11 @@
 ﻿using ChatTool.Infrastructure.Database;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace ChatTool.Models.DomainObjects {
@@ -12,14 +14,31 @@ namespace ChatTool.Models.DomainObjects {
 	/// </summary>
 	public class User {
 
-		#region constants
-		/// <summary>
-		/// アイコンフォルダパス。
-		/// </summary>
+		#region constants/constants
+		/// <summary>アイコンフォルダパス。</summary>
 		private const string IconFolderName = "UserIcons";
+
+		/// <summary>デフォルトアイコン。</summary>
+		private static readonly BitmapSource defaultIcon;
 		#endregion
 
 		#region constructors
+		/// <summary>
+		/// 静的コンストラクタ。
+		/// </summary>
+		static User() {
+#if DEBUG
+			if ((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue) {
+				defaultIcon = new BitmapImage();
+			} else {
+#endif
+				var uri = new Uri(AppSettings.UserDefaultIconUri);
+				defaultIcon = new BitmapImage(uri);
+#if DEBUG
+			}
+#endif
+		}
+
 		/// <summary>
 		/// コンストラクタ。
 		/// </summary>
@@ -61,13 +80,11 @@ namespace ChatTool.Models.DomainObjects {
 		public BitmapSource IconPath {
 			get {
 				var folderPath = Path.GetFullPath(Path.Combine(AppSettings.ResourceDirectoryPath, IconFolderName, this.IconId.ToString("00000")));
-				Uri uri;
 				if (!Directory.Exists(folderPath)) {
-					uri = new Uri(AppSettings.UserDefaultIconUri);
-				} else {
-					uri = new Uri(Directory.GetFiles(folderPath, "*.*")[0]);
+					return defaultIcon;
 				}
 
+				var uri = new Uri(Directory.GetFiles(folderPath, "*.*")[0]);
 				var bmp = new BitmapImage(uri);
 				return bmp;
 			}
@@ -77,9 +94,9 @@ namespace ChatTool.Models.DomainObjects {
 		/// オンラインフラグ。
 		/// </summary>
 		public bool IsOnline { get; set; } = false;
-		#endregion
+#endregion
 
-		#region static public methods
+#region static public methods
 		/// <summary>
 		/// <see cref="DataTable"/> を <see cref="User"/> の <see cref="List{T}"/> に変換する。
 		/// </summary>
@@ -87,22 +104,19 @@ namespace ChatTool.Models.DomainObjects {
 		/// <returns>変換したオブジェクト</returns>
 		public static List<User> ConvertFrom(DataTable dt) {
 			var ret = new List<User>();
-			foreach (var dr in dt.AsEnumerable()) {
-				var user = new User((int)dr["id"]) {
+			var users = dt.AsEnumerable().Select(dr =>
+				 new User(dr.Field<int>("id")) {
 					UserName = dr.Field<string>("user_name"),
 					MailAddress = dr.Field<string>("mail_address"),
 					IconId = dr.Field<int>("icon_id"),
 					Password = dr.Field<string?>("password") ?? string.Empty
-				};
+				});
 
-				ret.Add(user);
-			}
-
-			return ret;
+			return users.ToList();
 		}
-		#endregion
+#endregion
 
-		#region public methods
+#region public methods
 		/// <summary>
 		/// ユーザをログイン状態に変更する。
 		/// </summary>
@@ -116,7 +130,8 @@ namespace ChatTool.Models.DomainObjects {
 
 			return ret;
 		}
-		#endregion
+#endregion
 
 	}
 }
+
