@@ -19,10 +19,20 @@
                   SelectedItem="{Binding SelectedMessage}"
                   HorizontalContentAlignment="Stretch"
                   ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.CanContentScroll="True"
+                  VirtualizingPanel.ScrollUnit="Pixel">
             <ListView.ItemTemplate>
-                <DataTemplate DataType="m:Message">
-                    <local:MessagePanelView Message="{Binding}" />
+                <DataTemplate DataType="{x:Type m:Message}">
+                    <!--
+                        MessagePanelViewでViewModelをDataContextを設定していて
+                        そちらのプロパティがバインドされてしまうので
+                        ListViewItemのDataContextをバインドするように記載する必要がある。
+                        参考: http://var.blog.jp/archives/67898983.html
+                    -->
+                    <local:MessagePanelView
+                        Message="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                      AncestorType={x:Type ListViewItem}}}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

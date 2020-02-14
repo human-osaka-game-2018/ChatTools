@@ -13,11 +13,8 @@
         ScrollViewer.VerticalScrollBarVisibility="Disabled"
         MinHeight="400"
         MinWidth="450"
+        Closing="Window_Closing"
         d:DataContext="{d:DesignInstance {x:Type vm:MainViewModel}, IsDesignTimeCreatable=True}">
-    <Window.Resources>
-        <SolidColorBrush x:Key="borderColor" Color="#88ffffff" />
-    </Window.Resources>
-
     <Grid>
         <DockPanel x:Name="dockPanel" LastChildFill="True">
             <!-- チャンネル一覧ペイン -->
@@ -49,7 +46,7 @@
                                        Padding="16,8" />
                             <Button Grid.Column="1"
                                     Content="×"
-                                    Command="{Binding BtnCloseThreadPainClickCommand}"
+                                    Command="{Binding BtnCloseThreadPaneClickCommand}"
                                     Background="{x:Null}"
                                     Foreground="{StaticResource mainForegroundColor}"
                                     FontSize="30px"

@@ -17,7 +17,7 @@ namespace ChatTool.ViewModels {
 		/// コンストラクタ。
 		/// </summary>
 		public LoginViewModel() {
-			this.BtnLoginClickedCommand = new DelegateCommand(this.OnBtnLoginClicked);
+			this.BtnLoginClickCommand = new DelegateCommand(this.OnBtnLoginClicked);
 		}
 		#endregion
 
@@ -52,7 +52,7 @@ namespace ChatTool.ViewModels {
 		/// <summary>
 		/// ログインボタン押下コマンド。
 		/// </summary>
-		public DelegateCommand BtnLoginClickedCommand { get; }
+		public DelegateCommand BtnLoginClickCommand { get; }
 		#endregion
 
 		#region private methods

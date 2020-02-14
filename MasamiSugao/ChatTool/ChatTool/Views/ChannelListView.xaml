@@ -11,15 +11,17 @@
              d:DesignHeight="450" d:DesignWidth="100"
              d:DataContext="{d:DesignInstance {x:Type vm:ChannelListViewModel}, IsDesignTimeCreatable=True}">
     <Grid>
-        <ListView Background="{x:Null}"
+        <ListView Background="Transparent"
                   Foreground="{StaticResource mainForegroundColor}"
                   BorderThickness="0"
                   Padding="4"
                   ItemsSource="{Binding Channels}"
+                  SelectedItem="{Binding SelectedChannel}"
+                  HorizontalContentAlignment="Stretch"
                   ScrollViewer.VerticalScrollBarVisibility="Hidden"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  SelectedItem="{Binding SelectedChannel}"
-                  HorizontalContentAlignment="Stretch">
+                  ScrollViewer.CanContentScroll="True"
+                  VirtualizingPanel.ScrollUnit="Pixel">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="m:Channel">
                    <TextBlock Text="{Binding ChannelName, StringFormat=# {0}}"

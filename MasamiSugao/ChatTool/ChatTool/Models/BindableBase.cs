@@ -14,8 +14,8 @@ namespace ChatTool.Models {
 		public event PropertyChangedEventHandler? PropertyChanged;
 
 		/// <summary>
-		/// プロパティが既に目的の値と一致しているかどうかを確認します。必要な場合のみ、
-		/// プロパティを設定し、リスナーに通知します。
+		/// プロパティが既に目的の値と一致しているかどうかを確認します。
+		/// 必要な場合のみプロパティを設定し、リスナーに通知します。
 		/// </summary>
 		/// <typeparam name="T">プロパティの型。</typeparam>
 		/// <param name="storage">get アクセス操作子と set アクセス操作子両方を使用したプロパティへの参照。</param>
@@ -45,6 +45,5 @@ namespace ChatTool.Models {
 		}
 
 	}
-
 }
 

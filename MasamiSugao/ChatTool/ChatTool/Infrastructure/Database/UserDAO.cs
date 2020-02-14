@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Text;
 using ChatTool.Models.DomainObjects;
 using ChatTool.Models.Extentions;
@@ -22,12 +21,13 @@ namespace ChatTool.Infrastructure.Database {
 		/// </summary>
 		/// <param name="mailAddress">検索条件となるメールアドレス</param>
 		/// <returns>取得したユーザ情報一覧</returns>
-		public List<User> Select(string mailAddress) {
+		public DataTable Select(string mailAddress) {
 			string sql = $"SELECT * FROM {TableName} WHERE mail_address = @mail_address AND is_deleted = 0;";
 
 			using var con = Connection.Create();
 			using var cmd = con.CreateCommand();
 			cmd.CommandText = sql;
+
 			cmd.Parameters.Add("@mail_address", MySqlDbType.VarChar, 256);
 			cmd.Prepare();
 			cmd.Parameters["@mail_address"].Value = mailAddress;
@@ -36,9 +36,7 @@ namespace ChatTool.Infrastructure.Database {
 			var dt = new DataTable();
 			da.Fill(dt);
 
-			var ret = User.ConvertFrom(dt);
-
-			return ret;
+			return dt;
 		}
 
 		/// <summary>
@@ -54,10 +52,11 @@ namespace ChatTool.Infrastructure.Database {
 			sql.Append("is_online = @is_online ");
 			sql.Append("WHERE id = @id;");
 
-			// パラメータ生成
 			using var con = Connection.Create();
 			using var cmd = con.CreateCommand();
 			cmd.CommandText = sql.ToString();
+
+			// パラメータ生成
 			cmd.Parameters.Add("@is_online", MySqlDbType.Bit);
 			cmd.Parameters.Add("@id", MySqlDbType.Int32);
 			cmd.Prepare();
@@ -67,7 +66,13 @@ namespace ChatTool.Infrastructure.Database {
 			cmd.Parameters["@id"].Value = user.Id;
 
 			// SQL実行
+			using var tran = con.BeginTransaction();
 			var ret = (cmd.ExecuteNonQuery() > 0);
+			if (ret) {
+				tran.Commit();
+			} else {
+				tran.Rollback();
+			}
 
 			return ret;
 		}
@@ -76,7 +81,7 @@ namespace ChatTool.Infrastructure.Database {
 		/// 削除済みを含む全てのユーザを取得する。
 		/// </summary>
 		/// <returns>取得したユーザ情報一覧</returns>
-		public List<User> SelectAll() {
+		public DataTable SelectAll() {
 			StringBuilder sql = new StringBuilder();
 			sql.Append($"SELECT * FROM {TableName};");
 
@@ -88,9 +93,7 @@ namespace ChatTool.Infrastructure.Database {
 			var dt = new DataTable();
 			da.Fill(dt);
 
-			var ret = User.ConvertFrom(dt);
-
-			return ret;
+			return dt;
 		}
 		#endregion
 

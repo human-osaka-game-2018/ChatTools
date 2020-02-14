@@ -5,8 +5,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ChatTool.Views"
+             xmlns:vm="clr-namespace:ChatTool.ViewModels"
+             xmlns:m="clr-namespace:ChatTool.Models.DomainObjects"
              mc:Ignorable="d"
-             d:DesignHeight="200" d:DesignWidth="400">
+             Foreground="{StaticResource mainForegroundColor}"
+             d:DesignHeight="100" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance {x:Type vm:MessagePanelViewModel}, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <Style x:Key="ListViewItemStyle" TargetType="{x:Type ListViewItem}">
+             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+             <Setter Property="BorderThickness" Value="0" />
+             <Setter Property="Background" Value="Transparent" />
+             <Setter Property="Template">
+                 <Setter.Value>
+                     <ControlTemplate TargetType="{x:Type ContentControl}">
+                         <Border Background="{TemplateBinding Background}">
+                             <ContentPresenter />
+                         </Border>
+                     </ControlTemplate>
+                 </Setter.Value>
+             </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid Margin="8px">
             <Grid.ColumnDefinitions>
@@ -18,22 +39,95 @@
                    Height="50px"
                    Margin="0,0,8,0"
                    VerticalAlignment="Top"
-                   Source="{Binding Message.User.IconPath, ElementName=messagePanelView}"
+                   Source="{Binding Message.User.Icon}"
                    Stretch="Uniform">
                 <Image.Clip>
                     <EllipseGeometry RadiusX="25" RadiusY="25" Center="25,25"/>
                 </Image.Clip>
             </Image>
             <StackPanel Grid.Column="1" Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Message.User.UserName, ElementName=messagePanelView}"
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding Message.User.UserName}"
                                FontWeight="Bold"
                                Margin="0,0,8,8" />
-                    <TextBlock Text="{Binding Message.PostedDate, ElementName=messagePanelView,
-                                StringFormat=yyyy/MM/dd HH:mm}" />
-                </StackPanel>
-                <TextBlock Text="{Binding Message.Text, ElementName=messagePanelView}"
-                           TextWrapping="Wrap" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Message.PostedDate, StringFormat=yyyy/MM/dd HH:mm}" />
+                    <!-- リアクション追加ボタン -->
+                    <Button Grid.Column="3" Background="Transparent" BorderBrush="Transparent" Command="{Binding BtnAddReactionClickCommand}">
+                        <Border CornerRadius="5" BorderThickness="1" Padding="4">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="BorderBrush" Value="{StaticResource mainForegroundColor}" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Border.Style>
+                            <Grid>
+                                <Image Grid.Column="0"
+                                       Source="{Binding AddReactionIconPath}"
+                                       Width="16" Height="16" />
+                                <Popup IsOpen="{Binding IsReactionListPopupOpen}" StaysOpen="False">
+                                    <ListView ItemsSource="{Binding AllReaction}"
+                                              Width="260" Height="160"
+                                              Background="{StaticResource mainBackgroundColor}"
+                                              BorderThickness="0"
+                                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                              ItemContainerStyle="{StaticResource ListViewItemStyle}">
+                                        <ListView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ListView.ItemsPanel>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type m:Reaction}">
+                                                <Button BorderBrush="Transparent"
+                                                        BorderThickness="0"
+                                                        Background="Transparent"
+                                                        Command="{Binding DataContext.ReactionTypeButtonClickCommand,
+                                                                          RelativeSource={RelativeSource Mode=FindAncestor,
+                                                                                                         AncestorType={x:Type UserControl}}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Image Source="{Binding Icon}" Width="16px" Height="16px" />
+                                                </Button>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                    </Button>
+                </Grid>
+                <TextBlock Text="{Binding Message.Text}" TextWrapping="Wrap" />
+
+                <!-- リアクションボタン -->
+                <ListView x:Name="reactionLogListView"
+                          ItemsSource="{Binding Message.ReactionLogs}"
+                          Background="{x:Null}"
+                          SelectionMode="Multiple"
+                          BorderThickness="0"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type m:ReactionLog}">
+                            <local:ReactionButtonView ReactionLog="{Binding}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource ListViewItemStyle}">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListView>
             </StackPanel>
         </Grid>
     </Grid>

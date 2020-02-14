@@ -14,7 +14,7 @@ namespace ChatTool.Infrastructure.Database {
 		private static readonly string connectionString;
 
 		/// <summary>
-		/// コンストラクタ。
+		/// 静的コンストラクタ。
 		/// </summary>
 		static Connection() {
 			connectionString = ConfigurationManager.ConnectionStrings[ConfigurationManager.AppSettings[KeyOfDbKey]].ConnectionString;

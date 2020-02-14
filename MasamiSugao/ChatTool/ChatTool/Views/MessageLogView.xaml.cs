@@ -5,9 +5,20 @@ using ChatTool.ViewModels;
 
 namespace ChatTool.Views {
 	/// <summary>
-	/// MessageLogView.xaml の相互作用ロジック
+	/// MessageLogView.xaml の相互作用ロジック。
 	/// </summary>
 	public partial class MessageLogView : UserControl {
+
+		#region constants/readonly
+		/// <summary>
+		/// MessageLogType依存プロパティ。
+		/// </summary>
+		public static readonly DependencyProperty MessageLogTypeProperty = DependencyProperty.Register(
+																			"MessageLogType",
+																			typeof(MessageLogType),
+																			typeof(MessageLogView),
+																			new FrameworkPropertyMetadata(OnMessageLogTypePropertyChanged));
+		#endregion
 
 		#region field members
 		/// <summary>ViewModel.</summary>
@@ -29,15 +40,6 @@ namespace ChatTool.Views {
 
 		#region properties
 		/// <summary>
-		/// MessageLogType依存プロパティ。
-		/// </summary>
-		public static readonly DependencyProperty MessageLogTypeProperty = DependencyProperty.Register(
-																		"MessageLogType",
-																		typeof(MessageLogType),
-																		typeof(MessageLogView),
-																		new FrameworkPropertyMetadata(OnMessageLogTypePropertyChanged));
-
-		/// <summary>
 		/// メッセージログの種類。
 		/// </summary>
 		public MessageLogType MessageLogType {
@@ -46,7 +48,7 @@ namespace ChatTool.Views {
 		}
 		#endregion
 
-		#region private methods
+		#region private static methods
 		/// <summary>
 		/// MessageLogType依存プロパティ変更イベントハンドラ。
 		/// </summary>
@@ -56,17 +58,22 @@ namespace ChatTool.Views {
 			var view = d as MessageLogView;
 			view!.viewModel.MessageLogType = (MessageLogType)e.NewValue;
 		}
+		#endregion
 
+		#region private methods
 		/// <summary>
-		/// 1番下までスクロールする。
+		/// <see cref="messageListView"/> のリスト変更イベント。
 		/// </summary>
 		private void OnCollectionOfMessageListViewChanged(object sender, NotifyCollectionChangedEventArgs e) {
 			switch (e.Action) {
 				case NotifyCollectionChangedAction.Add:
 				case NotifyCollectionChangedAction.Reset:
-					if (this.messageListView.HasItems) {
-						this.messageListView.ScrollIntoView(this.messageListView.Items[this.messageListView.Items.Count - 1]);
-					}
+					Application.Current.Dispatcher.Invoke(() => {
+						// 1番下までスクロールする。
+						if (this.messageListView.HasItems) {
+							this.messageListView.ScrollIntoView(this.messageListView.Items[this.messageListView.Items.Count - 1]);
+						}
+					});
 					break;
 			}
 		}

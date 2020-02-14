@@ -3,7 +3,7 @@ using ChatTool.ViewModels;
 
 namespace ChatTool.Views {
 	/// <summary>
-	/// ChannelListView.xaml の相互作用ロジック
+	/// ChannelListView.xaml の相互作用ロジック。
 	/// </summary>
 	public partial class ChannelListView : UserControl {
 

@@ -1,8 +1,7 @@
-﻿using ChatTool.Models.DomainObjects;
-using MySql.Data.MySqlClient;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Text;
+using ChatTool.Models.DomainObjects;
+using MySql.Data.MySqlClient;
 
 namespace ChatTool.Infrastructure.Database {
 	/// <summary>
@@ -24,7 +23,7 @@ namespace ChatTool.Infrastructure.Database {
 		/// </summary>
 		/// <param name="user">検索条件となるユーザ</param>
 		/// <returns>取得したチャンネル情報一覧</returns>
-		public List<Channel> SelectBelongingChannels(User user) {
+		public DataTable SelectBelongingChannels(User user) {
 			StringBuilder sql = new StringBuilder();
 			sql.Append($"SELECT * FROM {ChannelTableName} AS ch ");
 			sql.Append($"INNER JOIN {ChannelMemberTableName} as member ");
@@ -44,9 +43,7 @@ namespace ChatTool.Infrastructure.Database {
 			var dt = new DataTable();
 			da.Fill(dt);
 
-			var ret = Channel.ConvertFrom(dt);
-
-			return ret;
+			return dt;
 		}
 		#endregion
 

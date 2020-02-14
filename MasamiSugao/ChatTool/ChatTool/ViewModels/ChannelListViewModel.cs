@@ -8,7 +8,7 @@ using ChatTool.Models.Services;
 
 namespace ChatTool.ViewModels {
 	/// <summary>
-	/// チャンネル一覧画面のViewModel.
+	/// チャンネル一覧画面のViewModel。
 	/// </summary>
 	public class ChannelListViewModel : BindableBase {
 
@@ -23,10 +23,9 @@ namespace ChatTool.ViewModels {
 		/// </summary>
 		public ChannelListViewModel() {
 #if DEBUG
+			// デザイナから実行時はテストデータ挿入
 			if ((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue) {
-				Enumerable.Range(1, 5).ToList().ForEach(i =>
-					this.Channels.Add(new Channel(i) { ChannelName = $"チャンネル名{i}" })
-				);
+				Enumerable.Range(1, 5).ToList().ForEach(i => this.Channels.Add(new Channel(i, $"チャンネル名{i}")));
 				return;
 			}
 #endif
@@ -47,6 +46,9 @@ namespace ChatTool.ViewModels {
 		/// </summary>
 		public ObservableCollection<Channel> Channels { get; } = new ObservableCollection<Channel>();
 
+		/// <summary>
+		/// 選択中のチャンネル。
+		/// </summary>
 		public Channel? SelectedChannel {
 			get => this.selectedChannel;
 			set {

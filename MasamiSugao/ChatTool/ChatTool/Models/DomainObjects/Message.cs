@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using ChatTool.Models.Extentions;
@@ -8,17 +9,9 @@ namespace ChatTool.Models.DomainObjects {
 	/// <summary>
 	/// メッセージ情報クラス。
 	/// </summary>
-	public class Message {
+	public class Message : EntityBase {
 
 		#region constructors
-		/// <summary>
-		/// コンストラクタ。
-		/// </summary>
-		/// <param name="id">メッセージID</param>
-		public Message(int id) {
-			this.Id = id;
-		}
-
 		/// <summary>
 		/// コンストラクタ。
 		/// </summary>
@@ -27,7 +20,20 @@ namespace ChatTool.Models.DomainObjects {
 		/// <param name="text">メッセージ文</param>
 		/// <param name="parentMessage">親メッセージ</param>
 		/// <param name="displaysToChannel">チャンネルに表示するかどうか</param>
-		public Message(Channel channel, User user, string text, Message? parentMessage = null, bool displaysToChannel = true) {
+		public Message(Channel channel, User user, string text, bool displaysToChannel = true, Message? parentMessage = null)
+				: this(-1, channel, user, text, displaysToChannel, parentMessage) {
+		}
+
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		/// <param name="id">メッセージID</param>
+		/// <param name="channel">投稿チャンネル</param>
+		/// <param name="user">投稿ユーザ</param>
+		/// <param name="text">メッセージ文</param>
+		/// <param name="displaysToChannel">チャンネルに表示するかどうか</param>
+		/// <param name="parentMessage">親メッセージ</param>
+		private Message(int id, Channel channel, User user, string text, bool displaysToChannel = true, Message? parentMessage = null) : base(id) {
 			this.Channel = channel;
 			this.User = user;
 			this.Text = text;
@@ -38,24 +44,19 @@ namespace ChatTool.Models.DomainObjects {
 
 		#region parameters
 		/// <summary>
-		/// メッセージID。
-		/// </summary>
-		public int? Id { get; }
-
-		/// <summary>
 		/// 投稿チャンネル。
 		/// </summary>
-		public Channel? Channel { get; set; }
+		public Channel? Channel { get; }
 
 		/// <summary>
 		/// 投稿ユーザ。
 		/// </summary>
-		public User? User { get; set; }
+		public User? User { get; }
 
 		/// <summary>
 		/// メッセージ文。
 		/// </summary>
-		public string Text { get; set; } = string.Empty;
+		public string Text { get; }
 
 		/// <summary>
 		/// 投稿日。
@@ -66,12 +67,17 @@ namespace ChatTool.Models.DomainObjects {
 		/// スレッドの親メッセージ。
 		/// </summary>
 		/// <remarks>スレッドの子メッセージの場合のみ格納される。</remarks>
-		public Message? ParentMessage { get; set; } = null;
+		public Message? ParentMessage { get; private set; } = null;
 
 		/// <summary>
 		/// チャンネルに表示するかどうか。
 		/// </summary>
-		public bool DisplaysToChannel { get; set; } = true;
+		public bool DisplaysToChannel { get; }
+
+		/// <summary>
+		/// リアクション一覧。
+		/// </summary>
+		public ObservableCollection<ReactionLogCollection> ReactionLogs { get; } = new ObservableCollection<ReactionLogCollection>();
 		#endregion
 
 		#region static public methods
@@ -108,15 +114,28 @@ namespace ChatTool.Models.DomainObjects {
 		/// <param name="users">ユーザ情報一覧</param>
 		/// <returns>変換したオブジェクト</returns>
 		private static Message ConvertFrom(DataRow dr, Channel channel, List<User> users) {
-			var message = new Message(dr.Field<int>("id")) {
-				Channel = channel,
-				User = users.First(x => x.Id == dr.Field<int>("user_id")),
-				Text = dr.Field<string>("text"),
-				PostedDate = dr.Field<DateTime>("time"),
-				DisplaysToChannel = dr.Field<sbyte>("displays_to_channel").ToBool()
-			};
+			var message = new Message(
+				dr.Field<int>("id"),
+				channel,
+				users.First(x => x.Id == dr.Field<int>("user_id")),
+				dr.Field<string>("text"),
+				dr.Field<sbyte>("displays_to_channel").ToBool()
+			) { PostedDate = dr.Field<DateTime>("time") };
 
 			return message;
+		}
+		#endregion
+
+		#region public methods
+		/// <summary>
+		/// メッセージへのリアクションを追加する。
+		/// </summary>
+		/// <param name="reaction">追加するリアクションの種類</param>
+		public void AddReaction(Reaction reaction) {
+			var target = this.ReactionLogs.FirstOrDefault(x => x.Reaction == reaction) ??
+				new ReactionLogCollection(reaction, this);
+			// リアクション選択状態に変更
+			target.IsSelected = true;
 		}
 		#endregion
 

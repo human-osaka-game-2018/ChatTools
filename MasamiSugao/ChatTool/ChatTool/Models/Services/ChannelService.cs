@@ -9,14 +9,19 @@ namespace ChatTool.Models.Services {
 	/// </summary>
 	public static class ChannelService {
 
+		#region field members
 		/// <summary>現在選択中のチャンネル。</summary>
 		private static Channel? currentChannel;
+		#endregion
 
+		#region events
 		/// <summary>
 		/// 選択チャンネル変更イベント。
 		/// </summary>
 		public static event EventHandler<Channel>? OnChannelChanged;
+		#endregion
 
+		#region properties
 		/// <summary>
 		/// 現在選択中のチャンネル。
 		/// </summary>
@@ -31,15 +36,19 @@ namespace ChatTool.Models.Services {
 				}
 			}
 		}
+		#endregion
 
+		#region public static methods
 		/// <summary>
 		/// チャンネル一覧データを生成する。
 		/// </summary>
 		/// <returns>一覧データ</returns>
 		public static List<Channel> ListAvailableChannelsBy(User user) {
 			var channelDAO = new ChannelDAO();
-			return channelDAO.SelectBelongingChannels(user);
+			var dt = channelDAO.SelectBelongingChannels(user);
+			return Channel.ConvertFrom(dt);
 		}
+		#endregion
 
 	}
 }

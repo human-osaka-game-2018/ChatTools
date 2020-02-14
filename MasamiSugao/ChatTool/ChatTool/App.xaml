@@ -6,6 +6,7 @@
     <Application.Resources>
         <SolidColorBrush x:Key="mainBackgroundColor" Color="Black" />
         <SolidColorBrush x:Key="mainForegroundColor" Color="#88ffffff" />
+        <SolidColorBrush x:Key="borderColor" Color="#88ffffff" />
     </Application.Resources>
 </Application>
 

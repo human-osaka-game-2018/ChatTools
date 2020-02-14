@@ -4,22 +4,11 @@ using ChatTool.ViewModels;
 
 namespace ChatTool.Views {
 	/// <summary>
-	/// InputAreaView.xaml の相互作用ロジック
+	/// InputAreaView.xaml の相互作用ロジック。
 	/// </summary>
 	public partial class InputAreaView : UserControl {
 
-		/// <summary>ViewModel.</summary>
-		private InputAreaViewModel viewModel = new InputAreaViewModel();
-
-		/// <summary>
-		/// コンストラクタ。
-		/// </summary>
-		public InputAreaView() {
-			InitializeComponent();
-			this.DataContext = this.viewModel;
-			this.viewModel.MessageLogType = this.MessageLogType;
-		}
-
+		#region constants/readonly
 		/// <summary>
 		/// MessageLogType依存プロパティ。
 		/// </summary>
@@ -28,7 +17,25 @@ namespace ChatTool.Views {
 																		typeof(MessageLogType),
 																		typeof(InputAreaView),
 																		new FrameworkPropertyMetadata(OnMessageLogTypePropertyChanged));
+		#endregion
 
+		#region field members
+		/// <summary>ViewModel.</summary>
+		private InputAreaViewModel viewModel = new InputAreaViewModel();
+		#endregion
+
+		#region constructors
+		/// <summary>
+		/// コンストラクタ。
+		/// </summary>
+		public InputAreaView() {
+			InitializeComponent();
+			this.DataContext = this.viewModel;
+			this.viewModel.MessageLogType = this.MessageLogType;
+		}
+		#endregion
+
+		#region properties
 		/// <summary>
 		/// メッセージログの種類。
 		/// </summary>
@@ -36,7 +43,9 @@ namespace ChatTool.Views {
 			get => (MessageLogType)base.GetValue(MessageLogTypeProperty);
 			set => base.SetValue(MessageLogTypeProperty, value);
 		}
+		#endregion
 
+		#region private static methods
 		/// <summary>
 		/// MessageLogType依存プロパティ変更イベントハンドラ。
 		/// </summary>
@@ -46,6 +55,7 @@ namespace ChatTool.Views {
 			var view = d as InputAreaView;
 			view!.viewModel.MessageLogType = (MessageLogType)e.NewValue;
 		}
+		#endregion
 
 	}
 }

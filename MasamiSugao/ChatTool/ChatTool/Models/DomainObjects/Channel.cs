@@ -6,28 +6,24 @@ namespace ChatTool.Models.DomainObjects {
 	/// <summary>
 	/// チャンネル情報クラス。
 	/// </summary>
-	public class Channel {
+	public class Channel : EntityBase {
 
 		#region constructors
 		/// <summary>
 		/// コンストラクタ。
 		/// </summary>
 		/// <param name="id">ユーザID</param>
-		public Channel(int id) {
-			this.Id = id;
+		/// <param name="channelName">チャンネル名</param>
+		public Channel(int id, string channelName) : base(id) {
+			this.ChannelName = channelName;
 		}
 		#endregion
 
 		#region parameters
 		/// <summary>
-		/// チャンネルID。
-		/// </summary>
-		public int Id { get; }
-
-		/// <summary>
 		/// チャンネル名。
 		/// </summary>
-		public string ChannelName { get; set; } = string.Empty;
+		public string ChannelName { get; }
 		#endregion
 
 		#region static public methods
@@ -38,7 +34,7 @@ namespace ChatTool.Models.DomainObjects {
 		/// <returns>変換したオブジェクト</returns>
 		public static List<Channel> ConvertFrom(DataTable dt) {
 			var channels = dt.AsEnumerable().Select(dr =>
-				new Channel(dr.Field<int>("id")) { ChannelName = dr.Field<string>("channel_name") });
+				new Channel(dr.Field<int>("id"), dr.Field<string>("channel_name")));
 
 			return channels.ToList();
 		}

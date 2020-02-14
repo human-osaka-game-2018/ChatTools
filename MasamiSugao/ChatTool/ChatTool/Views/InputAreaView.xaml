@@ -85,7 +85,7 @@
                     Background="#33ffffff"
                     BorderThickness="0"
                     VerticalAlignment="Bottom"
-                    Command="{Binding BtnSendClickedCommand}">
+                    Command="{Binding BtnSendClickCommand}">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="3" />

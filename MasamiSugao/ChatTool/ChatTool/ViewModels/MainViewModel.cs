@@ -41,11 +41,12 @@ namespace ChatTool.ViewModels {
 		/// </summary>
 		public MainViewModel() {
 			this.Title = App.AppName;
-			this.BtnCloseThreadPainClickCommand = new DelegateCommand(() => this.IsThreadPaneVisible = false);
+			this.BtnCloseThreadPaneClickCommand = new DelegateCommand(() => this.IsThreadPaneVisible = false);
 			ChannelService.OnChannelChanged += (_, __) => this.IsThreadPaneVisible = false;
 			MessageService.OnMessageThreadChanged += (_, message) => this.IsThreadPaneVisible = (message != null);
 
 #if DEBUG
+			// デザイナから実行時はスレッドを表示状態にしておく
 			if ((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue) {
 				this.IsThreadPaneVisible = true;
 				return;
@@ -65,13 +66,13 @@ namespace ChatTool.ViewModels {
 		/// </summary>
 		public int ThreadPaneWidth {
 			get => this.threadPaneWidth;
-			set => base.SetProperty(ref this.threadPaneWidth, value);
+			private set => base.SetProperty(ref this.threadPaneWidth, value);
 		}
 
 		/// <summary>
 		/// スレッドペインを閉じるボタンクリックコマンド。
 		/// </summary>
-		public DelegateCommand BtnCloseThreadPainClickCommand { get; }
+		public DelegateCommand BtnCloseThreadPaneClickCommand { get; }
 
 		/// <summary>
 		/// スレッドペインを表示するかどうか。
@@ -85,9 +86,18 @@ namespace ChatTool.ViewModels {
 				this.ThreadPaneWidth = value ? ThreadPaneMaxWidth : 0;
 
 				if (!value) {
-					MessageService.CurrentMessageThreadParent = null;
+					MessageService.ParentOfCurrentMessageThread = null;
 				}
 			}
+		}
+		#endregion
+
+		#region public methods
+		/// <summary>
+		/// 画面を閉じるときの処理。
+		/// </summary>
+		public bool OnClosing() {
+			return LoginService.LogOut();
 		}
 		#endregion
 

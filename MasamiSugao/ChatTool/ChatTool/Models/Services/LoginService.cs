@@ -28,7 +28,8 @@ namespace ChatTool.Models.Services {
 			var userDAO = new UserDAO();
 
 			// メールアドレスが一致するユーザ取得
-			var users = userDAO.Select(mailAddress);
+			var dt = userDAO.Select(mailAddress);
+			var users = User.ConvertFrom(dt);
 			if (users.Count == 0) return false;
 
 			// 認証
@@ -36,7 +37,7 @@ namespace ChatTool.Models.Services {
 			ret = (user != null);
 
 			// オンラインフラグ更新
-			ret = ret && user!.Login();
+			ret = ret && user!.LogIn();
 
 			if (ret) {
 				// 認証成功した場合はログイン中ユーザを保持
@@ -44,6 +45,13 @@ namespace ChatTool.Models.Services {
 			}
 
 			return ret;
+		}
+
+		/// <summary>
+		/// ログアウトする。
+		/// <returns>ログアウトに成功したかどうか</returns>
+		public static bool LogOut() {
+			return CurrentUser?.LogOut() ?? true;
 		}
 		#endregion
 
@@ -54,7 +62,7 @@ namespace ChatTool.Models.Services {
 		/// <param name="users">認証対象のユーザ一覧</param>
 		/// <param name="mailAddress">メールアドレス</param>
 		/// <param name="password">パスワード</param>
-		/// <returns>認証に成功したユーザ情報。に印象失敗した場合は<c>null</c></returns>
+		/// <returns>認証に成功したユーザ情報。認証に失敗した場合は<c>null</c>。</returns>
 		private static User? Authenticate(List<User> users, string mailAddress, string password) {
 			var user = users.FirstOrDefault(x => x.MailAddress == mailAddress && x.Password == password);
 

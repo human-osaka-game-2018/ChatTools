@@ -37,7 +37,8 @@
                        Height="16"
                        Margin="8"
                        Text="メールアドレス" />
-            <TextBox x:Name="txtMailAddress" Grid.Row="0" Grid.Column="2"
+            <TextBox x:Name="txtMailAddress"
+                     Grid.Row="0" Grid.Column="2"
                      Height="16"
                      Margin="8"
                      Text="{Binding MailAddress}" />
@@ -53,13 +54,11 @@
         </Grid>
 
         <!-- ボタンエリア -->
-        <Grid Grid.Row="1">
-            <Button Margin="16, 8"
-                    Height="30"
-                    Content="ログイン"
-                    Command="{Binding BtnLoginClickedCommand}" />
-
-        </Grid>
+        <Button Grid.Row="1"
+                Margin="16, 8"
+                Height="30"
+                Content="ログイン"
+                Command="{Binding BtnLoginClickCommand}" />
     </Grid>
 </Window>
 

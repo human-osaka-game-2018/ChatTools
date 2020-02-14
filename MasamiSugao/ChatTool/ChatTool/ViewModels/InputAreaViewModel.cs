@@ -8,12 +8,14 @@ namespace ChatTool.ViewModels {
 	/// </summary>
 	public class InputAreaViewModel : BindableBase {
 
+		#region constants/readonly
+		/// <summary>サービスクラス。</summary>
+		private MessageService service = new MessageService();
+		#endregion
+
 		#region field members
 		/// <summary>メッセージログの種類。</summary>
 		private MessageLogType messageLogType = MessageLogType.Main;
-
-		/// <summary>サービスクラス。</summary>
-		private MessageService service = new MessageService();
 
 		/// <summary>入力文字列。</summary>
 		private string inputMessage = string.Empty;
@@ -30,7 +32,7 @@ namespace ChatTool.ViewModels {
 		/// コンストラクタ。
 		/// </summary>
 		public InputAreaViewModel() {
-			this.BtnSendClickedCommand = new DelegateCommand(() => this.OnBtnSendClicked(), () => this.CanSend);
+			this.BtnSendClickCommand = new DelegateCommand(() => this.OnBtnSendClicked(), () => this.CanSend);
 
 			ChannelService.OnChannelChanged += (_, __) => this.InitializeInputItems();
 			MessageService.OnMessagePosted += (_, message) => this.OnMessagePosted(message);
@@ -57,7 +59,7 @@ namespace ChatTool.ViewModels {
 			get => this.inputMessage;
 			set {
 				if (base.SetProperty(ref this.inputMessage, value)) {
-					this.BtnSendClickedCommand.RaiseCanExecuteChanged();
+					this.BtnSendClickCommand.RaiseCanExecuteChanged();
 				}
 			}
 		}
@@ -65,7 +67,7 @@ namespace ChatTool.ViewModels {
 		/// <summary>
 		/// 送信ボタン押下コマンド。
 		/// </summary>
-		public DelegateCommand BtnSendClickedCommand { get; }
+		public DelegateCommand BtnSendClickCommand { get; }
 
 		/// <summary>
 		/// 送信可能かどうかを示すフラグ。
@@ -98,8 +100,8 @@ namespace ChatTool.ViewModels {
 				ChannelService.CurrentChannel!,
 				LoginService.CurrentUser!,
 				this.InputMessage,
-				(this.MessageLogType == MessageLogType.Main) ? null : MessageService.CurrentMessageThreadParent,
-				(this.MessageLogType == MessageLogType.Main) ? true : this.DisplaysToChannel
+				(this.MessageLogType == MessageLogType.Main) ? true : this.DisplaysToChannel,
+				(this.MessageLogType == MessageLogType.Main) ? null : MessageService.ParentOfCurrentMessageThread
 			);
 
 			this.service.Post(message);
@@ -110,6 +112,7 @@ namespace ChatTool.ViewModels {
 		/// </summary>
 		/// <param name="message">送信メッセージ</param>
 		private void OnMessagePosted(Message message) {
+			// 対応するViewと、投稿されたメッセージが同じ画面（メインorスレッド）の場合は入力欄初期化
 			if ((this.messageLogType == MessageLogType.Main) == (message.ParentMessage == null)) {
 				this.InitializeInputItems();
 			}
